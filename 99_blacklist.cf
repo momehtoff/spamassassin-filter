@@ -1,0 +1,13 @@
+blacklist_from *@*.bond
+blacklist_from *@*.lat
+blacklist_from *@*.centrlic.ru
+blacklist_from *@*.curation-me.com
+blacklist_from *@*.hinet.net
+blacklist_from *@*.lukman.pl
+blacklist_from *@*.monster
+blacklist_from *@*.one
+blacklist_from *@*.otruda-client.ru
+blacklist_from *@*.otruda-client2.ru
+blacklist_from *@*.profiemail.ru
+blacklist_from *@*.rus-otruda-client.ru
+blacklist_from *@*.za.com
