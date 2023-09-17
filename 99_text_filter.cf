@@ -1,52 +1,53 @@
 #####################################################################################################
 ### Body filter 4 SpamAssassin                                                                    ###
-### v.20230914                                                                                    ###
+### v.20230916                                                                                    ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                         ###
 ### Regex check:     https://regex101.com/                                                        ###
 #####################################################################################################
 
-body FILTER_BODY_WORDS_EN_0001		/\bcheck([[:blank:][:punct:]]?)your([[:blank:][:punct:]]?)zip([[:blank:][:punct:]]?)code\b|\blorem([[:blank:][:punct:]]?)ipsum\b/i
-score FILTER_BODY_WORDS_EN_0001		5
-describe FILTER_BODY_WORDS_EN_0001	check your zip code|lorem ipsum
+body FILTER_BODY_WORDS_EN_0001		/\bbusiness([[:blank:][:punct:]]?)register\b|\bcheck([[:blank:][:punct:]]?)your([[:blank:][:punct:]]?)zip([[:blank:][:punct:]]?)code\b|\bchoice([[:blank:][:punct:]]?)home([[:blank:][:punct:]]?)warranty\b|\bchouchou\b|\binterested([[:blank:][:punct:]]?)in([[:blank:][:punct:]]?)you\b|\bla([[:blank:][:punct:]]?)vue\b|\blorem([[:blank:][:punct:]]?)ipsum\b|\bnano([[:blank:][:punct:]]?)care\b|\bpotential([[:blank:][:punct:]]?)customers\b|\bpromotional([[:blank:][:punct:]]?)email(s?)\b|\bspecial offer\b|\btake([[:blank:][:punct:]]?)our([[:blank:][:punct:]]?)survey\b|\bvalued([[:blank:][:punct:]]?)flyers\b|\bview([[:blank:][:punct:]]?)message(s?)\b|\bvisit([[:blank:][:punct:]]?)cam(s?)\b|\bvous\b|\bvvod([[:blank:][:punct:]]?)oks\b|\byagla\b/i
+score FILTER_BODY_WORDS_EN_0001		2
+describe FILTER_BODY_WORDS_EN_0001	business register|check your zip code|choice home warranty|chouchou|interested in you|la vue|lorem ipsum|nano-care|potential customers|promotional email(s)|special offer|take our survey|valued flyers|view message(s)|visit cam(s)|vous|vvod-oks|yagla
 
 body TXT_BODY_FILTER_NUMBERS		/\b[1-9]o{2,9}\b|\b[1-9]o o{1,7}\b/i
 score TXT_BODY_FILTER_NUMBERS		5
 describe TXT_BODY_FILTER_NUMBERS	[NUM]OO..|[NUM]O O..O
 
-body TXT_BODY_FILTER_PHONES		/\b[0-9]i{1,3}[0-9]\b/i
+body TXT_BODY_FILTER_PHONES			/\b[0-9]i{1,3}[0-9]\b/i
 score TXT_BODY_FILTER_PHONES		5
 describe TXT_BODY_FILTER_PHONES		[NUM]I[NUM]
 
-body TXT_BODY_FILTER_RASSILKA_UTF8	/(((\xd0\xb5)|(\xd0\x95)|e|E)([[:blank:][:punct:]]?)((\xd0\xbc)|(\xd0\x9c)|m|M)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|@)(i|I|1)([[:blank:][:punct:]]?)(l|L|1)([[:blank:][:punct:]]?)((\xd1\x80)|(\xd0\xa0)|p|P)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|@)([[:blank:][:punct:]]?)((\xd1\x81)|(\xd0\xa1)|c|C)([[:blank:][:punct:]]?)((\xd1\x81)|(\xd0\xa1)|c|C)([[:blank:][:punct:]]?)((\xd1\x8b)|(\xd0\xab))([[:blank:][:punct:]]?)((\xd0\xbb)|(\xd0\x9b))([[:blank:][:punct:]]?)((\xd0\xba)|(\xd0\x9a)|k|K)([[:blank:][:punct:]]?)(((\xd0\xb0)|(\xd0\x90)|a|A|@)|((\xd0\xb5)|(\xd0\x95)|e|E)|((\xd0\xb8)|(\xd0\x98)|u|U)|((\xd1\x83)|(\xd0\xa3)|y|Y)))/ms
-score TXT_BODY_FILTER_RASSILKA_UTF8	5
-describe TXT_BODY_FILTER_RASSILKA_UTF8	E-Mail Рассылка|E-Mail Рассылке|E-Mail Рассылки|E-Mail Рассылку
+body TXT_BODY_FILTER_RASSILKA_UTF8		/(((\xd0\xb5)|(\xd0\x95)|e|E)([[:blank:][:punct:]]?)((\xd0\xbc)|(\xd0\x9c)|m|M)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|@)(i|I|1)([[:blank:][:punct:]]?)(l|L|1)([[:blank:][:punct:]]?)((\xd1\x80)|(\xd0\xa0)|p|P)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|@)([[:blank:][:punct:]]?)((\xd1\x81)|(\xd0\xa1)|c|C)([[:blank:][:punct:]]?)((\xd1\x81)|(\xd0\xa1)|c|C)([[:blank:][:punct:]]?)((\xd1\x8b)|(\xd0\xab))([[:blank:][:punct:]]?)((\xd0\xbb)|(\xd0\x9b))([[:blank:][:punct:]]?)((\xd0\xba)|(\xd0\x9a)|k|K)([[:blank:][:punct:]]?)(((\xd0\xb0)|(\xd0\x90)|a|A|@)|((\xd0\xb5)|(\xd0\x95)|e|E)|((\xd0\xb8)|(\xd0\x98)|u|U)|((\xd1\x83)|(\xd0\xa3)|y|Y)))|((\xd1\x80|\xd0\xa0|p|P)([[:blank:][:punct:]])(\xd0\xb0|\xd0\x90|a|A|@)([[:blank:][:punct:]])(\xd1\x81|\xd0\xa1|c|C)([[:blank:][:punct:]])(\xd1\x81|\xd0\xa1|c|C)([[:blank:][:punct:]])(\xd1\x8b|\xd0\xab)([[:blank:][:punct:]])(\xd0\xbb|\xd0\x9b)([[:blank:][:punct:]])(\xd0\xba|\xd0\x9a|k|K)([[:blank:][:punct:]])((\xd0\xb0|\xd0\x90|a|A|@)|(\xd0\xb8|\xd0\x98|u|U)|(\xd0\xb5|\xd0\x95|e|E)))/ms
+score TXT_BODY_FILTER_RASSILKA_UTF8		5
+describe TXT_BODY_FILTER_RASSILKA_UTF8	E-Mail Рассылка|E-Mail Рассылке|E-Mail Рассылки|E-Mail Рассылку|Р.а.с.с.ы.л.к.а
 
-body TXT_BODY_FILTER_REKLAMA		/\baltus\b|\barmani\b|\bbunchems\b|\beroforce\b|\bgemoderm\b|\bhublot\b|\blolidream\b|\bmaxphone\b|\brevoskin\b|\bswarovski\b/i
+body TXT_BODY_FILTER_REKLAMA		/\baltus\b|\barmani\b|\bbaccarat\b|\bbunchems\b|\beroforce\b|\bgemoderm\b|\bhublot\b|\blolidream\b|\bmaxphone\b|\brevoskin\b|\brolex\b|\bswarovski\b|x([[:blank:][:punct:]]?)bionic/i
 score TXT_BODY_FILTER_REKLAMA		3
-describe TXT_BODY_FILTER_REKLAMA	Какаято реклама EN: altus|armani|bunchems|eroforce|gemoderm|hublot|lolidream|maxphone|revoskin|swarovski
+describe TXT_BODY_FILTER_REKLAMA	Какаято реклама EN: altus|armani|baccarat|bunchems|eroforce|gemoderm|hublot|lolidream|maxphone|revoskin|rolex|swarovski|x-bionic
 
-body TXT_BODY_FILTER_UNSUBSCRIBE	/\bunsubscribe\b/i
-score TXT_BODY_FILTER_UNSUBSCRIBE	3
+body TXT_BODY_FILTER_UNSUBSCRIBE		/\bunsubscribe\b/i
+score TXT_BODY_FILTER_UNSUBSCRIBE		3
 describe TXT_BODY_FILTER_UNSUBSCRIBE	Cancel subscription
 
-body TXT_BODY_FILTER_SHOPER		/\bdear([[:blank:][:punct:]]?)valued([[:blank:][:punct:]]?)shopper\b/i
+body TXT_BODY_FILTER_SEMINAR_UTF8		/((\xd1\x81|\xd0\xa1|c|C)(\xd0\xb5|\xd0\xa1|e|E)(\xd0\xbc|\xd0\x9c|m|M)(\xd0\xb8|\xd0\x98|u|U)(\xd0\xbd|\xd0\x9d|H)(\xd0\xb0|\xd0\x90|a|A|@)(\xd1\x80|\xd0\xa0|p|P)([[:blank:][:punct:]]?)(\xd0\xbf|\xd0\x9f|n)(\xd0\xbb|\xd0\x9b)(\xd1\x8e|\xd0\xae)(\xd1\x81|\xd0\xa1|c|C))/ms
+score TXT_BODY_FILTER_SEMINAR_UTF8		5
+describe TXT_BODY_FILTER_SEMINAR_UTF8	Семинар плюс
+
+body TXT_BODY_FILTER_SHOPER			/\bdear([[:blank:][:punct:]]?)valued([[:blank:][:punct:]]?)shopper\b/i
 score TXT_BODY_FILTER_SHOPER		5
 describe TXT_BODY_FILTER_SHOPER		Dear Valued Shopper
 
-body TXT_BODY_FILTER_VEBINAR_UTF8	/(((\xd0\xb2)|(\xd0\x92)|B|8)([[:blank:][:punct:]]?)((\xd0\xb5)|(\xd0\x95)|e|E|3)([[:blank:][:punct:]]?)((\xd0\xb1)|(\xd0\x91)|6)([[:blank:][:punct:]]?)((\xd0\xb8)|(\xd0\x98)|u|U)([[:blank:][:punct:]]?)((\xd0\xbd)|(\xd0\x9d)|H)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|@)([[:blank:][:punct:]]?)((\xd1\x80)|(\xd0\xa0)|p|P))/ms
-score TXT_BODY_FILTER_VEBINAR_UTF8	5
+body TXT_BODY_FILTER_VEBINAR_UTF8		/(((\xd0\xb2)|(\xd0\x92)|B|8)([[:blank:][:punct:]]?)((\xd0\xb5)|(\xd0\x95)|e|E|3)([[:blank:][:punct:]]?)((\xd0\xb1)|(\xd0\x91)|6)([[:blank:][:punct:]]?)((\xd0\xb8)|(\xd0\x98)|u|U)([[:blank:][:punct:]]?)((\xd0\xbd)|(\xd0\x9d)|H)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|@)([[:blank:][:punct:]]?)((\xd1\x80)|(\xd0\xa0)|p|P))/ms
+score TXT_BODY_FILTER_VEBINAR_UTF8		2
 describe TXT_BODY_FILTER_VEBINAR_UTF8	Вебинар
-
-body TXT_BODY_FILTER_SHOPER		/\bdear([[:blank:][:punct:]]?)valued([[:blank:][:punct:]]?)shopper\b/i
-score TXT_BODY_FILTER_SHOPER		5
-describe TXT_BODY_FILTER_SHOPER		Dear Valued Shopper
 
 body TXT_BODY_FILTER_WORD_WITH_NUM_EN		/\b0utl(o|0)(o|0)k\b|\b(o|0)utl0(o|0)k\b|\b(o|0)utl(o|0)0k\b/i
 score TXT_BODY_FILTER_WORD_WITH_NUM_EN		5
 describe TXT_BODY_FILTER_WORD_WITH_NUM_EN	0utlook|outl0ok|outlo0k
 
-body TXT_BODY_FILTER_WORD_WITH_NUM_RU		/((o|O|0)([[:blank:][:punct:]]?)((\xd0\xba)|(\xd0\x9a)|k|K)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|4)([[:blank:][:punct:]]?)((\xd0\xb6)|(\xd0\x96))([[:blank:][:punct:]]?)((\xd0\xb5)|(\xd0\x95)|e|E)([[:blank:][:punct:]]?)((\xd0\xbc)|(\xd0\x9c)|m|M))/ms
-score TXT_BODY_FILTER_WORD_WITH_NUM_RU		5
-describe TXT_BODY_FILTER_WORD_WITH_NUM_RU	0кажем
+body TXT_BODY_FILTER_WORD_WITH_NUM_RU_UTF_8		/((o|O|0)([[:blank:][:punct:]]?)((\xd0\xba)|(\xd0\x9a)|k|K)([[:blank:][:punct:]]?)((\xd0\xb0)|(\xd0\x90)|a|A|4)([[:blank:][:punct:]]?)((\xd0\xb6)|(\xd0\x96))([[:blank:][:punct:]]?)((\xd0\xb5)|(\xd0\x95)|e|E)([[:blank:][:punct:]]?)((\xd0\xbc)|(\xd0\x9c)|m|M))/ms
+score TXT_BODY_FILTER_WORD_WITH_NUM_RU_UTF_8	5
+describe TXT_BODY_FILTER_WORD_WITH_NUM_RU_UTF_8	0кажем
