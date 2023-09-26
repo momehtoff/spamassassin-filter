@@ -7,7 +7,7 @@
 #* customisation.  If you want to make changes to the site-wide defaults,
 #* create a file in /etc/spamassassin or /etc/mail/spamassassin instead.
 ###########################################################################
-
+7
 # How many points before a mail is considered spam.
 # required_score		5
 
@@ -33,12 +33,23 @@
 # score UPPERCASE_50_75		0
 # score UPPERCASE_75_100	0
 # score OBSCURED_EMAIL          0
-score BAYES_999			2.5
+score BAYES_999			3.5
 score BITCOIN_TOEQFM		1
 score BITCOIN_SPAM_07		2
+score BITCOIN_VISTA		0.5
 score DIET_1			0.5
+score DKIMWL_WL_MED		-1
+score DKIMWL_WL_HIGH		-1.5
 score GB_HASHBL_BTC		0.5
+score HDR_ORDER_FTSDMCXX_NORDNS	2
+score HDR_ORDER_FTSDMCXX_DIRECT 2
+score KHOP_HELO_FCRDNS		0.5
+score MIME_QP_LONG_LINE RAW	0.2
+score MIMEOLE_DIRECT_TO_MX	2
+score NO_FM_NAME_IP_HOSTN	0.5
 score PDS_BTC_ID		0.5
+score PDS_BTC_MSGID		0.5
+score RATWARE_NO_RDNS		2
 score RCVD_IN_MSPIKE_BL		1.5
 score RCVD_IN_MSPIKE_L5		3.5
 score RCVD_IN_MSPIKE_L4		3
@@ -54,7 +65,14 @@ score RCVD_IN_MSPIKE_H5		-3
 score RCVD_IN_MSPIKE_ZBI	2
 score SPF_NONE			1
 score SPF_PASS			-0.3
+score SPOOF_GMAIL_MID		1
+score SPOOFED_FREEMAIL		1
+score SPOOFED_FREEMAIL_NO_RDNS	2
+score T_HTML_ATTACH		1.5
+score T_KAM_HTML_FONT_INVALID	0.1
 score T_SPF_HELO_TEMPERROR	0.3
+score TVD_RCVD_IP		0.5
+score VISTA_COST		0.2
 
 # Speakers of any language that uses non-English, accented characters may wish
 # to uncomment the following lines.   They turn off rules that fire on
