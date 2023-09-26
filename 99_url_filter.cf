@@ -1,0 +1,37 @@
+#####################################################################################################
+### URL filter 4 SpamAssassin                                                                     ###
+### v.20230925                                                                                    ###
+###                                                                                               ###
+### Addon links:                                                                                  ###
+### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                         ###
+### Regex check:     https://regex101.com/                                                        ###
+#####################################################################################################
+
+uri URL_FILTER_COM_UA			/(.*\.com\.ua)/i
+score URL_FILTER_COM_UA			5
+describe URL_FILTER_COM_UA		COM.UA
+
+uri URL_FILTER_IMAGES			/(i\.postimg\.cc)/i
+score URL_FILTER_IMAGES			2
+describe URL_FILTER_IMAGES		Хостинги с картинками
+
+uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)/i
+score URL_FILTER_SHORTURL		5
+describe URL_FILTER_SHORTURL	Укорачиватели ссылок
+
+uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)/i
+score URL_FILTER_REKLAMA		3
+describe URL_FILTER_REKLAMA		ad(s).*.*|cdn.*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru
+
+body URL_FILTER_SEMINAR			/(radislavgandapas\.com)|(seminar-inform\.ru)/i
+score URL_FILTER_SEMINAR		5
+describe URL_FILTER_SEMINAR		radislavgandapas.com|seminar-inform.ru
+
+uri URL_FILTER_UNSUBSCRIBE 		/(.{0,5}-usndr\.com)|(besteml\.com)|(cssystem\.ru)|(dmesp\.ru)|(emlbest\.com)|(fsclick\.ru)|(geteml\.com)|(mailinternetsub\.com)|.*\/unsubscribe\/.*/i
+score URL_FILTER_UNSUBSCRIBE	2
+describe URL_FILTER_UNSUBSCRIBE	*-usndr.com|besteml.com|cssystem.ru|dmesp.ru|emlbest.com|fsclick.ru|geteml.com|mailinternetsub.com|unsubscribe
+
+uri URL_FILTER_URL 		/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)/i
+score URL_FILTER_URL 	3
+describe URL_FILTER_URL abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|sk-magazin.ru|tramts.com|shop.ultraseller.ru

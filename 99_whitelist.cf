@@ -1,3 +1,5 @@
+whitelist_from *@*.roseltorg.ru
 whitelist_from *@carolinaspb.ru
 whitelist_from *@kontur.ru
+whitelist_from *@roseltorg.ru
 whitelist_from *@tender.pro

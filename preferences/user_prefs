@@ -36,7 +36,7 @@
 score BAYES_999			2.5
 score BITCOIN_TOEQFM		1
 score BITCOIN_SPAM_07		2
-ысщку DIET_1			0.5
+score DIET_1			0.5
 score GB_HASHBL_BTC		0.5
 score PDS_BTC_ID		0.5
 score RCVD_IN_MSPIKE_BL		1.5
