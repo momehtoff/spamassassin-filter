@@ -1,6 +1,6 @@
 ﻿#####################################################################################################
 ### Convertor Russian symbols 2 UTF-8 for Text filter 4 SpamAssassin                              ###
-### v.20230921                                                                                    ###
+### v.20230922                                                                                    ###
 #####################################################################################################
 
 Param (
@@ -8,6 +8,7 @@ Param (
 )
 
 $russian_letters = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+$fileRusUTF8 = 'RusUTF8.txt';
 
 if (-not $inputFilter) {
 	Write-Warning "Не введено значение параметра [inputFilter]!";
@@ -18,10 +19,10 @@ Write-Host "Длина входящей строки:" $inputFilter.Length "си
 
 $current_dir = ($MyInvocation.MyCommand.Path | split-path -parent); # Текущий каталог
 
-$check_RusUTF8 = (Test-Path -Path ($current_dir + '\RusUTF8.txt'));
+$check_RusUTF8 = (Test-Path -Path ($current_dir + '\' + $fileRusUTF8));
 
 if (-not $check_RusUTF8) {
-	Write-Warning "Файл [RusUTF8.txt] не найден!"
+	Write-Warning "Файл [$fileRusUTF8] не найден!"
 	exit;
 }
 
@@ -42,7 +43,7 @@ if ($count_open_round_brackets -ne $count_close_round_brackets) {
 }
 
 # Конвертация русских букв в UTF8 кодировку
-$utf8_table = (Get-Content -Path ($current_dir + '\RusUTF8.txt'));
+$utf8_table = (Get-Content -Path ($current_dir + '\' + $fileRusUTF8));
 
 $resultFilter = "";
 
