@@ -1,3 +1,13 @@
+#####################################################################################################
+### Body Russian Text filter 4 SpamAssassin                                                       ###
+### v.20230927                                                                                    ###
+###                                                                                               ###
+### Addon links:                                                                                  ###
+### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                         ###
+### Regex check:     https://regex101.com/                                                        ###
+#####################################################################################################
+
 blacklist_from *@*.bet
 blacklist_from *@*.bio
 blacklist_from *@*.bond
@@ -21,3 +31,4 @@ blacklist_from *@*.profiemail.ru
 blacklist_from *@*.rus-otruda-client.ru
 blacklist_from *@*.sa.com
 blacklist_from *@*.za.com
+blacklist_from *@*-usndr.com
