@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Body Russian Text filter 4 SpamAssassin                                                       ###
-### v.20230927                                                                                    ###
+### v.20231003                                                                                    ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
@@ -15,7 +15,9 @@ blacklist_from *@*.lat
 blacklist_from *@*.centrlic.ru
 blacklist_from *@*.curation-me.com
 blacklist_from *@*.dansco.ru
+blacklist_from *@*.dionisauto.ru
 blacklist_from *@*.directcrm.ru
+blacklist_from *@*.faxweb.ru
 blacklist_from *@*.hinet.net
 blacklist_from *@*.mbx-sender-01.ru
 blacklist_from *@*.mbx-sender-02.ru
