@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Body Russian Text filter 4 SpamAssassin                                                       ###
-### v.20231006                                                                                    ###
+### v.20231016                                                                                    ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
@@ -8,18 +8,24 @@
 ### Regex check:     https://regex101.com/                                                        ###
 #####################################################################################################
 
-blacklist_from *@*.bet
+blacklist_from *@*.actabox.ru
+blacklist_from *@*.accdom.ru
 blacklist_from *@*.allsip.ru
+blacklist_from *@*.artbash.ru
+blacklist_from *@*.bet
 blacklist_from *@*.bio
 blacklist_from *@*.bond
 blacklist_from *@*.lat
 blacklist_from *@*.centrlic.ru
 blacklist_from *@*.curation-me.com
 blacklist_from *@*.dansco.ru
+blacklist_from *@*.deneg-dam.ru
 blacklist_from *@*.dionisauto.ru
 blacklist_from *@*.directcrm.ru
+blacklist_from *@*.dreamhostps.com
 blacklist_from *@*.elisrecords.ru
 blacklist_from *@*.faxweb.ru
+blacklist_from *@*.fotoltd.ru
 blacklist_from *@*.hinet.net
 blacklist_from *@*.mbx-sender-01.ru
 blacklist_from *@*.mbx-sender-02.ru
