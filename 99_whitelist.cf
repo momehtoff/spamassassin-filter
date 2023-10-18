@@ -1,5 +1,17 @@
+#####################################################################################################
+### Whitelist filter 4 SpamAssassin                                                               ###
+### v.20231018                                                                                    ###
+### https://github.com/momehtoff/spamassassin-filter                                              ###
+###                                                                                               ###
+### Addon links:                                                                                  ###
+### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                         ###
+### Regex check:     https://regex101.com/                                                        ###
+#####################################################################################################
+
 whitelist_from *@*.roseltorg.ru
 whitelist_from *@carolinaspb.ru
+whitelist_from *@etpgpb.ru
 whitelist_from *@kontur.ru
 whitelist_from *@roseltorg.ru
 whitelist_from *@tender.pro

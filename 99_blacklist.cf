@@ -1,6 +1,7 @@
 #####################################################################################################
-### Body Russian Text filter 4 SpamAssassin                                                       ###
-### v.20231016                                                                                    ###
+### Blacklist filter 4 SpamAssassin                                                               ###
+### v.20231018                                                                                    ###
+### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                      ###
@@ -8,8 +9,11 @@
 ### Regex check:     https://regex101.com/                                                        ###
 #####################################################################################################
 
-blacklist_from *@*.actabox.ru
 blacklist_from *@*.accdom.ru
+blacklist_from *@*.acsnn.ru
+blacklist_from *@*.actabox.ru
+blacklist_from *@*.actq.ru
+blacklist_from *@*.acvostok.ru
 blacklist_from *@*.allsip.ru
 blacklist_from *@*.artbash.ru
 blacklist_from *@*.bet
@@ -40,5 +44,9 @@ blacklist_from *@*.otruda-client2.ru
 blacklist_from *@*.profiemail.ru
 blacklist_from *@*.rus-otruda-client.ru
 blacklist_from *@*.sa.com
+blacklist_from *@*.top
 blacklist_from *@*.za.com
 blacklist_from *@*-usndr.com
+blacklist_from *@actq.ru
+blacklist_from *@dllicer.ru
+blacklist_from *@mail365.ru
