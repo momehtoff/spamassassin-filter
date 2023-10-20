@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### v.20231018                                                                                    ###
+### v.20231020                                                                                    ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -19,8 +19,10 @@ blacklist_from *@*.artbash.ru
 blacklist_from *@*.bet
 blacklist_from *@*.bio
 blacklist_from *@*.bond
+blacklist_from *@*.buzz
 blacklist_from *@*.lat
 blacklist_from *@*.centrlic.ru
+blacklist_from *@*.cfd
 blacklist_from *@*.curation-me.com
 blacklist_from *@*.dansco.ru
 blacklist_from *@*.deneg-dam.ru
@@ -30,6 +32,7 @@ blacklist_from *@*.dreamhostps.com
 blacklist_from *@*.elisrecords.ru
 blacklist_from *@*.faxweb.ru
 blacklist_from *@*.fotoltd.ru
+blacklist_from *@*.fun
 blacklist_from *@*.hinet.net
 blacklist_from *@*.mbx-sender-01.ru
 blacklist_from *@*.mbx-sender-02.ru
@@ -42,11 +45,18 @@ blacklist_from *@*.one
 blacklist_from *@*.otruda-client.ru
 blacklist_from *@*.otruda-client2.ru
 blacklist_from *@*.profiemail.ru
+blacklist_from *@*.quest
 blacklist_from *@*.rus-otruda-client.ru
+blacklist_from *@*.s-otruda-client.ru
 blacklist_from *@*.sa.com
+blacklist_from *@*.shop
+blacklist_from *@*.space
 blacklist_from *@*.top
+blacklist_from *@*.vservers.es
 blacklist_from *@*.za.com
 blacklist_from *@*-usndr.com
 blacklist_from *@actq.ru
 blacklist_from *@dllicer.ru
 blacklist_from *@mail365.ru
+blacklist_from *@mvk.ru
+blacklist_from *@seminar-plus.ru
