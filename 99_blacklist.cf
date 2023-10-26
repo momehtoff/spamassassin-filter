@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### v.20231020                                                                                    ###
+### v.20231025                                                                                    ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -53,10 +53,12 @@ blacklist_from *@*.shop
 blacklist_from *@*.space
 blacklist_from *@*.top
 blacklist_from *@*.vservers.es
+blacklist_from *@*.xyz
 blacklist_from *@*.za.com
 blacklist_from *@*-usndr.com
 blacklist_from *@actq.ru
 blacklist_from *@dllicer.ru
+blacklist_from *@fsav.ru
 blacklist_from *@mail365.ru
 blacklist_from *@mvk.ru
 blacklist_from *@seminar-plus.ru
