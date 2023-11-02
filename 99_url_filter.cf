@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### v.20231026                                                                                    ###
+### v.20231102                                                                                    ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -13,6 +13,10 @@ uri URL_FILTER_COM_UA			/(.*\.com\.ua)/i
 score URL_FILTER_COM_UA			5
 describe URL_FILTER_COM_UA		COM.UA
 
+body URL_FILTER_FISHING			/(\/upload(s?)\/)/i
+score URL_FILTER_FISHING		5
+describe URL_FILTER_FISHING		/upload(s?)/
+
 uri URL_FILTER_IMAGES			/(i\.postimg\.cc)/i
 score URL_FILTER_IMAGES			2
 describe URL_FILTER_IMAGES		Хостинги с картинками
@@ -21,9 +25,9 @@ uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)
 score URL_FILTER_SHORTURL		5
 describe URL_FILTER_SHORTURL	Укорачиватели ссылок
 
-uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(stripocdn.email)/i
+uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(mindbox\.ru)|(stripocdn.email)/i
 score URL_FILTER_REKLAMA		3
-describe URL_FILTER_REKLAMA		ad(s).*.*|cdn.*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru|stripocdn.email
+describe URL_FILTER_REKLAMA		ad(s).*.*|cdn.*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru|mindbox.ru|stripocdn.email
 
 body URL_FILTER_SEMINAR			/(1prombez\.ru)|(radislavgandapas\.com)|(seminar-inform\.ru)/i
 score URL_FILTER_SEMINAR		5
@@ -33,9 +37,9 @@ uri URL_FILTER_UNSUBSCRIBE 		/(.{0,5}-usndr\.com)|(besteml\.com)|(cssystem\.ru)|
 score URL_FILTER_UNSUBSCRIBE	2
 describe URL_FILTER_UNSUBSCRIBE	*-usndr.com|besteml.com|cssystem.ru|dllicer.ru|dmesp.ru|emlbest.com|fsclick.ru|geteml.com|mail365.ru|mailinternetsub.com|unsubscribe
 
-uri URL_FILTER_URL 				/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(blogspot\.it)|(blogwasabi\.com)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(prokul\.ru)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)/i
+uri URL_FILTER_URL 				/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(blogspot\.it)|(blogwasabi\.com)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(lg-informationdisplay\.com)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(prokul\.ru)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)/i
 score URL_FILTER_URL 			3
-describe URL_FILTER_URL 		abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|blogspot.it|blogwasabi.com|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|prokul.ru|sk-magazin.ru|tramts.com|shop.ultraseller.ru
+describe URL_FILTER_URL 		abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|blogspot.it|blogwasabi.com|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|lg-informationdisplay.com|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|prokul.ru|sk-magazin.ru|tramts.com|shop.ultraseller.ru
 
 body URL_FILTER_VEBINAR			/(webinar\.ru)|(webinar\.ru\.net)/i
 score URL_FILTER_VEBINAR		5

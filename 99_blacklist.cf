@@ -37,6 +37,7 @@ blacklist_from *@*.hinet.net
 blacklist_from *@*.mbx-sender-01.ru
 blacklist_from *@*.mbx-sender-02.ru
 blacklist_from *@*.mbx-sender-03.ru
+blacklist_from *@*.lesozavodskiy.ru
 blacklist_from *@*.lukman.pl
 blacklist_from *@*.monster
 blacklist_from *@*.msk-seminar.ru

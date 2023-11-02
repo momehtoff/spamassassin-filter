@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Whitelist filter 4 SpamAssassin                                                               ###
-### v.20231018                                                                                    ###
+### v.20231102                                                                                    ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -14,4 +14,5 @@ whitelist_from *@carolinaspb.ru
 whitelist_from *@etpgpb.ru
 whitelist_from *@kontur.ru
 whitelist_from *@roseltorg.ru
+whitelist_from *@saipwell.com
 whitelist_from *@tender.pro
