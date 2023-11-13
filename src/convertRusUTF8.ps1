@@ -1,6 +1,6 @@
 ﻿#####################################################################################################
 ### Convertor Russian symbols 2 UTF-8 for Text filter 4 SpamAssassin                              ###
-### v.20231003                                                                                    ###
+### v202311113                                                                                    ###
 #####################################################################################################
 
 Param (
@@ -48,33 +48,6 @@ if ($count_open_round_brackets -ne $count_close_round_brackets) {
 	exit;
 }
 
-# Добавление ([[:blank:][:punct:]]?)
-#if ($addBP) {
-#    $PBFilter = "";
-#
-#    for ($idx = 0; $idx -lt $inputFilter.Length; $idx++) {
-#        $PBFilter += $inputFilter[$idx];
-#
-#        if ($letters.Contains($inputFilter[$idx])) {    # Добавляем BP после букв
-#            if (($idx + 1) -lt $inputFilter.Length) {
-#                if (-not $no_PB_letters.Contains($inputFilter[$idx + 1])) {
-#                    $PBFilter += '([[:blank:][:punct:]]?)';
-#                }
-#            }
-#        }
-#
-#        if ($inputFilter[$idx] -eq ')') {                       # Добавляем BP после круглой скобки, перед буквами
-#            if (($idx + 1) -lt $inputFilter.Length) {
-#                if ($letters.Contains($inputFilter[$idx + 1])) {
-#                    $PBFilter += '([[:blank:][:punct:]]?)';
-#                }
-#            }
-#        }
-#    }
-#
-#    if ($PBFilter.Length -gt 0) { $inputFilter = $PBFilter; }
-#}
-
 # Конвертация букв
 $convert_table = (Get-Content -Path ($current_dir + '\' + $file_convert_table));
 
@@ -85,18 +58,23 @@ for ($idx = 0; $idx -lt $inputFilter.Length; $idx++) {
         $replacement_found = $false;
 
         foreach ($str in $convert_table) {
-            if ($str.Contains($inputFilter[$idx])) {
-                $str_arr = $str.Split(':');
-
-                $resultFilter += $str_arr[1];
-                $replacement_found = $true;
+            if ($idx -gt 0 -and $inputFilter[$idx - 1] -eq "\") {   # Экранированный символ
                 break;
+            } else {
+                if ($str.Contains($inputFilter[$idx])) {            # Поиск замены для символа
+                    $str_arr = $str.Split(':');
+
+                    $resultFilter += $str_arr[1];
+                    $replacement_found = $true;
+                    break;
+                }
             }
         }
         
         if (-not $replacement_found) {  # Замена не найдена
             $resultFilter += $inputFilter[$idx];
-            Write-Warning "Не найдена замена для символа" $inputFilter[$idx];
+            $replacement_found_symbol = $inputFilter[$idx];
+            Write-Warning "Не найдена замена для символа: $replacement_found_symbol, IDX=$idx";
         }
 
         if ($addBP) {   # Добавление ([[:blank:][:punct:]]?)
