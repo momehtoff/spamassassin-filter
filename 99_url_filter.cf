@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### v.20231115                                                                                    ###
+### v.20231124                                                                                    ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -17,17 +17,13 @@ uri URL_FILTER_FISHING			/(\/upload(s?)\/)/i
 score URL_FILTER_FISHING		5
 describe URL_FILTER_FISHING		/upload(s?)/
 
-uri URL_FILTER_HTTP				/(http:\/\/)/i
-score URL_FILTER_HTTP			2
-describe URL_FILTER_HTTP		http://
-
-uri URL_FILTER_IMAGES			/(img\.hiteml\.com)|(i\.postimg\.cc)|(storage\.dashamail\.ru)/i
+uri URL_FILTER_IMAGES			/(img\.hiteml\.com)|(i\.postimg\.cc)|(storage\.dashamail\.ru)|(vfl\.ru)/i
 score URL_FILTER_IMAGES			2
 describe URL_FILTER_IMAGES		Хостинги с картинками
 
-uri URL_FILTER_MARKETING		/(rees46\.ru)/i
+uri URL_FILTER_MARKETING		/(brevo\.com)|(rees46\.ru)|(sendibm3\.com)/i
 score URL_FILTER_MARKETING		3
-describe URL_FILTER_MARKETING	rees46.ru
+describe URL_FILTER_MARKETING	brevo.com|rees46.ru|sendibm3.com
 
 uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)/i
 score URL_FILTER_SHORTURL		5
@@ -45,9 +41,9 @@ uri URL_FILTER_UNSUBSCRIBE 		/(.{0,5}-usndr\.com)|(besteml\.com)|(cssystem\.ru)|
 score URL_FILTER_UNSUBSCRIBE	2
 describe URL_FILTER_UNSUBSCRIBE	*-usndr.com|besteml.com|cssystem.ru|dllicer.ru|dmesp.ru|emlbest.com|fsclick.ru|geteml.com|mail365.ru|mailinternetsub.com|unsubscribe
 
-uri URL_FILTER_URL 				/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(blogspot\.it)|(blogwasabi\.com)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(lg-informationdisplay\.com)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(prokul\.ru)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)/i
+uri URL_FILTER_URL 				/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(blogspot\.((cz)|(it)))|(blogwasabi\.com)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(lg-informationdisplay\.com)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(prokul\.ru)|(sendpul\.se)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)/i
 score URL_FILTER_URL 			3
-describe URL_FILTER_URL 		abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|blogspot.it|blogwasabi.com|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|lg-informationdisplay.com|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|prokul.ru|sk-magazin.ru|tramts.com|shop.ultraseller.ru
+describe URL_FILTER_URL 		abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|blogspot.(cz|it)|blogwasabi.com|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|lg-informationdisplay.com|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|prokul.ru|sendpul.se|sk-magazin.ru|tramts.com|shop.ultraseller.ru
 
 uri URL_FILTER_VEBINAR			/(webinar\.ru)|(webinar\.ru\.net)/i
 score URL_FILTER_VEBINAR		5
