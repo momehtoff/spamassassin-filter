@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### v.20231117                                                                                    ###
+### Version: 20231211                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -15,6 +15,7 @@ blacklist_from *@*.actabox.ru
 blacklist_from *@*.actq.ru
 blacklist_from *@*.acvostok.ru
 blacklist_from *@*.alexpeo.ru
+blacklist_from *@*.alexpso.ru
 blacklist_from *@*.allsip.ru
 blacklist_from *@*.artbash.ru
 blacklist_from *@*.bet
@@ -31,7 +32,9 @@ blacklist_from *@*.deneg-dam.ru
 blacklist_from *@*.dionisauto.ru
 blacklist_from *@*.directcrm.ru
 blacklist_from *@*.dreamhostps.com
+blacklist_from *@*.dreamservers.com
 blacklist_from *@*.elisrecords.ru
+blacklist_from *@*.enhost.ru
 blacklist_from *@*.faxweb.ru
 blacklist_from *@*.fotoltd.ru
 blacklist_from *@*.fun
@@ -61,7 +64,10 @@ blacklist_from *@*.za.com
 blacklist_from *@*-usndr.com
 blacklist_from *@actq.ru
 blacklist_from *@dllicer.ru
+blacklist_from *@finkont.ru
+blacklist_from *@fk-edu.ru
 blacklist_from *@fsav.ru
 blacklist_from *@mail365.ru
 blacklist_from *@mvk.ru
+blacklist_from *@roscerts.ru
 blacklist_from *@seminar-plus.ru
