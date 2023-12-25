@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### Version: 20231211                                                                             ###
+### Version: 20231218                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -53,6 +53,7 @@ blacklist_from *@*.otruda-client2.ru
 blacklist_from *@*.profiemail.ru
 blacklist_from *@*.quest
 blacklist_from *@*.rus-otruda-client.ru
+blacklist_from *@*.rusya-tasimacilik.com
 blacklist_from *@*.s-otruda-client.ru
 blacklist_from *@*.sa.com
 blacklist_from *@*.shop
@@ -63,6 +64,7 @@ blacklist_from *@*.xyz
 blacklist_from *@*.za.com
 blacklist_from *@*-usndr.com
 blacklist_from *@actq.ru
+blacklist_from *@block-metal.ru
 blacklist_from *@dllicer.ru
 blacklist_from *@finkont.ru
 blacklist_from *@fk-edu.ru
