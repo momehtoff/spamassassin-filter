@@ -78,6 +78,7 @@ score T_HTML_ATTACH		1.5
 score T_KAM_HTML_FONT_INVALID	0.1
 score T_SPF_HELO_TEMPERROR	0.3
 score TVD_RCVD_IP		0.5
+score USER_IN_WELCOMELIST	-120
 score VISTA_COST		0.2
 
 # Speakers of any language that uses non-English, accented characters may wish
