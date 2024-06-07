@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Header - Russian Text filter 4 SpamAssassin                                                   ###
-### Version: 20240306                                                                             ###
+### Version: 20240607                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -9,7 +9,7 @@
 ### Regex check:     https://regex101.com/                                                        ###
 #####################################################################################################
 
-body TXT_FILTER_VEBINAR				Subject =~ /((в|В|B|8)(е|Е|e|E)(б|Б|6)(и|И|u|U)(н|Н|H)(а|А|a|A|4|@)(р|Р|p|P).*(у|У|y|Y)(ч|Ч|4)(а|А|a|A|4|@)(с|С|c|C)(т|Т|m|T)(в|В|B|8)(о|О|o|O|0)(в|В|B|8)(а|А|a|A|4|@)(т|Т|m|T)(ь|Ь|b))/msd
+header TXT_FILTER_VEBINAR			Subject =~ /((в|В|B|8)(е|Е|e|E)(б|Б|6)(и|И|u|U)(н|Н|H)(а|А|a|A|4|@)(р|Р|p|P).*(у|У|y|Y)(ч|Ч|4)(а|А|a|A|4|@)(с|С|c|C)(т|Т|m|T)(в|В|B|8)(о|О|o|O|0)(в|В|B|8)(а|А|a|A|4|@)(т|Т|m|T)(ь|Ь|b))/msd
 score TXT_FILTER_VEBINAR			5
 describe TXT_FILTER_VEBINAR			вебинар.*участвовать
 
