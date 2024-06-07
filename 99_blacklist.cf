@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### Version: 20240305                                                                             ###
+### Version: 20240312                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -35,6 +35,7 @@ blacklist_from *@*.dionisauto.ru
 blacklist_from *@*.directcrm.ru
 blacklist_from *@*.dreamhostps.com
 blacklist_from *@*.dreamservers.com
+blacklist_from *@*.elcode.ru
 blacklist_from *@*.elisrecords.ru
 blacklist_from *@*.enhost.ru
 blacklist_from *@*.faxweb.ru

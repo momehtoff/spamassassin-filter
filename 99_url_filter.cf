@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240304                                                                             ###
+### Version: 20240307                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -21,13 +21,13 @@ uri URL_FILTER_IMAGES			/(i\.postimg\.cc)|(img\..{1,5}\.besteml\.com)|(img\.hite
 score URL_FILTER_IMAGES			2
 describe URL_FILTER_IMAGES		Хостинги с картинками
 
-uri URL_FILTER_KURSI			/(finkont\.ru)|(fk-edu\.ru)/i
+uri URL_FILTER_KURSI			/(dev-plutokrsk\.ru)|(finkont\.ru)|(fk-edu\.ru)/i
 score URL_FILTER_KURSI			5
-describe URL_FILTER_KURSI		finkont.ru|fk-edu.ru
+describe URL_FILTER_KURSI		dev-plutokrsk.ru|finkont.ru|fk-edu.ru
 
-uri URL_FILTER_MARKETING		/(amomail\.amocrm\.ru)|(brevo\.com)|(rees46\.ru)|(sendibm3\.com)|(trckmg\.com)/i
+uri URL_FILTER_MARKETING		/(amomail\.amocrm\.ru)|(brevo\.com)|(rees46\.ru)|(sendibm3\.com)|(sendpromo\.email)|(trckmg\.com)/i
 score URL_FILTER_MARKETING		3
-describe URL_FILTER_MARKETING	amomail.amocrm.ru|brevo.com|rees46.ru|sendibm3.com|trckmg.com
+describe URL_FILTER_MARKETING	amomail.amocrm.ru|brevo.com|rees46.ru|sendibm3.com|sendpromo.email|trckmg.com
 
 uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)/i
 score URL_FILTER_SHORTURL		5
