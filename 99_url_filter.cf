@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240610                                                                             ###
+### Version: 20240617                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -28,9 +28,9 @@ uri URL_FILTER_KURSI			/(dev-plutokrsk\.ru)|(finkont\.ru)|(fk-edu\.ru)/i
 score URL_FILTER_KURSI			5
 describe URL_FILTER_KURSI		dev-plutokrsk.ru|finkont.ru|fk-edu.ru
 
-uri URL_FILTER_MARKETING		/(amomail\.amocrm\.ru)|(brevo\.com)|(rees46\.ru)|(sendibm3\.com)|(sendpromo\.email)|(simla\.((com)|(io)))|(trckmg\.com)/i
+uri URL_FILTER_MARKETING		/(1sender.ru)|(amomail\.amocrm\.ru)|(brevo\.com)|(emlmind\.com)|(rees46\.ru)|(sendibm3\.com)|(sendpromo\.email)|(simla\.((com)|(io)))|(trckmg\.com)/i
 score URL_FILTER_MARKETING		3
-describe URL_FILTER_MARKETING	amomail.amocrm.ru|brevo.com|rees46.ru|sendibm3.com|sendpromo.email|simla.(com|io)|trckmg.com
+describe URL_FILTER_MARKETING	1sender.ru|amomail.amocrm.ru|brevo.com|emlmind.com|rees46.ru|sendibm3.com|sendpromo.email|simla.(com|io)|trckmg.com
 tflags URL_FILTER_MARKETING autolearn_force
 
 uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)/i
@@ -52,9 +52,9 @@ uri URL_FILTER_UNSUBSCRIBE 		/(.{0,5}-usndr\.com)|(2di\.ru)|(besteml\.com)|(cssy
 score URL_FILTER_UNSUBSCRIBE	2
 describe URL_FILTER_UNSUBSCRIBE	*-usndr.com|2di.ru|besteml.com|cssystem.ru|dllicer.ru|dmesp.ru|emlbest.com|fsclick.ru|mail365.ru|mailinternetsub.com|unsubscribe
 
-uri URL_FILTER_URL 				/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(blogger\.com)|(blogspot\.((cz)|(it)|(se)))|(blogwasabi\.com)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(donevar\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(lg-informationdisplay\.com)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(prokul\.ru)|(sendpul\.se)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)|(tilda\.cc)/i
+uri URL_FILTER_URL 				/(abc-toulouse\.fr)|(aflink\.info)|(aparusa\.com)|(atami\.com)|(bathuset\.no)|(blogger\.com)|(blogspot\.((cz)|(it)|(se)))|(blogwasabi\.com)|(cswayhelp\.ru)|(dekeukelaere\.be)|(doctor-invest\.ru)|(donevar\.ru)|(eventsek\.com)|(eyedesignclub\.com)|(fond\.tambov\.ru)|(googleapis\.com)|(gxstyle\.com)|(himtara\.com)|(instyletravels\.com)|(j99203\.com)|(kuturie\.ru)|(lg-informationdisplay\.com)|(manmagazin\.ru)|(mbsgroup\.ru)|(myjino\.ru)|(paymentgateway\.ru)|(pof\.com)|(prokul\.ru)|(sendpul\.se)|(sk-magazin\.ru)|(tramts\.com)|(shop\.ultraseller\.ru)|(tilda\.cc)/i
 score URL_FILTER_URL 			3
-describe URL_FILTER_URL 		abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|blogger.com|blogspot.(cz|it|se)|blogwasabi.com|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|donevar.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|lg-informationdisplay.com|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|prokul.ru|sendpul.se|sk-magazin.ru|tramts.com|shop.ultraseller.ru|tilda.cc
+describe URL_FILTER_URL 		abc-toulouse.fr|aflink.info|aparusa.com|atami.com|bathuset\.no|blogger.com|blogspot.(cz|it|se)|blogwasabi.com|cswayhelp.ru|dekeukelaere.be|doctor-invest.ru|donevar.ru|eventsek.com|eyedesignclub.com|fond.tambov.ru|googleapis.com|gxstyle.com|himtara.com|instyletravels.com|j99203.com|kuturie.ru|lg-informationdisplay.com|manmagazin.ru|mbsgroup.ru|myjino.ru|paymentgateway.ru|pof.com|prokul.ru|sendpul.se|sk-magazin.ru|tramts.com|shop.ultraseller.ru|tilda.cc
 tflags URL_FILTER_UNSUBSCRIBE autolearn_force
 
 uri URL_FILTER_VEBINAR			/(webinar\.ru)|(webinar\.ru\.net)/i
