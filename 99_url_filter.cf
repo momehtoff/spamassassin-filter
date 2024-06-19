@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240617                                                                             ###
+### Version: 20240618                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -38,9 +38,9 @@ score URL_FILTER_SHORTURL		5
 describe URL_FILTER_SHORTURL	Укорачиватели ссылок
 tflags URL_FILTER_SHORTURL autolearn_force
 
-uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(datacloudmail\.ru)|(emlway\.com)|(geteml\.com)|(mindbox\.ru)|(stripocdn.email)/i
+uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(cdn-.\.*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(datacloudmail\.ru)|(emlway\.com)|(geteml\.com)|(mindbox\.ru)|(stripocdn.email)/i
 score URL_FILTER_REKLAMA		3
-describe URL_FILTER_REKLAMA		ad(s).*.*|cdn.*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru|datacloudmail.ru|emlway.com|geteml.com|mindbox.ru|stripocdn.email
+describe URL_FILTER_REKLAMA		ad(s).*.*|cdn.*.*|cdn-*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru|datacloudmail.ru|emlway.com|geteml.com|mindbox.ru|stripocdn.email
 tflags URL_FILTER_REKLAMA autolearn_force
 
 uri URL_FILTER_SEMINAR			/(1prombez\.ru)|(radislavgandapas\.com)|(seminar-inform\.ru)/i
