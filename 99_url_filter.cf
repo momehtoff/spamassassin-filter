@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240618                                                                             ###
+### Version: 20240620                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -33,7 +33,7 @@ score URL_FILTER_MARKETING		3
 describe URL_FILTER_MARKETING	1sender.ru|amomail.amocrm.ru|brevo.com|emlmind.com|rees46.ru|sendibm3.com|sendpromo.email|simla.(com|io)|trckmg.com
 tflags URL_FILTER_MARKETING autolearn_force
 
-uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)/i
+uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)|(vk\.cc)/i
 score URL_FILTER_SHORTURL		5
 describe URL_FILTER_SHORTURL	Укорачиватели ссылок
 tflags URL_FILTER_SHORTURL autolearn_force
