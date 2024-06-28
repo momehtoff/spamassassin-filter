@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240620                                                                             ###
+### Version: 20240625                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -19,7 +19,7 @@ score URL_FILTER_FISHING		5
 describe URL_FILTER_FISHING		splitcurated.com|/upload(s?)/|weebly.com
 tflags URL_FILTER_FISHING autolearn_force
 
-uri URL_FILTER_IMAGES			/(i\.postimg\.cc)|(img\..{1,5}\.besteml\.com)|(img\.hiteml\.com)|(imgdist\.com)|(mj\.am)|(storage\.dashamail\.ru)|(vfl\.ru)/i
+uri URL_FILTER_IMAGES			/(hostingkartinok\.com)|(i\.postimg\.cc)|(img\..{1,5}\.besteml\.com)|(img\.hiteml\.com)|(imgdist\.com)|(mj\.am)|(storage\.dashamail\.ru)|(vfl\.ru)/i
 score URL_FILTER_IMAGES			2
 describe URL_FILTER_IMAGES		Хостинги с картинками
 tflags URL_FILTER_IMAGES autolearn_force
@@ -33,7 +33,7 @@ score URL_FILTER_MARKETING		3
 describe URL_FILTER_MARKETING	1sender.ru|amomail.amocrm.ru|brevo.com|emlmind.com|rees46.ru|sendibm3.com|sendpromo.email|simla.(com|io)|trckmg.com
 tflags URL_FILTER_MARKETING autolearn_force
 
-uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)|(vk\.cc)/i
+uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(hm\.ru)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)|(vk\.cc)/i
 score URL_FILTER_SHORTURL		5
 describe URL_FILTER_SHORTURL	Укорачиватели ссылок
 tflags URL_FILTER_SHORTURL autolearn_force
