@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Header - Russian Text filter 4 SpamAssassin                                                   ###
-### Version: 20240620                                                                             ###
+### Version: 20240701                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -9,6 +9,16 @@
 ### Regex check:     https://regex101.com/                                                        ###
 #####################################################################################################
 
+header HEADER_FILTER_SEO			/((((s|S|5)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(о|О|o|O|0))|((с|С|c|C)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(о|О|o|O|0)))([[:blank:][:punct:]]?)(((а|А|a|A|4|@)([[:blank:][:punct:]]?)(н|Н|H)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(л|Л)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(з|З|3))|((о|О|o|O|0)([[:blank:][:punct:]]?)(п|П|n)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(м|М|m|M)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(з|З|3)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(ц|Ц)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)((ю|Ю)|(я|Я|R)))|((с|С|c|C)([[:blank:][:punct:]]?)(п|П|n)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(ц|Ц)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(л|Л)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(с|С|c|C)([[:blank:][:punct:]]?)(т|Т|m|T))|((с|С|c|C)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(ь|Ь|b)([[:blank:][:punct:]]?)((и|И|u|U)|(я|Я|R)))|((т|Т|m|T)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(к|К|k|K)([[:blank:][:punct:]]?)(с|С|c|C)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)((ы|Ы)?))))|((в|В|B|8)([[:blank:][:punct:]]?)(л|Л)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(д|Д)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(л|Л)([[:blank:][:punct:]]?)(ь|Ь|b)([[:blank:][:punct:]]?)(ц|Ц)([[:blank:][:punct:]]?)(у|У|y|Y)([[:blank:][:punct:]]?)(с|С|c|C)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(и|И|й|Й|u|U)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(а|А|a|A|4|@))/msd
+score HEADER_FILTER_SEO				5
+describe HEADER_FILTER_SEO			(Sео|Сео) (анализ|оптимизаци(ю|я)|специалист|стать(и|я)|текст(ы?))|Владельцу сайта
+tflags HEADER_FILTER_SEO autolearn_force
+
+header HEADER_FILTER_SPAM_0001_EN		/\bknee([[:blank:][:punct:]]?)pain\b/i
+score HEADER_FILTER_SPAM_0001_EN		3
+describe HEADER_FILTER_SPAM_0001_EN		knee pain
+tflags HEADER_FILTER_SPAM_0001_EN autolearn_force
+
 header TXT_FILTER_VEBINAR			Subject =~ /((в|В|B|8)(е|Е|e|E)(б|Б|6)(и|И|u|U)(н|Н|H)(а|А|a|A|4|@)(р|Р|p|P).*(у|У|y|Y)(ч|Ч|4)(а|А|a|A|4|@)(с|С|c|C)(т|Т|m|T)(в|В|B|8)(о|О|o|O|0)(в|В|B|8)(а|А|a|A|4|@)(т|Т|m|T)(ь|Ь|b))/msd
 score TXT_FILTER_VEBINAR			5
 describe TXT_FILTER_VEBINAR			вебинар.*участвовать
@@ -16,11 +26,6 @@ describe TXT_FILTER_VEBINAR			вебинар.*участвовать
 header HEADER_FILTER_WORD_MIX_RU_EN		Subject =~ /\s((а|А|б|Б|в|В|г|Г|д|Д|е|Е|ё|Ё|ж|Ж|з|З|и|И|й|Й|к|К|л|Л|м|М|н|Н|о|О|п|П|р|Р|с|С|т|Т|у|У|ф|Ф|х|Х|ц|Ц|ч|Ч|ш|Ш|щ|Щ|ъ|Ъ|ы|Ы|ь|Ь|э|Э|ю|Ю|я|Я)+(a|A|B|e|E|u|U|k|K|m|M|o|O|0|n|p|P|c|C|T|y|Y|x|X|w|W|b)+)/d
 score HEADER_FILTER_WORD_MIX_RU_EN		3
 describe HEADER_FILTER_WORD_MIX_RU_EN	Words with mixed Russian and English letters
-
-header HEADER_FILTER_SEO			/((((s|S|5)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(о|О|o|O|0))|((с|С|c|C)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(о|О|o|O|0)))([[:blank:][:punct:]]?)(((а|А|a|A|4|@)([[:blank:][:punct:]]?)(н|Н|H)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(л|Л)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(з|З|3))|((о|О|o|O|0)([[:blank:][:punct:]]?)(п|П|n)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(м|М|m|M)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(з|З|3)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(ц|Ц)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)((ю|Ю)|(я|Я|R)))|((с|С|c|C)([[:blank:][:punct:]]?)(п|П|n)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(ц|Ц)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(л|Л)([[:blank:][:punct:]]?)(и|И|u|U)([[:blank:][:punct:]]?)(с|С|c|C)([[:blank:][:punct:]]?)(т|Т|m|T))|((с|С|c|C)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(а|А|a|A|4|@)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)(ь|Ь|b)([[:blank:][:punct:]]?)((и|И|u|U)|(я|Я|R)))|((т|Т|m|T)([[:blank:][:punct:]]?)(е|Е|e|E)([[:blank:][:punct:]]?)(к|К|k|K)([[:blank:][:punct:]]?)(с|С|c|C)([[:blank:][:punct:]]?)(т|Т|m|T)([[:blank:][:punct:]]?)((ы|Ы)?))))/msd
-score HEADER_FILTER_SEO				5
-describe HEADER_FILTER_SEO			(Sео|Сео) (анализ|оптимизаци(ю|я)|специалист|стать(и|я)|текст(ы?))
-tflags HEADER_FILTER_SEO autolearn_force
 
 ##header HEADER_FILTER_TEST	Subject =~ /0726546787854/i
 ##score HEADER_FILTER_TEST	25
