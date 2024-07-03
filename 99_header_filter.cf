@@ -19,9 +19,9 @@ score HEADER_FILTER_SPAM_0001_EN		3
 describe HEADER_FILTER_SPAM_0001_EN		knee pain
 tflags HEADER_FILTER_SPAM_0001_EN autolearn_force
 
-header TXT_FILTER_VEBINAR			Subject =~ /((в|В|B|8)(е|Е|e|E)(б|Б|6)(и|И|u|U)(н|Н|H)(а|А|a|A|4|@)(р|Р|p|P).*(у|У|y|Y)(ч|Ч|4)(а|А|a|A|4|@)(с|С|c|C)(т|Т|m|T)(в|В|B|8)(о|О|o|O|0)(в|В|B|8)(а|А|a|A|4|@)(т|Т|m|T)(ь|Ь|b))/msd
-score TXT_FILTER_VEBINAR			5
-describe TXT_FILTER_VEBINAR			вебинар.*участвовать
+header HEADER_FILTER_VEBINAR		Subject =~ /((в|В|B|8)(е|Е|e|E)(б|Б|6)(и|И|u|U)(н|Н|H)(а|А|a|A|4|@)(р|Р|p|P).*(у|У|y|Y)(ч|Ч|4)(а|А|a|A|4|@)(с|С|c|C)(т|Т|m|T)(в|В|B|8)(о|О|o|O|0)(в|В|B|8)(а|А|a|A|4|@)(т|Т|m|T)(ь|Ь|b))/msd
+score HEADER_FILTER_VEBINAR			5
+describe HEADER_FILTER_VEBINAR		вебинар.*участвовать
 
 header HEADER_FILTER_WORD_MIX_RU_EN		Subject =~ /\s((а|А|б|Б|в|В|г|Г|д|Д|е|Е|ё|Ё|ж|Ж|з|З|и|И|й|Й|к|К|л|Л|м|М|н|Н|о|О|п|П|р|Р|с|С|т|Т|у|У|ф|Ф|х|Х|ц|Ц|ч|Ч|ш|Ш|щ|Щ|ъ|Ъ|ы|Ы|ь|Ь|э|Э|ю|Ю|я|Я)+(a|A|B|e|E|u|U|k|K|m|M|o|O|0|n|p|P|c|C|T|y|Y|x|X|w|W|b)+)/d
 score HEADER_FILTER_WORD_MIX_RU_EN		3
