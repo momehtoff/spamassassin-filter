@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### Version: 20240312                                                                             ###
+### Version: 20240710                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -54,6 +54,7 @@ blacklist_from *@*.one
 blacklist_from *@*.otruda-client.ru
 blacklist_from *@*.otruda-client2.ru
 blacklist_from *@*.profiemail.ru
+blacklist_from *@*.proway.tech
 blacklist_from *@*.quest
 blacklist_from *@*.reg178.ru
 blacklist_from *@*.rus-otruda-client.ru
