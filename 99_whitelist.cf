@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Whitelist filter 4 SpamAssassin                                                               ###
-### Version: 20240708                                                                             ###
+### Version: 20240712                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -32,6 +32,7 @@ whitelist_from *@saipwell.com
 whitelist_from *@sberbank-ast.ru
 whitelist_from *@sbermarket.ru
 whitelist_from *@sbis.ru
+whitelist_from *@service.citilink.ru
 whitelist_from *@service.leroymerlin.ru
 whitelist_from *@tender.pro
 whitelist_from *@xcomspb.ru
