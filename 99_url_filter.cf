@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240814                                                                             ###
+### Version: 20240815                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -14,9 +14,9 @@ score URL_FILTER_COM_UA			5
 describe URL_FILTER_COM_UA		COM.UA
 tflags URL_FILTER_COM_UA autolearn_force
 
-uri URL_FILTER_FISHING			/(.*\.com\.br)|(splitcurated\.com)|(\/upload(s?)\/)|(weebly\.com)/i
+uri URL_FILTER_FISHING			/(.*\.com\.((br)|(mx)))|(splitcurated\.com)|(\/upload(s?)\/)|(weebly\.com)/i
 score URL_FILTER_FISHING		5
-describe URL_FILTER_FISHING		*\.com\.br|splitcurated.com|/upload(s?)/|weebly.com
+describe URL_FILTER_FISHING		*\.com\.(br|mx)|splitcurated.com|/upload(s?)/|weebly.com
 tflags URL_FILTER_FISHING autolearn_force
 
 uri URL_FILTER_IMAGES			/(hostingkartinok\.com)|(i\.postimg\.cc)|(img\..{1,5}\.besteml\.com)|(img\.hiteml\.com)|(imgdist\.com)|(mj\.am)|(storage\.dashamail\.ru)|(vfl\.ru)/i
@@ -28,9 +28,9 @@ uri URL_FILTER_KURSI			/(dev-plutokrsk\.ru)|(finkont\.ru)|(fk-edu\.ru)/i
 score URL_FILTER_KURSI			5
 describe URL_FILTER_KURSI		dev-plutokrsk.ru|finkont.ru|fk-edu.ru
 
-uri URL_FILTER_MARKETING		/(1sender.ru)|(amomail\.amocrm\.ru)|(brevo\.com)|(emlmind\.com)|(rees46\.ru)|(sendibm3\.com)|(sendpromo\.email)|(simla\.((com)|(io)))|(trckmg\.com)/i
+uri URL_FILTER_MARKETING		/(1sender.ru)|(amomail\.amocrm\.ru)|(brevo\.com)|(cmdf5\.ru)|(comf5\.ru)|(emlmind\.com)|(rees46\.ru)|(sendibm3\.com)|(sendpromo\.email)|(simla\.((com)|(io)))|(trckmg\.com)/i
 score URL_FILTER_MARKETING		3
-describe URL_FILTER_MARKETING	1sender.ru|amomail.amocrm.ru|brevo.com|emlmind.com|rees46.ru|sendibm3.com|sendpromo.email|simla.(com|io)|trckmg.com
+describe URL_FILTER_MARKETING	1sender.ru|amomail.amocrm.ru|brevo.com|cmdf5.ru|comf5.ru|emlmind.com|rees46.ru|sendibm3.com|sendpromo.email|simla.(com|io)|trckmg.com
 tflags URL_FILTER_MARKETING autolearn_force
 
 uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)|(haa\.su)|(hm\.ru)|(qps\.ru)|(shorl\.com)|(snipr\.com)|(snipurl\.com)|(tiny\.cc)|(tlinks\.run)|(vk\.cc)/i
