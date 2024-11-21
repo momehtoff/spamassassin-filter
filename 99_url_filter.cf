@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20240815                                                                             ###
+### Version: 20241121                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -14,9 +14,9 @@ score URL_FILTER_COM_UA			5
 describe URL_FILTER_COM_UA		COM.UA
 tflags URL_FILTER_COM_UA autolearn_force
 
-uri URL_FILTER_FISHING			/(.*\.com\.((br)|(mx)))|(splitcurated\.com)|(\/upload(s?)\/)|(weebly\.com)/i
+uri URL_FILTER_FISHING			/(.*\.com\.((br)|(mx)))|.*\.nl|(splitcurated\.com)|(\/upload(s?)\/)|(weebly\.com)/i
 score URL_FILTER_FISHING		5
-describe URL_FILTER_FISHING		*\.com\.(br|mx)|splitcurated.com|/upload(s?)/|weebly.com
+describe URL_FILTER_FISHING		*.com.(br|mx)|*.nl|splitcurated.com|/upload(s?)/|weebly.com
 tflags URL_FILTER_FISHING autolearn_force
 
 uri URL_FILTER_IMAGES			/(hostingkartinok\.com)|(i\.postimg\.cc)|(img\..{1,5}\.besteml\.com)|(img\.hiteml\.com)|(imgdist\.com)|(mj\.am)|(storage\.dashamail\.ru)|(vfl\.ru)/i
@@ -37,6 +37,11 @@ uri URL_FILTER_SHORTURL			/(bit\.ly)|(clck\.ru)|(cutshorturl\.info)|(goo-gl\.me)
 score URL_FILTER_SHORTURL		5
 describe URL_FILTER_SHORTURL	Укорачиватели ссылок
 tflags URL_FILTER_SHORTURL autolearn_force
+
+body URL_FILTER_RASSILKA		/(\/ras(s?)ilka\/)/i
+score URL_FILTER_RASSILKA		5
+describe URL_FILTER_RASSILKA	/ras(s)ilka/
+tflags URL_FILTER_RASSILKA autolearn_force
 
 uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(cdn-.\.*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(datacloudmail\.ru)|(emlway\.com)|(geteml\.com)|(mailinetservice\.net)|(mindbox\.ru)|(stripocdn.email)/i
 score URL_FILTER_REKLAMA		3
