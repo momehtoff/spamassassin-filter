@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### Version: 20240710                                                                             ###
+### Version: 20241122                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -20,6 +20,7 @@ blacklist_from *@*.alexpso.ru
 blacklist_from *@*.allsip.ru
 blacklist_from *@*.artbash.ru
 blacklist_from *@*.bet
+blacklist_from *@*.best
 blacklist_from *@*.bio
 blacklist_from *@*.bond
 blacklist_from *@*.buzz
