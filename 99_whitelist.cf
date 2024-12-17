@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Whitelist filter 4 SpamAssassin                                                               ###
-### Version: 20241128                                                                             ###
+### Version: 20241217                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -21,17 +21,21 @@ whitelist_from *@dellin.ru
 whitelist_from *@dl-trans.ru
 whitelist_from *@eapteka.ru
 whitelist_from *@etpgpb.ru
+whitelist_from *@gos.etpgpb.ru
 whitelist_from *@gosuslugi.ru
 whitelist_from *@i.zarplata.ru
 whitelist_from *@ingos.ru
 whitelist_from *@kolesa-darom.ru
 whitelist_from *@kontur.ru
 whitelist_from *@lot-online.ru
+whitelist_from *@market.yandex.ru
 whitelist_from *@miranda-media.ru
+whitelist_from *@momehtoff.ru
 whitelist_from *@news.ozon.ru
 whitelist_from *@notify.sibur.ru
 whitelist_from *@onlinetrade.ru
 whitelist_from *@phosagro.ru
+whitelist_from *@pseg.bitrix24.ru
 whitelist_from *@roseltorg.ru
 whitelist_from *@rts-tender.ru
 whitelist_from *@sabylink.ru
@@ -42,9 +46,13 @@ whitelist_from *@sbis.ru
 whitelist_from *@service.citilink.ru
 whitelist_from *@service.leroymerlin.ru
 whitelist_from *@tender.pro
+whitelist_from *@tochka.com
+whitelist_from *@toomanygifts.ru
 whitelist_from *@torgi223.ru
+whitelist_from *@vispo.ru
 whitelist_from *@xcomspb.ru
 whitelist_from dk2506@yandex.ru
 whitelist_from echeck@1-ofd.ru
 whitelist_from noreply@steampowered.com
 whitelist_from portalmarket@mos.ru
+whitelist_from robot@zont-online.ru
