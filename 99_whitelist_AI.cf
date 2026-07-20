@@ -1,0 +1,236 @@
+##############################################################################################################
+### УНИВЕРСАЛЬНЫЕ ПРАВИЛА ДЛЯ БЕЛОГО СПИСКА 4 SpamAssassin                                                 ###
+### Version: 20260720                                                                                      ###
+###                                                                                                        ###
+### Addon links:                                                                                           ###
+### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                                  ###
+### Regex check:     https://regex101.com/                                                                 ###
+##############################################################################################################
+
+# ============================================================================
+# БАЗОВЫЕ ПРАВИЛА ДЛЯ ВСЕХ ЛЕГИТИМНЫХ РАССЫЛОК
+# ============================================================================
+
+header LIST_UNSUBSCRIBE List-Unsubscribe =~ /\S+/i
+header LIST_PRECEDENCE Precedence =~ /bulk|list|junk/i
+header LIST_ID List-Id =~ /\S+\.\S+/i
+
+meta LEGITIMATE_MAILING (LIST_UNSUBSCRIBE && LIST_PRECEDENCE && DKIM_VALID)
+score LEGITIMATE_MAILING -5.0
+describe LEGITIMATE_MAILING Legitimate mailing with proper list headers
+
+# ============================================================================
+# ОБЩЕЕ ПРАВИЛО ДЛЯ КРУПНЫХ КОМПАНИЙ (ПО ДОМЕНУ)
+# ============================================================================
+
+header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru)$/i
+
+meta TRUSTED_DOMAIN_MAIL (TRUSTED_DOMAIN && DKIM_VALID)
+score TRUSTED_DOMAIN_MAIL -20.0
+describe TRUSTED_DOMAIN_MAIL Email from trusted domain with valid DKIM
+
+# ============================================================================
+# СПЕЦИАЛИЗИРОВАННЫЕ ПРАВИЛА ДЛЯ КАЖДОГО ОТПРАВИТЕЛЯ
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# OZON
+# ----------------------------------------------------------------------------
+
+header OZON_FROM From:addr =~ /sender\.ozon\.ru$/i
+header OZON_DKIM DKIM-Signature =~ /d=sender\.ozon\.ru/i
+
+body OZON_BODY_1 /ozon\.ru\/(my|order|points|product)/i
+body OZON_BODY_2 /Озон|Ozon/i
+body OZON_BODY_3 /баллы|кешбэк|скидка|подарок/i
+
+meta OZON_OFFICIAL (OZON_FROM && OZON_DKIM && (OZON_BODY_1 || OZON_BODY_2 || OZON_BODY_3))
+score OZON_OFFICIAL -20.0
+describe OZON_OFFICIAL Official email from Ozon.ru
+
+# ----------------------------------------------------------------------------
+# YANDEX (Яндекс 360, Яндекс Почта)
+# ----------------------------------------------------------------------------
+
+header YANDEX_FROM From:addr =~ /(360\.yandex\.ru|yandex\.ru)$/i
+header YANDEX_DKIM DKIM-Signature =~ /d=360\.yandex\.ru/i
+header YANDEX_SUPER Sender =~ /supersender\.yandex\.net/i
+
+body YANDEX_BODY_1 /Яндекс( 360)? (для бизнеса|Почта|Почты)/i
+body YANDEX_BODY_2 /yandex\.(ru|net)\//i
+body YANDEX_BODY_3 /yastatic\.net/i
+
+meta YANDEX_OFFICIAL ((YANDEX_FROM && YANDEX_DKIM) || (YANDEX_FROM && YANDEX_SUPER) && (YANDEX_BODY_1 || YANDEX_BODY_2 || YANDEX_BODY_3))
+score YANDEX_OFFICIAL -20.0
+describe YANDEX_OFFICIAL Official email from Yandex 360 / Yandex Mail
+
+# ----------------------------------------------------------------------------
+# T-BANK (Тинькофф)
+# ----------------------------------------------------------------------------
+
+header TBANK_FROM From:addr =~ /(emails\.tinkoff\.ru|tbank\.ru)$/i
+header TBANK_DKIM DKIM-Signature =~ /d=emails\.tinkoff\.ru/i
+header TBANK_LIST_ID List-Id =~ /tinkoff\.pg/i
+header TBANK_UNSUB_LIST List-Unsubscribe =~ /emails\.tinkoff\.ru\/backend\/member\/unsub/i
+
+body TBANK_BODY_1 /Т-Банк|Тинькофф/i
+body TBANK_BODY_2 /tbank\.ru|tinkoff\.ru/i
+body TBANK_BODY_3 /кэшбэк|кешбэк|бонусы|скидка/i
+
+meta TBANK_OFFICIAL (TBANK_FROM && TBANK_DKIM && (TBANK_BODY_1 || TBANK_BODY_2 || TBANK_BODY_3))
+score TBANK_OFFICIAL -20.0
+describe TBANK_OFFICIAL Official email from T-Bank (Tinkoff)
+
+meta TBANK_LIST_OFFICIAL (TBANK_FROM && TBANK_LIST_ID && TBANK_UNSUB_LIST)
+score TBANK_LIST_OFFICIAL -20.0
+describe TBANK_LIST_OFFICIAL Official T-Bank mailing with list headers
+
+# ----------------------------------------------------------------------------
+# VTB (ВТБ Банк)
+# ----------------------------------------------------------------------------
+
+header VTB_FROM From:addr =~ /(send\.vtb\.ru|vtb\.ru)$/i
+header VTB_DKIM DKIM-Signature =~ /d=(emails\.tinkoff\.ru|mail\.psndsy\.ru)/i
+header VTB_X_FELIS X-Felis-L =~ /bmru/i
+header VTB_X_RPCAMPAIGN X-rpcampaign =~ /bmru/i
+
+body VTB_BODY_1 /ВТБ/i
+body VTB_BODY_2 /vtb\.ru/i
+body VTB_BODY_3 /кредит(ная|ный)|карта|льготный период|кешбэк/i
+
+meta VTB_OFFICIAL (VTB_FROM && VTB_DKIM && (VTB_BODY_1 || VTB_BODY_2 || VTB_BODY_3))
+score VTB_OFFICIAL -20.0
+describe VTB_OFFICIAL Official email from VTB Bank
+
+meta VTB_LIST_OFFICIAL (VTB_FROM && VTB_X_FELIS && VTB_X_RPCAMPAIGN)
+score VTB_LIST_OFFICIAL -20.0
+describe VTB_LIST_OFFICIAL Official VTB mailing with campaign headers
+
+# ----------------------------------------------------------------------------
+# CITILINK (Ситилинк)
+# ----------------------------------------------------------------------------
+
+header CITILINK_FROM From:addr =~ /citilink\.ru$/i
+header CITILINK_DKIM DKIM-Signature =~ /d=citilink\.ru/i
+
+body CITILINK_BODY_1 /Ситилинк|Citilink/i
+body CITILINK_BODY_2 /citilink\.ru/i
+body CITILINK_BODY_3 /скидка|бонус|промокод|корпоративн/i
+
+meta CITILINK_OFFICIAL (CITILINK_FROM && CITILINK_DKIM && (CITILINK_BODY_1 || CITILINK_BODY_2 || CITILINK_BODY_3))
+score CITILINK_OFFICIAL -20.0
+describe CITILINK_OFFICIAL Official email from Citilink
+
+body CITILINK_MANAGER /Менеджер корпоративного отдела|Dolganov\.V@citilink\.ru/i
+meta CITILINK_B2B (CITILINK_OFFICIAL && CITILINK_MANAGER)
+score CITILINK_B2B -30.0
+describe CITILINK_B2B Citilink B2B email with manager signature
+
+# ----------------------------------------------------------------------------
+# PLATFORMA OFD (Платформа ОФД - чеки)
+# ----------------------------------------------------------------------------
+
+header POFD_FROM From:addr =~ /(chek\.pofd\.ru|pofd\.ru)$/i
+header POFD_DKIM DKIM-Signature =~ /d=chek\.pofd\.ru/i
+
+body POFD_BODY_1 /Платформа ОФД|platformaofd\.ru/i
+body POFD_BODY_2 /кассовый чек|фискальн/i
+body POFD_BODY_3 /ФН \d+|ФПД \d+/i
+
+meta POFD_OFFICIAL (POFD_FROM && POFD_DKIM && (POFD_BODY_1 || POFD_BODY_2 || POFD_BODY_3))
+score POFD_OFFICIAL -20.0
+describe POFD_OFFICIAL Official email from Platforma OFD (receipt)
+
+body POFD_QR /qrcode|QR-код/i
+meta POFD_QR_CHECK (POFD_OFFICIAL && POFD_QR)
+score POFD_QR_CHECK -25.0
+describe POFD_QR_CHECK Official Platforma OFD receipt with QR-code
+
+# ----------------------------------------------------------------------------
+# SBIS (СБИС / Saby) - Уведомления о тендерах и закупках
+# ----------------------------------------------------------------------------
+
+header SBIS_FROM From:addr =~ /(mail-trade\.saby\.ru|saby\.ru)$/i
+header SBIS_DKIM DKIM-Signature =~ /d=mail-trade\.saby\.ru/i
+
+header SBIS_LIST_ID List-Id =~ /3;6/i
+header SBIS_XMAILRU X-Mailru-Msgtype =~ /3;6/i
+header SBIS_XSABY X-SABY-NOTIFY =~ /1/i
+
+body SBIS_BODY_1 /СБИС|Сабис|Saby/i
+body SBIS_BODY_2 /saby\.ru/i
+body SBIS_BODY_3 /тендер|закупк|торги/i
+body SBIS_BODY_4 /подача заявок|номер закупки/i
+body SBIS_BODY_5 /электронная площадка|Росэлторг/i
+body SBIS_BODY_6 /44-ФЗ|223-ФЗ/i
+
+meta SBIS_OFFICIAL (SBIS_FROM && SBIS_DKIM && (SBIS_BODY_1 || SBIS_BODY_2 || SBIS_BODY_3 || SBIS_BODY_4 || SBIS_BODY_5 || SBIS_BODY_6))
+score SBIS_OFFICIAL -20.0
+describe SBIS_OFFICIAL Official email from Saby (SBIS) - tender notifications
+
+meta SBIS_HEADERS_ONLY (SBIS_FROM && SBIS_LIST_ID && SBIS_XMAILRU && SBIS_XSABY)
+score SBIS_HEADERS_ONLY -25.0
+describe SBIS_HEADERS_ONLY Official Saby email identified by unique headers
+
+meta SBIS_MAILING (SBIS_FROM && GENERIC_UNSUB && SBIS_LIST_ID && SBIS_XMAILRU)
+score SBIS_MAILING -20.0
+describe SBIS_MAILING Valid Saby mailing with list headers
+
+# ============================================================================
+# ОБЩЕЕ ПРАВИЛО ДЛЯ ПИСЕМ С КОРРЕКТНЫМИ ЗАГОЛОВКАМИ (FALLBACK)
+# ============================================================================
+
+header GENERIC_LIST_ID List-Id =~ /\S+\.\S+/i
+header GENERIC_UNSUB List-Unsubscribe =~ /https?:\/\/[^\/]+\/[^\/]+\/unsub/i
+header GENERIC_PRECEDENCE Precedence =~ /bulk|list|junk/i
+
+meta GENERIC_MAILING_LIST (GENERIC_LIST_ID && GENERIC_UNSUB && GENERIC_PRECEDENCE && DKIM_VALID)
+score GENERIC_MAILING_LIST -10.0
+describe GENERIC_MAILING_LIST Generic legitimate mailing list with proper headers
+
+# Определяем основные правила для идентификации письма от OFD.RU
+header OFDRU_FROM From:addr =~ /ofd\.ru|chek\.pofd\.ru$/i
+header OFDRU_DKIM DKIM-Signature =~ /d=ofd\.ru|d=chek\.pofd\.ru/i
+header OFDRU_SENDER Sender =~ /noreply@ofd\.ru/i
+
+# Проверяем наличие уникальных маркеров в теле письма
+body OFDRU_BODY_1 /ОФД|OFD\.RU|Платформа ОФД/i
+body OFDRU_BODY_2 /ofd\.ru/i
+body OFDRU_BODY_3 /кассовый чек/i
+body OFDRU_BODY_4 /фискальный/i
+body OFDRU_BODY_5 /ФН \d+/i
+body OFDRU_BODY_6 /ФПД \d+/i
+body OFDRU_BODY_7 /QR-код|qrcode/i
+body OFDRU_BODY_8 /чек доступен в браузере/i
+body OFDRU_BODY_9 /platformaofd\.ru/i
+body OFDRU_BODY_10 /спасибо за покупку/i
+body OFDRU_BODY_11 /подарок за оплату/i
+
+# Мета-правило: письмо от OFD.RU, если совпадает домен отправителя, DKIM и хотя бы один признак в теле
+meta OFDRU_OFFICIAL (OFDRU_FROM && OFDRU_DKIM && (OFDRU_BODY_1 || OFDRU_BODY_2 || OFDRU_BODY_3 || OFDRU_BODY_4 || OFDRU_BODY_5 || OFDRU_BODY_6 || OFDRU_BODY_7 || OFDRU_BODY_8 || OFDRU_BODY_9 || OFDRU_BODY_10 || OFDRU_BODY_11))
+
+# Альтернативное мета-правило для чеков с QR-кодом
+body OFDRU_QR /qrcode|QR-код/i
+meta OFDRU_QR_CHECK (OFDRU_OFFICIAL && OFDRU_QR)
+score OFDRU_QR_CHECK -25.0
+
+# Присваиваем письму очень низкий балл, чтобы оно гарантированно не попало в спам
+score OFDRU_OFFICIAL -20.0
+
+# Описываем правила для отчета
+describe OFDRU_OFFICIAL Official email from OFD.RU (Platforma OFD) - receipt
+describe OFDRU_QR_CHECK Official OFD.RU receipt with QR-code
+
+# Правило для писем с фискальными реквизитами
+header OFDRU_FROM_FISCAL From:addr =~ /ofd\.ru|chek\.pofd\.ru$/i
+header OFDRU_DKIM_FISCAL DKIM-Signature =~ /d=ofd\.ru|d=chek\.pofd\.ru/i
+
+body OFDRU_FN /ФН \d+/i
+body OFDRU_FPD /ФПД \d+/i
+body OFDRU_QR /qrcode|QR-код/i
+body OFDRU_CHECK /кассовый чек|фискальный/i
+
+meta OFDRU_FISCAL (OFDRU_FROM_FISCAL && OFDRU_DKIM_FISCAL && OFDRU_FN && OFDRU_FPD && OFDRU_QR && OFDRU_CHECK)
+score OFDRU_FISCAL -25.0
+describe OFDRU_FISCAL Official OFD.RU fiscal receipt with QR-code

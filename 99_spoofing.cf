@@ -1,0 +1,72 @@
+##############################################################################################################
+### УНИВЕРСАЛЬНЫЕ ПРАВИЛА ПРОТИВ ПОДДЕЛКИ "ПИСЬМО САМОМУ СЕБЕ" 4 SpamAssassin                              ###
+### Version: 20260720                                                                                      ###
+###                                                                                                        ###
+### Addon links:                                                                                           ###
+### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                                  ###
+### Regex check:     https://regex101.com/                                                                 ###
+##############################################################################################################
+
+# ---- ПОДДЕЛЬНЫЙ HELO (пытается выдать себя за ваш сервер) ----
+header   SPAM_HELO_STELLIT   Received =~ /helo=mail\.stellit-spb\.com/i
+score    SPAM_HELO_STELLIT   0
+
+header   SPAM_FROM_STELLIT   Received =~ /from\s+mail\.stellit-spb\.com/i
+score    SPAM_FROM_STELLIT   0
+
+meta     SPAM_FAKE_HELO_STELLIT	SPAM_HELO_STELLIT && !SPAM_FROM_STELLIT
+score    SPAM_FAKE_HELO_STELLIT	3.0
+describe SPAM_FAKE_HELO_STELLIT	"Fake HELO mail.stellit-spb.com"
+
+header   SPAM_HELO_STELLIT   Received =~ /helo=mail\.groupstr\.ru/i
+score    SPAM_HELO_STELLIT   0
+
+header   SPAM_FROM_STELLIT   Received =~ /from\s+mail\.groupstr\.ru/i
+score    SPAM_FROM_STELLIT   0
+
+meta     SPAM_FAKE_HELO_STELLIT	SPAM_HELO_STELLIT && !SPAM_FROM_STELLIT
+score    SPAM_FAKE_HELO_STELLIT	3.0
+describe SPAM_FAKE_HELO_STELLIT	"Fake HELO mail.groupstr.ru"
+
+# ---- ИЗВЛЕЧЕНИЕ ДАННЫХ ----
+header  __SPOOF_FROM_DOM    From =~ /\@([a-z0-9-]+\.[a-z0-9-.]+)$/i
+header  __SPOOF_ENV_DOM     EnvelopeFrom =~ /\@([a-z0-9-]+\.[a-z0-9-.]+)$/i
+header  __SPOOF_RET_DOM     Return-Path =~ /\@([a-z0-9-]+\.[a-z0-9-.]+)$/i
+header  __SPOOF_FROM_USER   From =~ /^([^@]+)\@/
+header  __SPOOF_ENV_USER    EnvelopeFrom =~ /^([^@]+)\@/
+
+# ---- ПРОВЕРКА НА ПОДДЕЛКУ ----
+# 1. Несовпадение доменов (Envelope-From vs From)
+meta    SPOOF_ENV_MISMATCH  (__SPOOF_FROM_DOM && __SPOOF_ENV_DOM && !__SPOOF_FROM_DOM == __SPOOF_ENV_DOM)
+score   SPOOF_ENV_MISMATCH  5.0
+describe SPOOF_ENV_MISMATCH From domain differs from Envelope-From domain
+
+# 2. Несовпадение доменов (Return-Path vs From)
+meta    SPOOF_RET_MISMATCH  (__SPOOF_FROM_DOM && __SPOOF_RET_DOM && !__SPOOF_FROM_DOM == __SPOOF_RET_DOM)
+score   SPOOF_RET_MISMATCH  5.0
+describe SPOOF_RET_MISMATCH From domain differs from Return-Path domain
+
+# 3. Одинаковое имя пользователя
+# Используем отдельные header-правила и meta для проверки
+meta    SPOOF_SAME_USER     (__SPOOF_FROM_USER != __SPOOF_ENV_USER)
+score   SPOOF_SAME_USER     2.0
+describe SPOOF_SAME_USER    Both From and Envelope-From usernames not equal
+
+# 4. Комплексная проверка подделки
+meta    SPOOF_SELF_PHISHING  (SPOOF_ENV_MISMATCH || SPOOF_RET_MISMATCH) && SPOOF_SAME_USER
+score   SPOOF_SELF_PHISHING  8.0
+describe SPOOF_SELF_PHISHING Forged self-mail: same username, different domain
+
+# ---- УСИЛЕНИЕ СТАНДАРТНЫМИ ПРАВИЛАМИ ----
+meta    SPOOF_SPF_FAIL_SELF  (SPF_FAIL && SPOOF_SAME_USER)
+score   SPOOF_SPF_FAIL_SELF  6.0
+describe SPOOF_SPF_FAIL_SELF SPF fail on self-mail
+
+meta    SPOOF_NO_DKIM_SELF   (!DKIM_VALID && SPOOF_SAME_USER)
+score   SPOOF_NO_DKIM_SELF   4.0
+describe SPOOF_NO_DKIM_SELF  No valid DKIM on self-mail
+
+meta    SPOOF_SPF_SOFT_SELF  (SPF_SOFTFAIL && SPOOF_SAME_USER)
+score   SPOOF_SPF_SOFT_SELF  4.0
+describe SPOOF_SPF_SOFT_SELF SPF softfail on self-mail

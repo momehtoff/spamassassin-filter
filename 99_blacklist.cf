@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Blacklist filter 4 SpamAssassin                                                               ###
-### Version: 20241122                                                                             ###
+### Version: 20260717                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -19,15 +19,8 @@ blacklist_from *@*.alexpeo.ru
 blacklist_from *@*.alexpso.ru
 blacklist_from *@*.allsip.ru
 blacklist_from *@*.artbash.ru
-blacklist_from *@*.bet
-blacklist_from *@*.best
-blacklist_from *@*.bio
-blacklist_from *@*.bond
-blacklist_from *@*.buzz
-blacklist_from *@*.lat
 blacklist_from *@*.centrlic.ru
 blacklist_from *@*.com.ua
-blacklist_from *@*.cfd
 blacklist_from *@*.curation-me.com
 blacklist_from *@*.dansco.ru
 blacklist_from *@*.deneg-dam.ru
@@ -41,32 +34,24 @@ blacklist_from *@*.elisrecords.ru
 blacklist_from *@*.enhost.ru
 blacklist_from *@*.faxweb.ru
 blacklist_from *@*.fotoltd.ru
-blacklist_from *@*.fun
 blacklist_from *@*.hinet.net
 blacklist_from *@*.mbx-sender-01.ru
 blacklist_from *@*.mbx-sender-02.ru
 blacklist_from *@*.mbx-sender-03.ru
 blacklist_from *@*.lesozavodskiy.ru
 blacklist_from *@*.lukman.pl
-blacklist_from *@*.monster
 blacklist_from *@*.msk-seminar.ru
 blacklist_from *@*.nichiro.ru
-blacklist_from *@*.one
 blacklist_from *@*.otruda-client.ru
 blacklist_from *@*.otruda-client2.ru
 blacklist_from *@*.profiemail.ru
 blacklist_from *@*.proway.tech
-blacklist_from *@*.quest
 blacklist_from *@*.reg178.ru
 blacklist_from *@*.rus-otruda-client.ru
 blacklist_from *@*.rusya-tasimacilik.com
 blacklist_from *@*.s-otruda-client.ru
 blacklist_from *@*.sa.com
-blacklist_from *@*.shop
-blacklist_from *@*.space
-blacklist_from *@*.top
 blacklist_from *@*.vservers.es
-blacklist_from *@*.xyz
 blacklist_from *@*.za.com
 blacklist_from *@*-usndr.com
 blacklist_from *@100usf.com
@@ -81,4 +66,5 @@ blacklist_from *@mail365.ru
 blacklist_from *@mvk.ru
 blacklist_from *@roscerts.ru
 blacklist_from *@seminar-plus.ru
+blacklist_from *@yotpo.com
 blacklist_from *@zzs4kids.com

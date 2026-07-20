@@ -1,0 +1,720 @@
+##############################################################################################################
+### БАЗОВЫЕ ТЕХНИЧЕСКИЕ ПРИЗНАКИ 4 SpamAssassin                                                            ###
+### Version: 20260720                                                                                      ###
+###                                                                                                        ###
+### Addon links:                                                                                           ###
+### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
+### Decode UTF-8:    https://codebeautify.org/utf8-decode                                                  ###
+### Regex check:     https://regex101.com/                                                                 ###
+##############################################################################################################
+
+# Облачные хостинги
+header  SPAM_CLOUD_HOSTING   Received =~ /googleusercontent\.com|cloudapp\.net|compute\.amazonaws\.com/i
+score   SPAM_CLOUD_HOSTING   2.0
+
+# Несоответствие HELO и обратного DNS
+header  SPAM_HELO_MISMATCH   Received =~ /Received: from.*\.(googleusercontent|cloudapp)\.com.*helo=[^.]+\.[a-z]+/
+score   SPAM_HELO_MISMATCH   2.5
+
+# Отсутствие HELO (чистый IP)
+header   SPAM_NO_HELO  Received =~ /Received: from \[[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\](?!.*helo)/i
+score    SPAM_NO_HELO  2.5
+describe SPAM_NO_HELO  "No HELO, IP only"
+tflags   SPAM_NO_HELO  autolearn_force
+
+# Случайный Message-ID (хэш 32 или 40 символов)
+header  SPAM_RANDOM_MSGID    Message-ID =~ /^<[a-f0-9]{32,40}@/i
+score   SPAM_RANDOM_MSGID    1.5
+
+# Странный Message-ID с $@ (характерно для sextortion)
+header  SPAM_WEIRD_MSGID     Message-ID =~ /\$@/
+score   SPAM_WEIRD_MSGID     1.5
+
+# [time] в Message-ID (автоматическая генерация)
+header  SPAM_MSGID_TIME      Message-ID =~ /\[time\]/
+score   SPAM_MSGID_TIME      3.0
+
+# Домен tixez.ru в Message-ID
+header  SPAM_MSGID_BAD     Message-ID =~ /@(mailsys|tixez\.ru)\b/i
+score   SPAM_MSGID_BAD     1.5
+
+# Только HTML-версия (без текстовой части)
+rawbody SPAM_HTML_ONLY       /Content-Type: text\/html(?!.*Content-Type: text\/plain)/s
+score   SPAM_HTML_ONLY       1.5
+
+# Только текстовая версия (без HTML)
+rawbody SPAM_TEXT_ONLY       /Content-Type: text\/plain(?!.*Content-Type: text\/html)/
+score   SPAM_TEXT_ONLY       1.0
+
+# Quoted-printable кодировка
+rawbody SPAM_QUOTED_PRINTABLE /Content-Transfer-Encoding:\s*quoted-printable/
+score   SPAM_QUOTED_PRINTABLE 0.5
+
+# Bulk-рассылка
+header	SPAM_BULK_PRECEDENCE Precedence =~ /bulk/i
+score   SPAM_BULK_PRECEDENCE 1.0
+
+# Base64 в HTML-части
+rawbody SPAM_BASE64_HTML     /Content-Transfer-Encoding:\s*base64.*Content-Type:\s*text\/html/
+score   SPAM_BASE64_HTML     1.5
+
+# Base64 кодировка текста
+rawbody SPAM_BASE64_BODY    /Content-Transfer-Encoding:\s*base64\s*$/
+score   SPAM_BASE64_BODY    1.0
+
+# Подозрительный TLD
+header	SPAM_SUSPECT_TLD     From =~ /@[a-z0-9]+\.(?:click|store|top|online|site|xyz|club|work|date|download|stream|bet|best|bio|bond|buzz|lat|cfd|fun|monster|one|quest|shop|space)/i
+score   SPAM_SUSPECT_TLD     2.0
+
+# Двойная DKIM-подпись (Google)
+header   SPAM_DKIM_DOUBLE  X-Google-DKIM-Signature =~ /d=1e100\.net/i
+score    SPAM_DKIM_DOUBLE  1.5
+describe SPAM_DKIM_DOUBLE  "Google DKIM signature with 1e100.net"
+tflags   SPAM_DKIM_DOUBLE  autolearn_force
+
+# Несоответствие домена отправителя и Reply-To
+header   SPAM_REPLY_MISMATCH  ALL =~ /Reply-To:.*@[^@]+\.[a-z]+.*From:.*@[^@]+\.[a-z]+/i
+score    SPAM_REPLY_MISMATCH  2.5
+describe SPAM_REPLY_MISMATCH  "Reply-To and From domains mismatch"
+tflags   SPAM_REPLY_MISMATCH  autolearn_force
+
+# Outlook/Express заголовки
+header   SPAM_OUTLOOK_OLD  X-Mailer =~ /Microsoft Outlook (Express 6\.00\.|16\.0)/i
+score    SPAM_OUTLOOK_OLD  1.5
+describe SPAM_OUTLOOK_OLD  "Old Outlook version (Express 6.00 or 16.0)"
+tflags   SPAM_OUTLOOK_OLD  autolearn_force
+
+# X-Priority + Thread-Index
+header   SPAM_OUTLOOK_HEADERS  ALL =~ /X-Priority: 3|Thread-Index: AQ[A-Za-z0-9]{32,}/i
+score    SPAM_OUTLOOK_HEADERS  1.0
+describe SPAM_OUTLOOK_HEADERS  "Outlook-specific headers detected"
+tflags   SPAM_OUTLOOK_HEADERS  autolearn_force
+
+# Content-Language: en-us (часто в спаме)
+header   SPAM_CONTENT_LANG  Content-Language =~ /en-us/i
+score    SPAM_CONTENT_LANG  0.5
+describe SPAM_CONTENT_LANG  "Content-Language: en-us"
+tflags   SPAM_CONTENT_LANG  autolearn_force
+
+# Домен fozex.ru
+header   SPAM_DOMAIN_FROM  From =~ /@(fozex\.ru|ro\.ru)\b/i
+score    SPAM_DOMAIN_FROM  0.5
+describe SPAM_DOMAIN_FROM  "Email from domain"
+tflags   SPAM_DOMAIN_FROM  autolearn_force
+
+# ---- НОВЫЕ ПРАВИЛА ДЛЯ БАНКОВСКИХ ГАРАНТИЙ ----
+
+# Домен express-bg.ru
+header   SPAM_DOMAIN_EXPRESS_BG  From =~ /@express-bg\.ru/i
+score    SPAM_DOMAIN_EXPRESS_BG  3.0
+describe SPAM_DOMAIN_EXPRESS_BG  "Email from express-bg.ru domain"
+tflags   SPAM_DOMAIN_EXPRESS_BG  autolearn_force
+
+# PHPMailer 5.2.14 (устаревшая версия)
+header   SPAM_PHPMAILER_OLD  X-Mailer =~ /PHPMailer - 5\.2\.14/i
+score    SPAM_PHPMAILER_OLD  2.0
+describe SPAM_PHPMAILER_OLD  "Old PHPMailer version 5.2.14"
+tflags   SPAM_PHPMAILER_OLD  autolearn_force
+
+# Feedback-ID (трекинг рассылок)
+header   SPAM_FEEDBACK_ID  Feedback-ID =~ /[a-z0-9]+:[a-z0-9]+:[a-z0-9]+:[a-z0-9]+/i
+score    SPAM_FEEDBACK_ID  1.5
+describe SPAM_FEEDBACK_ID  "Feedback-ID tracking header"
+tflags   SPAM_FEEDBACK_ID  autolearn_force
+
+###############################################################################
+# ИМИТАЦИЯ БРЕНДОВ
+###############################################################################
+
+header   SPAM_BRAND_FAKE  ALL =~ /(?:CNN.*Health|Dr\.\s*Sanjay\s+Gupta|CNN\s*Breaking\s+News|Cloud\s+(?:Drive|ID:\s*))/i
+score    SPAM_BRAND_FAKE  2.5
+describe SPAM_BRAND_FAKE  "Fake brand names (CNN, Dr. Sanjay Gupta, Cloud)"
+tflags   SPAM_BRAND_FAKE  autolearn_force
+
+# Яндекс имитация (только кириллица)
+body    SPAM_YANDEX_CLONE    /Яндекс\s*(?:Плюс|Plus)|экосистема\s*Яндекс[а]?|Официальное\s+предложение|ООО\s*[«"']?Яндекс[»"']?/i
+score   SPAM_YANDEX_CLONE    2.5
+
+###############################################################################
+# ОБРАЩЕНИЯ (APPEAL)
+###############################################################################
+
+# Английские обращения
+body    SPAM_APPEAL_EN       /(?:\b(?:dear|greetings?|hello|hey|hi(?:ya?)?)\s{0,10}(?:author|ceo|client|colleague|customer|esteemed|friends?|groupstr|info|madam|manager|nour|offer|owner|participant|partner|purchas(?:er|ing)|sir|shopp?er|team|user)\b|\b(?:hello\s*dear|hi\s*there|sir\s*madam)\b)/i
+score   SPAM_APPEAL_EN       3.0
+tflags  SPAM_APPEAL_EN       autolearn_force
+
+# Русские обращения
+body    SPAM_APPEAL_RU       /(?:добр(?:ый|ое|ая)\s*день|здравствуйте|уважаем(?:ый|ая)\s*(?:господин|госпожа|партн[её]р|сэр)|(?:вас|господин|госпожа|партн[её]р|сэр)\s*(?:добр(?:ый|ое|ая)\s*день|здравствуйте)|уважаем[ая])/i
+score   SPAM_APPEAL_RU       3.0
+tflags  SPAM_APPEAL_RU       autolearn_force
+
+# Уважаемый клиент (общий)
+body    SPAM_RESPECTED_CLIENT /Уважаемый\s+клиент/i
+score   SPAM_RESPECTED_CLIENT 1.5
+
+# Greetings в начале письма (часто в sextortion)
+body    SPAM_GREETINGS_ONLY  /^Greetings!/
+score   SPAM_GREETINGS_ONLY  1.0
+
+###############################################################################
+# СТРАХ, УГРОЗЫ И СРОЧНОСТЬ
+###############################################################################
+
+# Общие угрозы (английский)
+body    SPAM_SCARE_EN        /(?:10x|scrambling|hide\s+this\s+video|leaked\s+presentation|shocking\s+doctors|doctors?\s+(?:completely\s+)?speechless)/i
+score   SPAM_SCARE_EN        2.5
+tflags  SPAM_SCARE_EN        autolearn_force
+
+# Русские угрозы (юридические + штрафы + проверки)
+body    SPAM_THREAT_RU       /(?:Роскомнадзор|Росаккредитац|РКН|152-ФЗ|претензи[яи]|жалоб[аы]|штраф[аы]\s*(?:до\s*)?\d+\s*(?:млн|тыс)|проверк[ау]\s+Роскомнадзор[ау]?|нарушени[ея]|проверк[ау]\s+Росаккредитац)/i
+score   SPAM_THREAT_RU       3.0
+tflags  SPAM_THREAT_RU       autolearn_force
+
+# Медицинские страшилки
+body    SPAM_MEDICAL_SCARE   /(?:knee\s*surgery|joint\s*pain|bone\s+on\s+bone|knees\s+grinding|arthritis|chronic\s+pain|choking\s+is\s+the\s+\d+th\s+leading\s+cause)/i
+score   SPAM_MEDICAL_SCARE   2.5
+tflags  SPAM_MEDICAL_SCARE   autolearn_force
+
+# Создание срочности (русский) - ОБНОВЛЕНО с учетом email-маркетинга и БГ
+body    SPAM_URGENCY_RU      /(?:до\s+конца\s+акции|только\s+сегодня|спешите|успейте|ограничен[оы]е?\s*предложение|квартальн[ая]?\s*квот[ау]|свободн[ых]?\s*слот[ов]?|до\s+закрыти[яю]\s+отч[её]тн[ого]?\s*период[аы]|открылас[ьс]\s+квот[ау]|спрос на рекламу достигает максимума|впереди лето|сезон отпусков|лучшее время это сделать|БГ за 2 часа|оформление за 2 часа|максимально быстро)/i
+score   SPAM_URGENCY_RU      2.5
+tflags  SPAM_URGENCY_RU      autolearn_force
+
+# Срочность (английский)
+body    SPAM_URGENCY_EN      /(?:selling\s+out\s+fast|limited\s+time\s+offer|don't\s+wait|act\s+now|urgent\s+update|while\s+supplies\s+last)/i
+score   SPAM_URGENCY_EN      2.0
+tflags  SPAM_URGENCY_EN      autolearn_force
+
+# Таймер для sextortion (48 часов)
+body    SPAM_SEXTORTION_TIMER /(?:only 48 hours|48 hours left|48 hours to make a transaction)/
+score   SPAM_SEXTORTION_TIMER 3.0
+tflags  SPAM_SEXTORTION_TIMER autolearn_force
+
+# Создание страха (sextortion)
+body    SPAM_SEXTORTION_FEAR /(?:no way back|ruin your life|no way in hell|cannot be fixed|salvation|disappear from your life)/
+score   SPAM_SEXTORTION_FEAR 2.5
+tflags  SPAM_SEXTORTION_FEAR autolearn_force
+
+# Оскорбления и грубость (маркер sextortion)
+body    SPAM_SEXTORTION_INSULTS /(?:sick fuck|mentally retarted|stupid man|flying fuck|useless shit|pervert porn)/
+score   SPAM_SEXTORTION_INSULTS 3.0
+tflags  SPAM_SEXTORTION_INSULTS autolearn_force
+
+# Множественные восклицательные
+body    SPAM_EXCLAMATION     /\!{2,}/
+score   SPAM_EXCLAMATION     0.5
+
+###############################################################################
+# SEXTORTION - КОНТЕНТНЫЕ ПРИЗНАКИ
+###############################################################################
+
+# Типичные фразы вымогателей
+body    SPAM_SEXTORTION      /(?:I own very sensitive information|hack your operating system|gain full access to all your devices|webcam streaming|keylogger|adult websites|infected with harmful malware|under my microscope|video compilation|controversial porn scenes|masturbating|Bitcoin address|transfer the Bitcoin equivalent)/
+score   SPAM_SEXTORTION      4.0
+tflags  SPAM_SEXTORTION      autolearn_force
+
+# Угрозы публикации
+body    SPAM_SEXTORTION_THREAT /(?:send this video to all your|make public all your emails|send and publish your videos|delete all those videos)/
+score   SPAM_SEXTORTION_THREAT 3.5
+tflags  SPAM_SEXTORTION_THREAT autolearn_force
+
+# Псевдо-технические детали
+body    SPAM_SEXTORTION_TECH /(?:keylogger|webcam streaming|operating system|antivirus and spyware|defender software|microscope|backup copy)/
+score   SPAM_SEXTORTION_TECH 2.5
+tflags  SPAM_SEXTORTION_TECH autolearn_force
+
+# Специальная сумма (1280 USD)
+body    SPAM_SEXTORTION_AMOUNT /(?:1280 USD|1280\s*USD|1,280\s*USD)/
+score   SPAM_SEXTORTION_AMOUNT 3.0
+
+###############################################################################
+# BITCOIN - ПРИЗНАКИ
+###############################################################################
+
+# Bitcoin адрес (формат Base58)
+body    SPAM_BITCOIN_ADDRESS /[13][a-km-zA-HJ-NP-Z1-9]{25,34}/
+score   SPAM_BITCOIN_ADDRESS 4.0
+
+# Bitcoin упоминание
+body    SPAM_BITCOIN_MENTION /(?:Bitcoin|BTC|bitcoin address|transfer the Bitcoin equivalent)/
+score   SPAM_BITCOIN_MENTION 2.5
+
+# Валидный Bitcoin-адрес (строгий)
+body    SPAM_BITCOIN_VALID   /\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b/
+score   SPAM_BITCOIN_VALID   5.0
+tflags  SPAM_BITCOIN_VALID   autolearn_force
+
+###############################################################################
+# ФАЛЬШИВЫЕ ИСТОРИИ
+###############################################################################
+
+body    SPAM_FAKE_STORY      /(?:ранее\s+обращал(?:ись|ся)|интересовал(?:ись|ся)\s+услугами|Вы\s+получили\s+письмо,\s+так\s+как\s+интересовал|I\s+Almost\s+Lost\s+My\s+(?:Son|Child)|gave\s+us\s+a\s+second\s+chance|panic\s+in\s+his\s+eyes|ER\s+Nurse\s+&\s+Mother|Как и прежде|Как и всегда|участником государственных закупок|участник государственных закупок)/
+score   SPAM_FAKE_STORY      2.5
+tflags  SPAM_FAKE_STORY      autolearn_force
+
+# Фальшивые отзывы
+body    SPAM_FAKE_TESTIMONIAL /(?:testimonial-author|"I\s+saw\s+the\s+panic|"This\s+changed\s+my\s+life")/
+score   SPAM_FAKE_TESTIMONIAL 2.5
+tflags  SPAM_FAKE_TESTIMONIAL autolearn_force
+
+###############################################################################
+# ПСЕВДОНАУЧНЫЕ УТВЕРЖДЕНИЯ
+###############################################################################
+
+body    SPAM_PSEUDOSCIENCE   /(?:clinical\s+trials?\s+in\s+20\d{2}|90%\+?\s+success\s+rate|\d+%\s+(?:more\s+)?effective|reversing\s+joint\s+damage|natural\s+at-home\s+protocol|Pacific\s+island\s+recipe|90%\+?\s*(?:success\s+rate|effective).{0,20}\d+%-\d+%)/
+score   SPAM_PSEUDOSCIENCE   2.5
+tflags  SPAM_PSEUDOSCIENCE   autolearn_force
+
+###############################################################################
+# СПАМ-ЛЕКСИКА (русский)
+###############################################################################
+
+# Извинения и ложная история переписки
+body    SPAM_RU_APOLOGY      /(?:не\s+получили\s+ответ|не\s+в\s+самое\s+удобное\s+время|извините\s+за\s+беспокойство|повторно\s+направляем|до\s+сих\s+пор\s+не\s+ответили|повторное\s+обращение)/
+score   SPAM_RU_APOLOGY      2.5
+tflags  SPAM_RU_APOLOGY      autolearn_force
+
+# Заработок в интернете
+body    SPAM_RU_EARN         /(?:дополнительный\s+источник\s+дохода|ежедневные\s+выплаты|свободный\s+график|реферальных\s+программах|дистанционных\s+задач|пассивный\s+доход)/
+score   SPAM_RU_EARN         2.5
+tflags  SPAM_RU_EARN         autolearn_force
+
+# Бесплатная проверка/аудит
+body    SPAM_RU_FREE_CHECK   /(?:бесплатно\s+проверим|бесплатно.*проверк[ау]|проверим\s+ваш\s+сайт|бесплатный\s+аудит)/
+score   SPAM_RU_FREE_CHECK   2.5
+tflags  SPAM_RU_FREE_CHECK   autolearn_force
+
+# Персональные данные (ПДн)
+body    SPAM_RU_PDN          /(?:персональных\s+данных|операторов\s+ПДн|реестр\s+операторов|согласи[ея]\s+на\s+обработку|политик[ау]\s+конфиденциальности)/
+score   SPAM_RU_PDN          2.0
+tflags  SPAM_RU_PDN          autolearn_force
+
+# Обучение/курсы/вебинары
+body    SPAM_RU_EDUCATION    /(?:бесплатн(?:ое|ый|ую)\s+обучени[ея]|приглашае(?:м|т)\s+на\s+обучени[ея]|пройти\s+обучени[ея]|мастер\s*[-.]?\s*кла(?:с|сс)|вебинар|тренинг|семинар)/
+score   SPAM_RU_EDUCATION    2.0
+tflags  SPAM_RU_EDUCATION    autolearn_force
+
+# Конкурсы/лотереи
+body    SPAM_RU_LOTTERY      /(?:беспроигрышн[ая]?\s+лотере[яи]|розыгрыш|конкурс|старт(?:овал|ует)\s+конкурс|лотере[яи])/
+score   SPAM_RU_LOTTERY      2.5
+tflags  SPAM_RU_LOTTERY      autolearn_force
+
+# Медицинская тематика
+body    SPAM_RU_CLINIC       /(?:для\s+вашей\s+клиники|пациентов\s+в\s+месяц|медицинский\s+центр|здоровья|лечения)/
+score   SPAM_RU_CLINIC       1.5
+tflags  SPAM_RU_CLINIC       autolearn_force
+
+# Простота работы (заманивание)
+body    SPAM_RU_NO_SKILLS    /(?:не\s+требуются\s+специальные\s+навыки|не\s+нужен\s+опыт|простая\s+работа|сам(?:и)?\s+выбираете)/
+score   SPAM_RU_NO_SKILLS    1.5
+tflags  SPAM_RU_NO_SKILLS    autolearn_force
+
+# Фальшивый адрес Яндекса
+body    SPAM_RU_FAKE_ADDRESS /(?:г\.\s*Таганрог.*Лесной\s+пер|Таганрог.*Яндекс)/
+score   SPAM_RU_FAKE_ADDRESS 2.5
+tflags  SPAM_RU_FAKE_ADDRESS autolearn_force
+
+# Поддельный копирайт
+body    SPAM_RU_FAKE_COPYRIGHT /ООО\s+[«"']?Яндекс[»"']?.*Все\s+права\s+защищены/
+score   SPAM_RU_FAKE_COPYRIGHT 2.0
+tflags  SPAM_RU_FAKE_COPYRIGHT autolearn_force
+
+# ---- НОВЫЕ ПРАВИЛА ДЛЯ БАНКОВСКИХ ГАРАНТИЙ ----
+
+# Банковская гарантия
+body    SPAM_RU_BG           /(?:банковскую гарантию|БГ за 2 часа|банковской гарантии|выпустить независимую гарантию)/
+score   SPAM_RU_BG           3.0
+tflags  SPAM_RU_BG           autolearn_force
+
+# Законы 44-ФЗ, 223-ФЗ, 275-ФЗ (уже частично есть в SPAM_THREAT_RU, добавляем недостающие)
+body    SPAM_RU_LAWS_BG      /(?:44-ФЗ|223-ФЗ|275-ФЗ|615-ПП|185-ФЗ)/
+score   SPAM_RU_LAWS_BG      2.0
+tflags  SPAM_RU_LAWS_BG      autolearn_force
+
+# Без залога и поручительства
+body    SPAM_RU_NO_COLLATERAL /(?:без залога|без залогового обеспечения|Без поручительства|поручители не нужны)/
+score   SPAM_RU_NO_COLLATERAL 2.5
+tflags  SPAM_RU_NO_COLLATERAL autolearn_force
+
+# Более 85 банков (ложное представительство)
+body    SPAM_RU_85_BANKS     /(?:представителем более 85 банков|более 85 банков)/
+score   SPAM_RU_85_BANKS     2.0
+tflags  SPAM_RU_85_BANKS     autolearn_force
+
+# ФинТендер
+body    SPAM_RU_FINTENDER    /(?:Компания ФинТендер|ФинТендер)/
+score   SPAM_RU_FINTENDER    2.0
+tflags  SPAM_RU_FINTENDER    autolearn_force
+
+# Телефон 8-800
+body    SPAM_RU_PHONE_800    /\+7\s*\(800\)\s*\d{3}-\d{2}-\d{2}/
+score   SPAM_RU_PHONE_800    1.5
+
+# Отписка через email (без ссылки)
+body    SPAM_RU_UNSUB_EMAIL  /(?:отпишитесь здесь|отписаться по почте|subject=UNSUBSCRIBE)/
+score   SPAM_RU_UNSUB_EMAIL  2.0
+tflags  SPAM_RU_UNSUB_EMAIL  autolearn_force
+
+# Перечисление преимуществ (маркер B2B-спама)
+body    SPAM_RU_BENEFITS_BG  /(?:Наши преимущества|Оформление за 2 часа|Без залога|Без поручительства|Быстро|Индивидуально|Удобно)/
+score   SPAM_RU_BENEFITS_BG  2.5
+tflags  SPAM_RU_BENEFITS_BG  autolearn_force
+
+###############################################################################
+# EMAIL-МАРКЕТИНГОВЫЙ СПАМ
+###############################################################################
+
+# Сервис рассылок (Jetmail и др.)
+body    SPAM_RU_EMAIL_SERVICE /(?:сервис email-рассылок|email-рассылок Jetmail|сервис рассылок|Jetmail)/
+score   SPAM_RU_EMAIL_SERVICE 3.0
+tflags  SPAM_RU_EMAIL_SERVICE autolearn_force
+
+# Лиды и клиенты (обещание результата)
+body    SPAM_RU_LEADS        /(?:больше лидов и клиентов|принести Вам.*лидов|лидов и клиентов)/
+score   SPAM_RU_LEADS        2.5
+tflags  SPAM_RU_LEADS        autolearn_force
+
+# Корпоративная база
+body    SPAM_RU_CORP_BASE    /(?:корпоративной базе|корпоративная база|уникальной корпоративной базе)/
+score   SPAM_RU_CORP_BASE    2.5
+tflags  SPAM_RU_CORP_BASE    autolearn_force
+
+# Цены (от 15тр)
+body SPAM_RU_PRICE           /(?:рассылок от \d+тр|пакетам от \d+|стоимость размещения в чатах)/i
+score   SPAM_RU_PRICE        2.0
+tflags  SPAM_RU_PRICE        autolearn_force
+
+# География (Москва, СПб, Россия)
+body    SPAM_RU_GEO          /(?:Гео: Москва, Санкт-Петербург, Россия|Москва, Санкт-Петербург, Россия)/
+score   SPAM_RU_GEO          1.5
+
+# Должности ЛПР (маркер B2B-спама)
+body    SPAM_RU_DECISION_MAKERS /(?:собственникам бизнеса|генеральным директорам|руководителям подразделений|лицам, принимающим решения|HR-менеджерам|директорам по коммерции)/
+score   SPAM_RU_DECISION_MAKERS 2.5
+tflags  SPAM_RU_DECISION_MAKERS autolearn_force
+
+# Услуги с маркерами (HTML-письмо, доставляемость, отчет)
+body    SPAM_RU_SERVICE_LIST /(?:разработка HTML-письма|проверка технической доставляемости|проведение рассылки|итогового отчета)/
+score   SPAM_RU_SERVICE_LIST 2.0
+tflags  SPAM_RU_SERVICE_LIST autolearn_force
+
+# Представление менеджера
+body    SPAM_RU_MANAGER_INTRO /(?:На связи Даниил|Меня зовут Даниил|представляю сервис)/
+score   SPAM_RU_MANAGER_INTRO 2.0
+tflags  SPAM_RU_MANAGER_INTRO autolearn_force
+
+body    SPAM_RU_AD_SETUP /(?:настройк(?:а|е|у)\s+рекламного\s+кабинета)/i
+score   SPAM_RU_AD_SETUP 2.0
+tflags  SPAM_RU_AD_SETUP autolearn_force
+
+###############################################################################
+# СЕРТИФИКАЦИОННЫЙ СПАМ
+###############################################################################
+
+# Домен mailzen.ru и отписка
+header   SPAM_DOMAIN_MAILZEN  From =~ /@mailzen\.ru/i
+score    SPAM_DOMAIN_MAILZEN  3.0
+describe SPAM_DOMAIN_MAILZEN  "Email from mailzen.ru domain"
+tflags   SPAM_DOMAIN_MAILZEN  autolearn_force
+
+header   SPAM_LIST_UNSUB_MAILZEN  List-Unsubscribe =~ /mailzen\.ru/i
+score    SPAM_LIST_UNSUB_MAILZEN  2.0
+describe SPAM_LIST_UNSUB_MAILZEN  "List-Unsubscribe points to mailzen.ru"
+tflags   SPAM_LIST_UNSUB_MAILZEN  autolearn_force
+
+body    SPAM_MAILZEN_UNSUB   /Отписаться: http:\/\/mailzen\.ru\/script\.php\?/
+score   SPAM_MAILZEN_UNSUB   2.5
+
+# Сертификационная лексика (объединена)
+body    SPAM_CERT_RU         /(?:сертификат|декларац|регистрац(?:ия|и)\s+в\s+реестре|ТР\s+ТС|ГОСТ\s+Р|пожарн(?:ая|ую)\s+безопасност|СГР|ISO\s+9\d{3}|код\s+ТН\s+ВЭД|пришлю\s+персональн(?:ую|у[ю])\s+смет[ау]|опишите\s+ваш(?:у|ей|е)\s+продукц)/
+score   SPAM_CERT_RU         2.5
+tflags  SPAM_CERT_RU         autolearn_force
+
+# Обещание "взять всё на себя"
+body    SPAM_TAKE_ALL_RU     /(?:бер(?:у|ём)\s+на\s+себя\s+вс[её]|вс[её]\s+от\s+консультаци(?:и|ю)\s+до\s+регистраци(?:и|ю))/
+score   SPAM_TAKE_ALL_RU     2.5
+tflags  SPAM_TAKE_ALL_RU     autolearn_force
+
+# Телефон 8-495
+body    SPAM_PHONE_495_RU    /8-495-\d{3}-\d{2}-\d{2}/
+score   SPAM_PHONE_495_RU    0
+
+###############################################################################
+# IT-УСЛУГИ (ХОЛОДНЫЙ СПАМ)
+###############################################################################
+
+body    SPAM_RU_IT_SERVICES  /(?:Внедрим AI|внедряем AI|AI в ваш|разработаем новый сайт|моб\. приложение|AI-функции|KPI и прозрачными|Первый рабочий результат|через \d+-\d+ недель|результат уже через|меньше ручной работы|быстрее обработка заявок|рост конверсии|качества сервиса)/
+score   SPAM_RU_IT_SERVICES  3.0
+tflags  SPAM_RU_IT_SERVICES  autolearn_force
+
+# Telegram ссылка
+body    SPAM_RU_TELEGRAM    /(?:Telegram: https?:\/\/t\.me\/[a-z0-9]+|t\.me\/[a-z0-9]+)/
+score   SPAM_RU_TELEGRAM    2.0
+tflags  SPAM_RU_TELEGRAM    autolearn_force
+
+body    SPAM_RU_TELEGRAM_AD /(?:размещени(?:е|я)\s+Вашей\s+рекламы\s+в|реклам(?:ы|а)\s+в\s+телеграм|тематическ(?:их|ие)\s+чат(?:ах|ы))/i
+score   SPAM_RU_TELEGRAM_AD 3.0
+tflags  SPAM_RU_TELEGRAM_AD autolearn_force
+
+body    SPAM_RU_TELEGRAM_MAX /(?:Telegram\s*\/\s*MAX|Телеграм\s*\/\s*MAX)/i
+score   SPAM_RU_TELEGRAM_MAX 2.0
+tflags  SPAM_RU_TELEGRAM_MAX autolearn_force
+
+# Телефон с кодом РФ
+body    SPAM_RU_PHONE       /\+7\s*\d{3}\s*\d{3}\s*\d{2}\s*\d{2}/
+score   SPAM_RU_PHONE       1.0
+
+###############################################################################
+# СПАМ-ЛЕКСИКА (английский)
+###############################################################################
+
+# Финансовый спам
+body    SPAM_FINANCE_EN      /(?:potential\s+client(?:s?)\s+daily|usd\s+slot(?:s?)|invest.{0,20}usd|business\s+register|fortune\s+500)/
+score   SPAM_FINANCE_EN      2.5
+tflags  SPAM_FINANCE_EN      autolearn_force
+
+# Предложения и скидки
+body    SPAM_OFFER_EN        /(?:our\s+featured\s+item(?:s?)|want\s+more\s+(?:quotes|deals)|special\s+offer|why\s+choose\s+(?:me|us)|take\s+our\s+survey|claim\s+your\s+\d+%\s+discount)/
+score   SPAM_OFFER_EN        2.0
+tflags  SPAM_OFFER_EN        autolearn_force
+
+# Рассылки
+body    SPAM_BULK_EN         /(?:email\s+marketing|marketing\s+email|jetmailone|e-?mail\s+version\s+upgrade)/
+score   SPAM_BULK_EN         2.0
+tflags  SPAM_BULK_EN         autolearn_force
+
+# Фишинг
+body    SPAM_PHISHING_EN     /(?:click\s+here|keep.{0,30}(?:login|password)|(?:maintain|set)\s+your\s+password|re-?authenticate\s+now|sharefile\s+email|sharepoint\s+notification|incoming\s+file\s+notification|please\s+click\s+here)/
+score   SPAM_PHISHING_EN     3.0
+tflags  SPAM_PHISHING_EN     autolearn_force
+
+###############################################################################
+# ССЫЛОЧНЫЕ ПРИЗНАКИ
+###############################################################################
+
+# Подозрительные домены (объединенный список) - ОБНОВЛЕН
+rawbody SPAM_SUSPECT_DOMAINS /(?:ni03hfph|gototis|myhealiq|trycoldly|kreditkalkyl|uralpodnyl|winsondanisl|biccamera|objetivonhn|vetermen|kademadigitaly|marketing-na100|gorodada|mailzen|fozex|tixez|jetmails|express-bg|protosender)\.(?:com|ru|net|click|store|com\.br|top|site)/
+score   SPAM_SUSPECT_DOMAINS 3.0
+
+# CloudFront CDN
+rawbody SPAM_CLOUDFRONT      /cloudfront\.net\/[A-Za-z0-9]{4,}\//
+score   SPAM_CLOUDFRONT      2.5
+
+# Google Storage
+rawbody SPAM_GOOGLE_STORAGE  /storage\.googleapis\.com\//
+score   SPAM_GOOGLE_STORAGE  2.0
+
+# Подозрительные пути (offers/c/assets)
+rawbody SPAM_SUSPECT_PATH    /\/offers\/\d+\/c\/\d+\/assets\//i
+score   SPAM_SUSPECT_PATH    2.5
+
+# Параметры аутентификации (фишинг)
+rawbody SPAM_AUTH_PARAMS     /(?:auth_nonce=|signature_hash=|secure_token=|session_id=)/
+score   SPAM_AUTH_PARAMS     2.0
+
+# Множественные домены - ОБНОВЛЕН
+rawbody SPAM_MULTI_DOMAINS   /(?:kademadigitaly|marketing-na100|trycoldly|objetivonhn|gototis|ni03hfph|myhealiq|biccamera|winsondanisl|vetermen|gorodada|mailzen|fozex|tixez|jetmails|express-bg|protosender)\.(?:ru|net|com|com\.br|store|click|top|site)/
+score   SPAM_MULTI_DOMAINS   2.0
+
+# Случайные пути
+rawbody SPAM_RANDOM_PATH     /https?:\/\/[^\/]+\/[a-z0-9]{6,12}\/[a-z0-9]+\//
+score   SPAM_RANDOM_PATH     1.5
+
+# Обманчивый Unsubscribe
+body    SPAM_FAKE_UNSUB      /(?:Unsubscribe securely|Update Communication Preferences).*https?:\/\/[^@]*\.(?:store|click|top)/
+score   SPAM_FAKE_UNSUB      1.5
+
+# Нет ссылок (характерно для sextortion)
+rawbody SPAM_NO_URLS         /^[^http]*$/s
+score   SPAM_NO_URLS         0.5
+
+# stripocdn.email
+rawbody SPAM_STRIPOCDN       /stripocdn\.email/
+score   SPAM_STRIPOCDN       2.0
+
+# jetmails.ru
+rawbody SPAM_JETMAILS        /jetmails\.ru/
+score   SPAM_JETMAILS        2.5
+
+# protosender.site (трекинг) - НОВОЕ
+rawbody SPAM_PROTOSENDER     /protosender\.site/
+score   SPAM_PROTOSENDER     2.5
+
+###############################################################################
+# СКРЫТЫЙ ТЕКСТ И ВЕРСТКА
+###############################################################################
+
+body    SPAM_HIDDEN_TEXT     /display:\s*none.*overflow:\s*hidden/
+score   SPAM_HIDDEN_TEXT     1.5
+
+body    SPAM_ZWNJ_SPACING    /(?:&zwnj;&nbsp;|&\#8203;|&\#x200B;)/
+score   SPAM_ZWNJ_SPACING    1.0
+
+body    SPAM_CSS_ANIMATION   /@keyframes\s+pulse/
+score   SPAM_CSS_ANIMATION   1.0
+
+rawbody SPAM_APPLE_STYLES    /-apple-system,\s*BlinkMacSystemFont|\#[0-9A-Fa-f]{6}.*\#007AFF|\#FF3B30|\#5AC8FA/
+score   SPAM_APPLE_STYLES    0.5
+
+body    SPAM_LIVE_COUNTER    /(?:people\s+watching\s+now|watch(?:ing)?\s+now|\d+\s+people\s+viewing)/
+score   SPAM_LIVE_COUNTER    1.5
+tflags  SPAM_LIVE_COUNTER    autolearn_force
+
+body    SPAM_MARKETING_DISCL /(?:MARKETING\s+DISCLOSURE|monetary\s+connection\s+to\s+the\s+product|affiliate\s+disclosure)/
+score   SPAM_MARKETING_DISCL 1.0
+tflags  SPAM_MARKETING_DISCL autolearn_force
+
+###############################################################################
+# СПЕЦИАЛЬНЫЕ ПРАВИЛА
+###############################################################################
+
+body    SPAM_MEANINGLESSNESS /(?:wmpzl|nuklo|kjjww|lsnzo|owmws|wwwps|wpoyc|pgwpj|pnlyw|joslg)/
+score   SPAM_MEANINGLESSNESS 5.0
+tflags  SPAM_MEANINGLESSNESS autolearn_force
+
+body    SPAM_PHONES          /[0-9][il]{1,3}[0-9]|380973510878|79104740011/
+score   SPAM_PHONES          5.0
+tflags  SPAM_PHONES          autolearn_force
+
+# Смешанные языки (строгое правило)
+body    SPAM_MIX_STRICT      /\b(?:[a-zA-Z]+[а-яА-Я]+[a-zA-Z]*|[а-яА-Я]+[a-zA-Z]+[а-яА-Я]*)\b/d
+score   SPAM_MIX_STRICT      4.0
+tflags  SPAM_MIX_STRICT      autolearn_force
+
+# Смешанные языки (похожие буквы)
+body    SPAM_MIX_SIMILAR     /\b[а-яА-Я]*(?:[aAОoЕeСcРpНHВBКkХxУy])[а-яА-Я]*(?:[aAОoЕeСcРpНHВBКkХxУy])?[а-яА-Я]*\b/d
+score   SPAM_MIX_SIMILAR     5.0
+tflags  SPAM_MIX_SIMILAR     autolearn_force
+
+body    SPAM_RU_OBFUSCATED_PHONE /\d+\s*\(\d\s*\d\s*\d\)\s*\d\s*\d\s*\d[- ]?\d\d(?:==)?/
+score   SPAM_RU_OBFUSCATED_PHONE 3.0
+tflags  SPAM_RU_OBFUSCATED_PHONE autolearn_force
+
+###############################################################################
+# МЕТА-ПРАВИЛА (КОМБИНАЦИИ)
+###############################################################################
+
+# 1. Фальшивые новости о здоровье
+meta    SPAM_FAKE_HEALTH     (SPAM_BRAND_FAKE || SPAM_MEDICAL_SCARE) && (SPAM_SCARE_EN || SPAM_PSEUDOSCIENCE) && SPAM_HTML_ONLY
+score   SPAM_FAKE_HEALTH     4.0
+
+# 2. Apple/Cloud фишинг
+meta    SPAM_APPLE_PHISHING  SPAM_BRAND_FAKE && SPAM_PHISHING_EN && (SPAM_CLOUD_HOSTING || SPAM_HELO_MISMATCH)
+score   SPAM_APPLE_PHISHING  4.5
+
+# 3. Фальшивый Яндекс
+meta    SPAM_FAKE_YANDEX     SPAM_YANDEX_CLONE && (SPAM_RU_EARN || SPAM_FINANCE_EN) && (SPAM_SUSPECT_TLD || SPAM_SUSPECT_DOMAINS)
+score   SPAM_FAKE_YANDEX     4.5
+
+# 4. Юридический спам
+meta    SPAM_LAW_SCAM_RU     SPAM_THREAT_RU && SPAM_RU_FREE_CHECK && SPAM_RU_PDN
+score   SPAM_LAW_SCAM_RU     4.5
+
+# 5. Медицинские устройства
+meta    SPAM_MEDICAL_DEVICE  (SPAM_BRAND_FAKE || SPAM_FAKE_STORY) && SPAM_PSEUDOSCIENCE && SPAM_SUSPECT_DOMAINS
+score   SPAM_MEDICAL_DEVICE  5.0
+
+# 6. Холодные B2B (русский) - ОБНОВЛЕН
+meta    SPAM_B2B_COLD_RU     (SPAM_RU_APOLOGY || SPAM_RU_IT_SERVICES || SPAM_CERT_RU || SPAM_RU_EMAIL_SERVICE || SPAM_RU_BG) && (SPAM_RU_CLINIC || SPAM_THREAT_RU || SPAM_TAKE_ALL_RU || SPAM_RU_DECISION_MAKERS || SPAM_RU_LAWS_BG || SPAM_RU_NO_COLLATERAL) && SPAM_SUSPECT_DOMAINS
+score   SPAM_B2B_COLD_RU     4.0
+
+# 7. IT-услуги
+meta    SPAM_RU_IT_COLD      SPAM_RU_IT_SERVICES && SPAM_URGENCY_RU && (SPAM_REPLY_MISMATCH || SPAM_RU_TELEGRAM)
+score   SPAM_RU_IT_COLD      5.0
+
+# 8. Сертификационный спам
+meta    SPAM_CERT_TOTAL_RU   SPAM_CERT_RU && (SPAM_TAKE_ALL_RU || SPAM_URGENCY_RU) && SPAM_PHONE_495_RU && (SPAM_DOMAIN_MAILZEN || SPAM_LIST_UNSUB_MAILZEN)
+score   SPAM_CERT_TOTAL_RU   5.5
+
+# 9. Финансовый спам (английский)
+meta    SPAM_FINANCE_SCAM    SPAM_FINANCE_EN && SPAM_OFFER_EN && SPAM_SUSPECT_DOMAINS
+score   SPAM_FINANCE_SCAM    4.0
+
+# 10. SEXTORTION - полный комплекс
+meta    SPAM_SEXTORTION_TOTAL SPAM_SEXTORTION && (SPAM_SEXTORTION_THREAT || SPAM_SEXTORTION_TIMER) && (SPAM_BITCOIN_ADDRESS || SPAM_BITCOIN_MENTION)
+score   SPAM_SEXTORTION_TOTAL 6.0
+
+# 11. SEXTORTION с оскорблениями
+meta    SPAM_SEXTORTION_ABUSE SPAM_SEXTORTION_INSULTS && SPAM_SEXTORTION_THREAT && SPAM_SEXTORTION_FEAR
+score   SPAM_SEXTORTION_ABUSE 5.0
+
+# 12. SEXTORTION с Bitcoin
+meta    SPAM_SEXTORTION_BTC  (SPAM_SEXTORTION || SPAM_SEXTORTION_THREAT) && (SPAM_BITCOIN_ADDRESS || SPAM_BITCOIN_MENTION) && SPAM_SEXTORTION_TIMER
+score   SPAM_SEXTORTION_BTC  5.5
+
+# 13. SEXTORTION с техническими признаками
+meta    SPAM_SEXTORTION_FULL SPAM_SEXTORTION_TOTAL && (SPAM_NO_HELO || SPAM_WEIRD_MSGID || SPAM_TEXT_ONLY)
+score   SPAM_SEXTORTION_FULL 7.0
+
+# 14. SEXTORTION критический
+meta    SPAM_SEXTORTION_CRITICAL SPAM_SEXTORTION_THREAT && SPAM_BITCOIN_VALID && SPAM_SEXTORTION_TIMER && SPAM_SEXTORTION_INSULTS
+score   SPAM_SEXTORTION_CRITICAL 8.0
+
+# 15. SEXTORTION упрощенный
+meta    SPAM_SEXTORTION_SIMPLE SPAM_TEXT_ONLY && (SPAM_SEXTORTION || SPAM_SEXTORTION_THREAT) && SPAM_BITCOIN_MENTION
+score   SPAM_SEXTORTION_SIMPLE 5.0
+
+# 16. Email-маркетинговый спам
+meta    SPAM_RU_EMAIL_MARKETING SPAM_RU_EMAIL_SERVICE && (SPAM_URGENCY_RU || SPAM_RU_LEADS) && (SPAM_RU_CORP_BASE || SPAM_RU_PRICE) && SPAM_RU_DECISION_MAKERS
+score   SPAM_RU_EMAIL_MARKETING 5.5
+
+# 17. Спам с Jetmail
+meta    SPAM_JETMAIL_SPAM    (SPAM_JETMAILS || SPAM_RU_EMAIL_SERVICE) && SPAM_RU_MANAGER_INTRO && SPAM_URGENCY_RU
+score   SPAM_JETMAIL_SPAM    5.0
+
+# 18. B2B-холодный спам (новый вариант)
+meta    SPAM_RU_B2B_COLD_NEW (SPAM_RU_MANAGER_INTRO || SPAM_RU_EMAIL_SERVICE) && SPAM_RU_DECISION_MAKERS && (SPAM_URGENCY_RU || SPAM_RU_CORP_BASE)
+score   SPAM_RU_B2B_COLD_NEW 4.5
+
+# 19. Банковская гарантия (полный комплекс) - НОВОЕ
+meta    SPAM_RU_BG_TOTAL     SPAM_RU_BG && (SPAM_RU_LAWS_BG || SPAM_RU_NO_COLLATERAL) && (SPAM_RU_PHONE_800 || SPAM_RU_FINTENDER)
+score   SPAM_RU_BG_TOTAL     5.5
+
+# 20. Спам с БГ через express-bg.ru - НОВОЕ
+meta    SPAM_EXPRESS_BG      SPAM_DOMAIN_EXPRESS_BG && (SPAM_RU_BG || SPAM_RU_LAWS_BG) && SPAM_RU_NO_COLLATERAL
+score   SPAM_EXPRESS_BG      5.0
+
+# 21. B2B-спам с банковскими гарантиями - НОВОЕ
+meta    SPAM_RU_B2B_BG       (SPAM_RU_BG || SPAM_RU_LAWS_BG) && SPAM_RU_BENEFITS_BG && (SPAM_DOMAIN_EXPRESS_BG || SPAM_PROTOSENDER)
+score   SPAM_RU_B2B_BG       4.5
+
+# 22. Комплекс русского спама - ОБНОВЛЕН
+meta SPAM_RU_COMPLEX	(SPAM_THREAT_RU || SPAM_RU_EARN || SPAM_YANDEX_CLONE || SPAM_RU_IT_SERVICES || SPAM_CERT_RU || SPAM_RU_EMAIL_SERVICE || SPAM_RU_BG || SPAM_RU_TELEGRAM_AD) && (SPAM_SUSPECT_DOMAINS || SPAM_DOMAIN_RO_RU) && (SPAM_RANDOM_MSGID || SPAM_MSGID_BAD)
+score   SPAM_RU_COMPLEX      5.0
+
+# 23. Комплекс английского спама - ОБНОВЛЕН
+meta    SPAM_EN_COMPLEX      (SPAM_MEDICAL_SCARE || SPAM_FINANCE_EN || SPAM_PHISHING_EN || SPAM_SEXTORTION) && SPAM_SUSPECT_DOMAINS && SPAM_HTML_ONLY
+score   SPAM_EN_COMPLEX      5.0
+
+# 24. Универсальный спам-паттерн - ОБНОВЛЕН
+meta    SPAM_UNIVERSAL       (SPAM_CLOUD_HOSTING || SPAM_SUSPECT_TLD) && (SPAM_SCARE_EN || SPAM_URGENCY_RU || SPAM_URGENCY_EN || SPAM_SEXTORTION_FEAR) && SPAM_RANDOM_MSGID
+score   SPAM_UNIVERSAL       4.0
+
+# 25. Полный комплекс Яндекса
+meta    SPAM_YANDEX_TOTAL    SPAM_FAKE_YANDEX && SPAM_RU_FAKE_ADDRESS && SPAM_RU_FAKE_COPYRIGHT
+score   SPAM_YANDEX_TOTAL    5.5
+
+# 26. Полный комплекс юридического спама
+meta    SPAM_LAW_TOTAL       SPAM_LAW_SCAM_RU && SPAM_REPLY_MISMATCH && SPAM_RANDOM_MSGID
+score   SPAM_LAW_TOTAL       5.0
+
+# 27. Полный комплекс медицинского спама
+meta    SPAM_MEDICAL_TOTAL   SPAM_MEDICAL_DEVICE && SPAM_FAKE_STORY && SPAM_FAKE_TESTIMONIAL
+score   SPAM_MEDICAL_TOTAL   6.0
+
+# 28. Комплекс облачного скама
+meta    SPAM_CLOUD_SCAM      SPAM_CLOUD_HOSTING && SPAM_HELO_MISMATCH && SPAM_RANDOM_MSGID && (SPAM_SUSPECT_DOMAINS || SPAM_MULTI_DOMAINS)
+score   SPAM_CLOUD_SCAM      4.5
+
+# 29. Полный Telegram-спам
+meta    SPAM_RU_TELEGRAM_TOTAL SPAM_RU_TELEGRAM_AD && (SPAM_RU_PRICE || SPAM_RU_AD_SETUP) && (SPAM_RU_OBFUSCATED_PHONE || SPAM_RU_TELEGRAM_MAX)
+score   SPAM_RU_TELEGRAM_TOTAL 5.5
+
+# 30. Спам с ro.ru
+meta    SPAM_RO_RU_SPAM SPAM_DOMAIN_FROM && (SPAM_RU_TELEGRAM_AD || SPAM_RU_PRICE) && (SPAM_NO_URLS || SPAM_BASE64_BODY || SPAM_BASE64_HTML)
+score   SPAM_RO_RU_SPAM 4.5
+
+# 31. Рекламный Telegram
+meta    SPAM_RU_TELEGRAM_ADS (SPAM_RU_TELEGRAM_AD || SPAM_RU_PRICE) && SPAM_RU_OBFUSCATED_PHONE && (SPAM_NO_URLS || SPAM_BASE64_BODY || SPAM_BASE64_HTML)
+score   SPAM_RU_TELEGRAM_ADS 5.0

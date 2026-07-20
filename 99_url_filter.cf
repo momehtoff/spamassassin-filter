@@ -1,6 +1,6 @@
 #####################################################################################################
 ### URL filter 4 SpamAssassin                                                                     ###
-### Version: 20241217                                                                             ###
+### Version: 20250428                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -43,9 +43,9 @@ score URL_FILTER_RASSILKA		5
 describe URL_FILTER_RASSILKA	/ras(s)ilka/
 tflags URL_FILTER_RASSILKA autolearn_force
 
-uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(cdn\..*\..*)|(cdn-.\.*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(datacloudmail\.ru)|(emlway\.com)|(geteml\.com)|(mailinetservice\.net)|(mckx\.ru)|(mindbox\.ru)|(stripocdn.email)|(vk\.com\/pravovestnews)/i
+uri URL_FILTER_REKLAMA 			/(ad((s)?)\..*\..*)|(bmetrack\.com)|(cdn\..*\..*)|(cdn-.\.*)|(c.cpl1.ru)|(cpl1.ru)|(c.cpl2.ru)|(cpl2.ru)|(datacloudmail\.ru)|(emlway\.com)|(geteml\.com)|(mailinetservice\.net)|(mckx\.ru)|(mindbox\.ru)|(stripocdn.email)|(vk\.com\/pravovestnews)/i
 score URL_FILTER_REKLAMA		3
-describe URL_FILTER_REKLAMA		ad(s).*.*|cdn.*.*|cdn-*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru|datacloudmail.ru|emlway.com|geteml.com|mailinetservice.net|mckx.ru|mindbox.ru|stripocdn.email|vk.com/pravovestnews
+describe URL_FILTER_REKLAMA		ad(s).*.*|bmetrack.com|cdn.*.*|cdn-*.*|c.cpl1.ru|cpl1.ru|c.cpl2.ru|cpl2.ru|datacloudmail.ru|emlway.com|geteml.com|mailinetservice.net|mckx.ru|mindbox.ru|stripocdn.email|vk.com/pravovestnews
 tflags URL_FILTER_REKLAMA autolearn_force
 
 uri URL_FILTER_SEMINAR			/(1prombez\.ru)|(radislavgandapas\.com)|(seminar-inform\.ru)/i
