@@ -141,12 +141,12 @@ score   SPAM_YANDEX_CLONE    2.5
 
 # Английские обращения
 body    SPAM_APPEAL_EN       /(?:\b(?:dear|greetings?|hello|hey|hi(?:ya?)?)\s{0,10}(?:author|ceo|client|colleague|customer|esteemed|friends?|groupstr|info|madam|manager|nour|offer|owner|participant|partner|purchas(?:er|ing)|sir|shopp?er|team|user)\b|\b(?:hello\s*dear|hi\s*there|sir\s*madam)\b)/i
-score   SPAM_APPEAL_EN       3.0
+score   SPAM_APPEAL_EN       2.0
 tflags  SPAM_APPEAL_EN       autolearn_force
 
 # Русские обращения
-body    SPAM_APPEAL_RU       /(?:добр(?:ый|ое|ая)\s*день|здравствуйте|уважаем(?:ый|ая)\s*(?:господин|госпожа|партн[её]р|сэр)|(?:вас|господин|госпожа|партн[её]р|сэр)\s*(?:добр(?:ый|ое|ая)\s*день|здравствуйте)|уважаем[ая])/i
-score   SPAM_APPEAL_RU       3.0
+body    SPAM_APPEAL_RU       /(?:(?:добр(?:ый|ое|ая)\s+день|здравствуйте|уважаем(?:ый|ая))[\s,.!:-]*(?:господин|госпожа|партн[её]р|сэр)|(?:господин|госпожа|партн[её]р|сэр)[\s,.!:-]*(?:добр(?:ый|ое|ая)\s+день|здравствуйте|уважаем(?:ый|ая)))/i
+score   SPAM_APPEAL_RU       1.0
 tflags  SPAM_APPEAL_RU       autolearn_force
 
 # Уважаемый клиент (общий)
@@ -349,7 +349,7 @@ tflags  SPAM_RU_FINTENDER    autolearn_force
 
 # Телефон 8-800
 body    SPAM_RU_PHONE_800    /\+7\s*\(800\)\s*\d{3}-\d{2}-\d{2}/
-score   SPAM_RU_PHONE_800    1.5
+score   SPAM_RU_PHONE_800    1.0
 
 # Отписка через email (без ссылки)
 body    SPAM_RU_UNSUB_EMAIL  /(?:отпишитесь здесь|отписаться по почте|subject=UNSUBSCRIBE)/
@@ -461,10 +461,6 @@ body    SPAM_RU_TELEGRAM_MAX /(?:Telegram\s*\/\s*MAX|Телеграм\s*\/\s*MAX
 score   SPAM_RU_TELEGRAM_MAX 2.0
 tflags  SPAM_RU_TELEGRAM_MAX autolearn_force
 
-# Телефон с кодом РФ
-body    SPAM_RU_PHONE       /\+7\s*\d{3}\s*\d{3}\s*\d{2}\s*\d{2}/
-score   SPAM_RU_PHONE       1.0
-
 ###############################################################################
 # СПАМ-ЛЕКСИКА (английский)
 ###############################################################################
@@ -518,7 +514,7 @@ rawbody SPAM_MULTI_DOMAINS   /(?:kademadigitaly|marketing-na100|trycoldly|objeti
 score   SPAM_MULTI_DOMAINS   2.0
 
 # Случайные пути
-rawbody SPAM_RANDOM_PATH     /https?:\/\/[^\/]+\/[a-z0-9]{6,12}\/[a-z0-9]+\//
+rawbody SPAM_RANDOM_PATH     /https?:\/\/[^\/]+\/[a-z0-9]{8,12}\/[a-f0-9]{8,32}\//i
 score   SPAM_RANDOM_PATH     1.5
 
 # Обманчивый Unsubscribe
@@ -583,7 +579,7 @@ score   SPAM_MIX_STRICT      4.0
 tflags  SPAM_MIX_STRICT      autolearn_force
 
 # Смешанные языки (похожие буквы)
-body    SPAM_MIX_SIMILAR     /\b[а-яА-Я]*(?:[aAОoЕeСcРpНHВBКkХxУy])[а-яА-Я]*(?:[aAОoЕeСcРpНHВBКkХxУy])?[а-яА-Я]*\b/d
+body    SPAM_MIX_SIMILAR     \b(?=[А-ЯЁа-яё]*[AaBCcEeHKkMOoPpTXxYy])(?=[A-Za-zА-ЯЁа-яё]*[А-ЯЁа-яё])[A-Za-zА-ЯЁа-яё]+\b
 score   SPAM_MIX_SIMILAR     5.0
 tflags  SPAM_MIX_SIMILAR     autolearn_force
 

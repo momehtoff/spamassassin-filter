@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Whitelist filter 4 SpamAssassin                                                               ###
-### Version: 20250326                                                                             ###
+### Version: 20260720                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -12,6 +12,7 @@
 whitelist_from *@*.renins.com
 whitelist_from *@*.roseltorg.ru
 whitelist_from *@1cfresh.com
+whitelist_from *@acron.ru
 whitelist_from *@akbars.ru
 whitelist_from *@b2b-center.ru
 whitelist_from *@bonus.megamarket.ru
@@ -21,10 +22,13 @@ whitelist_from *@dellin.ru
 whitelist_from *@dl-trans.ru
 whitelist_from *@eapteka.ru
 whitelist_from *@etpgpb.ru
+whitelist_from *@gipcomp.ru
 whitelist_from *@gos.etpgpb.ru
 whitelist_from *@gosuslugi.ru
+whitelist_from *@groupstr.ru
 whitelist_from *@i.zarplata.ru
 whitelist_from *@ingos.ru
+whitelist_from *@irkutskoil.ru
 whitelist_from *@kolesa-darom.ru
 whitelist_from *@kontur.ru
 whitelist_from *@lentamail.com
@@ -38,6 +42,7 @@ whitelist_from *@onlinetrade.ru
 whitelist_from *@phosagro.ru
 whitelist_from *@psbank.ru
 whitelist_from *@pseg.bitrix24.ru
+whitelist_from *@reginc.ru
 whitelist_from *@reso.ru
 whitelist_from *@roseltorg.ru
 whitelist_from *@rts-tender.ru
@@ -54,6 +59,7 @@ whitelist_from *@tochka.com
 whitelist_from *@toomanygifts.ru
 whitelist_from *@torgi223.ru
 whitelist_from *@vispo.ru
+whitelist_from *@vnov.acron.ru
 whitelist_from *@xcomspb.ru
 whitelist_from dk2506@yandex.ru
 whitelist_from echeck@1-ofd.ru

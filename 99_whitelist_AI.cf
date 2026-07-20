@@ -24,7 +24,7 @@ describe LEGITIMATE_MAILING Legitimate mailing with proper list headers
 # ОБЩЕЕ ПРАВИЛО ДЛЯ КРУПНЫХ КОМПАНИЙ (ПО ДОМЕНУ)
 # ============================================================================
 
-header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru)$/i
+header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru)$/i
 
 meta TRUSTED_DOMAIN_MAIL (TRUSTED_DOMAIN && DKIM_VALID)
 score TRUSTED_DOMAIN_MAIL -20.0
@@ -57,9 +57,12 @@ header YANDEX_FROM From:addr =~ /(360\.yandex\.ru|yandex\.ru)$/i
 header YANDEX_DKIM DKIM-Signature =~ /d=360\.yandex\.ru/i
 header YANDEX_SUPER Sender =~ /supersender\.yandex\.net/i
 
-body YANDEX_BODY_1 /Яндекс( 360)? (для бизнеса|Почта|Почты)/i
+body YANDEX_BODY_1  /Яндекс( 360)? (для бизнеса|Почта|Почты)/i
+score YANDEX_BODY_1 0
 body YANDEX_BODY_2 /yandex\.(ru|net)\//i
+score YANDEX_BODY_2 0
 body YANDEX_BODY_3 /yastatic\.net/i
+score YANDEX_BODY_3 0
 
 meta YANDEX_OFFICIAL ((YANDEX_FROM && YANDEX_DKIM) || (YANDEX_FROM && YANDEX_SUPER) && (YANDEX_BODY_1 || YANDEX_BODY_2 || YANDEX_BODY_3))
 score YANDEX_OFFICIAL -20.0
@@ -177,12 +180,85 @@ meta SBIS_MAILING (SBIS_FROM && GENERIC_UNSUB && SBIS_LIST_ID && SBIS_XMAILRU)
 score SBIS_MAILING -20.0
 describe SBIS_MAILING Valid Saby mailing with list headers
 
+# ----------------------------------------------------------------------------
+# ACRON (ЭТП АКРОН)
+# ----------------------------------------------------------------------------
+
+header ACRON_FROM From:addr =~ /acron\.ru$/i
+header ACRON_DKIM DKIM-Signature =~ /d=vnov\.acron\.ru/i
+
+header ACRON_LIST_UNSUB List-Unsubscribe =~ /etp\.acron\.ru\/app\/UnSubscribe/i
+
+body ACRON_BODY_1 /Электронная торговая площадка ГК Акрон|АКРОН\. ЭТП/i
+body ACRON_BODY_2 /etp\.acron\.ru/i
+body ACRON_BODY_3 /Извещение о проведении закупки/i
+body ACRON_BODY_4 /запрос коммерческих предложений/i
+body ACRON_BODY_5 /торгово-закупочной процедуре/i
+body ACRON_BODY_6 /Источник радионуклидный/i
+body ACRON_BODY_7 /7042002600801/i
+body ACRON_BODY_8 /\bАкрон\b/i
+body ACRON_BODY_9 /acron\.ru/i
+body ACRON_BODY_10 /закупк/i
+
+meta ACRON_OFFICIAL (ACRON_FROM && ACRON_DKIM && (ACRON_BODY_1 || ACRON_BODY_2 || ACRON_BODY_3 || ACRON_BODY_4 || ACRON_BODY_5 || ACRON_BODY_6 || ACRON_BODY_7 || ACRON_BODY_8 || ACRON_BODY_9 || ACRON_BODY_10))
+score ACRON_OFFICIAL -20.0
+describe ACRON_OFFICIAL Official email from Acron ETP
+
+meta ACRON_MAILING (ACRON_FROM && ACRON_LIST_UNSUB && LIST_PRECEDENCE)
+score ACRON_MAILING -20.0
+describe ACRON_MAILING Official Acron mailing with list headers
+
+meta ACRON_LEGIT (ACRON_OFFICIAL || ACRON_MAILING)
+score ACRON_LEGIT -25.0
+describe ACRON_LEGIT Trusted Acron ETP email
+
+# ----------------------------------------------------------------------------
+# IRKUTSKOIL (ИНК)
+# ----------------------------------------------------------------------------
+
+header KSMG_SPAM_CLEAN      X-KSMG-AntiSpam-Status =~ /not_detected/i
+header KSMG_AV_CLEAN        X-KSMG-AntiVirus-Status =~ /NotDetected/i
+header KSMG_LINKS_CLEAN     X-KSMG-LinksScanning =~ /NotDetected/i
+
+meta KSMG_ALL_CLEAN  (KSMG_SPAM_CLEAN && KSMG_AV_CLEAN && KSMG_LINKS_CLEAN)
+describe             KSMG_ALL_CLEAN Message passed all Kaspersky SMG checks
+score KSMG_ALL_CLEAN -2.0
+
+uri URI_LKK_IRKUTSKOIL       /\blkk\.irkutskoil\.ru\b/i
+describe                     URI_LKK_IRKUTSKOIL Official LKK Irkutsk Oil portal
+score URI_LKK_IRKUTSKOIL     -2.0
+
+uri URI_TG_ME /\bt\.me\b/i
+
+body BODY_IRKUTSKOIL_TG /закупки_ИНК/i
+
+meta IRKUTSKOIL_TG  (URI_TG_ME && BODY_IRKUTSKOIL_TG)
+describe            IRKUTSKOIL_TG Official Telegram channel reference
+score IRKUTSKOIL_TG -1.0
+
+meta IRKUTSKOIL_CORPORATE  (TRUSTED_DOMAIN_MAIL && KSMG_ALL_CLEAN && URI_LKK_IRKUTSKOIL)
+describe                   IRKUTSKOIL_CORPORATE Trusted Irkutsk Oil corporate message
+score IRKUTSKOIL_CORPORATE -10.0
+
+header IRKUTSKOIL_FROM From:addr =~ /irkutskoil\.ru$/i
+
+body IRKUTSKOIL_BODY_1 /\bИНК\b/i
+body IRKUTSKOIL_BODY_2 /Иркутская нефтяная компания/i
+body IRKUTSKOIL_BODY_3 /lkk\.irkutskoil\.ru/i
+body IRKUTSKOIL_BODY_4 /тендер/i
+body IRKUTSKOIL_BODY_5 /закупк/i
+body IRKUTSKOIL_BODY_6 /личный кабинет/i
+
+meta IRKUTSKOIL_OFFICIAL  IRKUTSKOIL_FROM && DKIM_VALID && (IRKUTSKOIL_BODY_1 || IRKUTSKOIL_BODY_2 || IRKUTSKOIL_BODY_3 || IRKUTSKOIL_BODY_4 || IRKUTSKOIL_BODY_5 || IRKUTSKOIL_BODY_6)
+describe                  IRKUTSKOIL_OFFICIAL Official Irkutsk Oil email
+score IRKUTSKOIL_OFFICIAL -20.0
+
 # ============================================================================
 # ОБЩЕЕ ПРАВИЛО ДЛЯ ПИСЕМ С КОРРЕКТНЫМИ ЗАГОЛОВКАМИ (FALLBACK)
 # ============================================================================
 
 header GENERIC_LIST_ID List-Id =~ /\S+\.\S+/i
-header GENERIC_UNSUB List-Unsubscribe =~ /https?:\/\/[^\/]+\/[^\/]+\/unsub/i
+header GENERIC_UNSUB List-Unsubscribe =~ /https?:\/\/\S+/i
 header GENERIC_PRECEDENCE Precedence =~ /bulk|list|junk/i
 
 meta GENERIC_MAILING_LIST (GENERIC_LIST_ID && GENERIC_UNSUB && GENERIC_PRECEDENCE && DKIM_VALID)
