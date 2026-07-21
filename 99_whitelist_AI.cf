@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### УНИВЕРСАЛЬНЫЕ ПРАВИЛА ДЛЯ БЕЛОГО СПИСКА 4 SpamAssassin                                                 ###
-### Version: 20260720                                                                                      ###
+### Version: 20260721                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -24,7 +24,7 @@ describe LEGITIMATE_MAILING Legitimate mailing with proper list headers
 # ОБЩЕЕ ПРАВИЛО ДЛЯ КРУПНЫХ КОМПАНИЙ (ПО ДОМЕНУ)
 # ============================================================================
 
-header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru)$/i
+header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru|bidzaar\.com|astgoz\.ru)$/i
 
 meta TRUSTED_DOMAIN_MAIL (TRUSTED_DOMAIN && DKIM_VALID)
 score TRUSTED_DOMAIN_MAIL -20.0
@@ -42,8 +42,11 @@ header OZON_FROM From:addr =~ /sender\.ozon\.ru$/i
 header OZON_DKIM DKIM-Signature =~ /d=sender\.ozon\.ru/i
 
 body OZON_BODY_1 /ozon\.ru\/(my|order|points|product)/i
+score OZON_BODY_1 0
 body OZON_BODY_2 /Озон|Ozon/i
+score OZON_BODY_2 0
 body OZON_BODY_3 /баллы|кешбэк|скидка|подарок/i
+score OZON_BODY_3 0
 
 meta OZON_OFFICIAL (OZON_FROM && OZON_DKIM && (OZON_BODY_1 || OZON_BODY_2 || OZON_BODY_3))
 score OZON_OFFICIAL -20.0
@@ -78,8 +81,11 @@ header TBANK_LIST_ID List-Id =~ /tinkoff\.pg/i
 header TBANK_UNSUB_LIST List-Unsubscribe =~ /emails\.tinkoff\.ru\/backend\/member\/unsub/i
 
 body TBANK_BODY_1 /Т-Банк|Тинькофф/i
+score TBANK_BODY_1 0
 body TBANK_BODY_2 /tbank\.ru|tinkoff\.ru/i
+score TBANK_BODY_2 0
 body TBANK_BODY_3 /кэшбэк|кешбэк|бонусы|скидка/i
+score TBANK_BODY_3 0
 
 meta TBANK_OFFICIAL (TBANK_FROM && TBANK_DKIM && (TBANK_BODY_1 || TBANK_BODY_2 || TBANK_BODY_3))
 score TBANK_OFFICIAL -20.0
@@ -99,8 +105,11 @@ header VTB_X_FELIS X-Felis-L =~ /bmru/i
 header VTB_X_RPCAMPAIGN X-rpcampaign =~ /bmru/i
 
 body VTB_BODY_1 /ВТБ/i
+score VTB_BODY_1 0
 body VTB_BODY_2 /vtb\.ru/i
+score VTB_BODY_2 0
 body VTB_BODY_3 /кредит(ная|ный)|карта|льготный период|кешбэк/i
+score VTB_BODY_3 0
 
 meta VTB_OFFICIAL (VTB_FROM && VTB_DKIM && (VTB_BODY_1 || VTB_BODY_2 || VTB_BODY_3))
 score VTB_OFFICIAL -20.0
@@ -118,8 +127,11 @@ header CITILINK_FROM From:addr =~ /citilink\.ru$/i
 header CITILINK_DKIM DKIM-Signature =~ /d=citilink\.ru/i
 
 body CITILINK_BODY_1 /Ситилинк|Citilink/i
+score CITILINK_BODY_1 0
 body CITILINK_BODY_2 /citilink\.ru/i
+score CITILINK_BODY_2 0
 body CITILINK_BODY_3 /скидка|бонус|промокод|корпоративн/i
+score CITILINK_BODY_3 0
 
 meta CITILINK_OFFICIAL (CITILINK_FROM && CITILINK_DKIM && (CITILINK_BODY_1 || CITILINK_BODY_2 || CITILINK_BODY_3))
 score CITILINK_OFFICIAL -20.0
@@ -138,8 +150,11 @@ header POFD_FROM From:addr =~ /(chek\.pofd\.ru|pofd\.ru)$/i
 header POFD_DKIM DKIM-Signature =~ /d=chek\.pofd\.ru/i
 
 body POFD_BODY_1 /Платформа ОФД|platformaofd\.ru/i
+score POFD_BODY_1 0
 body POFD_BODY_2 /кассовый чек|фискальн/i
+score POFD_BODY_2 0
 body POFD_BODY_3 /ФН \d+|ФПД \d+/i
+score POFD_BODY_3 0
 
 meta POFD_OFFICIAL (POFD_FROM && POFD_DKIM && (POFD_BODY_1 || POFD_BODY_2 || POFD_BODY_3))
 score POFD_OFFICIAL -20.0
@@ -162,11 +177,17 @@ header SBIS_XMAILRU X-Mailru-Msgtype =~ /3;6/i
 header SBIS_XSABY X-SABY-NOTIFY =~ /1/i
 
 body SBIS_BODY_1 /СБИС|Сабис|Saby/i
+score SBIS_BODY_1 0
 body SBIS_BODY_2 /saby\.ru/i
+score SBIS_BODY_2 0
 body SBIS_BODY_3 /тендер|закупк|торги/i
+score SBIS_BODY_3 0
 body SBIS_BODY_4 /подача заявок|номер закупки/i
+score SBIS_BODY_4 0
 body SBIS_BODY_5 /электронная площадка|Росэлторг/i
+score SBIS_BODY_5 0
 body SBIS_BODY_6 /44-ФЗ|223-ФЗ/i
+score SBIS_BODY_6 0
 
 meta SBIS_OFFICIAL (SBIS_FROM && SBIS_DKIM && (SBIS_BODY_1 || SBIS_BODY_2 || SBIS_BODY_3 || SBIS_BODY_4 || SBIS_BODY_5 || SBIS_BODY_6))
 score SBIS_OFFICIAL -20.0
@@ -190,17 +211,23 @@ header ACRON_DKIM DKIM-Signature =~ /d=vnov\.acron\.ru/i
 header ACRON_LIST_UNSUB List-Unsubscribe =~ /etp\.acron\.ru\/app\/UnSubscribe/i
 
 body ACRON_BODY_1 /Электронная торговая площадка ГК Акрон|АКРОН\. ЭТП/i
+score ACRON_BODY_1 0
 body ACRON_BODY_2 /etp\.acron\.ru/i
+score ACRON_BODY_2 0
 body ACRON_BODY_3 /Извещение о проведении закупки/i
+score ACRON_BODY_3 0
 body ACRON_BODY_4 /запрос коммерческих предложений/i
+score ACRON_BODY_4 0
 body ACRON_BODY_5 /торгово-закупочной процедуре/i
-body ACRON_BODY_6 /Источник радионуклидный/i
-body ACRON_BODY_7 /7042002600801/i
-body ACRON_BODY_8 /\bАкрон\b/i
-body ACRON_BODY_9 /acron\.ru/i
-body ACRON_BODY_10 /закупк/i
+score ACRON_BODY_5 0
+body ACRON_BODY_6 /\bАкрон\b/i
+score ACRON_BODY_6 0
+body ACRON_BODY_7 /acron\.ru/i
+score ACRON_BODY_7 0
+body ACRON_BODY_8 /закупк/i
+score ACRON_BODY_8 0
 
-meta ACRON_OFFICIAL (ACRON_FROM && ACRON_DKIM && (ACRON_BODY_1 || ACRON_BODY_2 || ACRON_BODY_3 || ACRON_BODY_4 || ACRON_BODY_5 || ACRON_BODY_6 || ACRON_BODY_7 || ACRON_BODY_8 || ACRON_BODY_9 || ACRON_BODY_10))
+meta ACRON_OFFICIAL (ACRON_FROM && ACRON_DKIM && (ACRON_BODY_1 || ACRON_BODY_2 || ACRON_BODY_3 || ACRON_BODY_4 || ACRON_BODY_5 || ACRON_BODY_6 || ACRON_BODY_7 || ACRON_BODY_8))
 score ACRON_OFFICIAL -20.0
 describe ACRON_OFFICIAL Official email from Acron ETP
 
@@ -243,15 +270,49 @@ score IRKUTSKOIL_CORPORATE -10.0
 header IRKUTSKOIL_FROM From:addr =~ /irkutskoil\.ru$/i
 
 body IRKUTSKOIL_BODY_1 /\bИНК\b/i
+score IRKUTSKOIL_BODY_1 0
 body IRKUTSKOIL_BODY_2 /Иркутская нефтяная компания/i
+score IRKUTSKOIL_BODY_2 0
 body IRKUTSKOIL_BODY_3 /lkk\.irkutskoil\.ru/i
+score IRKUTSKOIL_BODY_3 0
 body IRKUTSKOIL_BODY_4 /тендер/i
+score IRKUTSKOIL_BODY_4 0
 body IRKUTSKOIL_BODY_5 /закупк/i
+score IRKUTSKOIL_BODY_5 0
 body IRKUTSKOIL_BODY_6 /личный кабинет/i
+score IRKUTSKOIL_BODY_6 0
 
 meta IRKUTSKOIL_OFFICIAL  IRKUTSKOIL_FROM && DKIM_VALID && (IRKUTSKOIL_BODY_1 || IRKUTSKOIL_BODY_2 || IRKUTSKOIL_BODY_3 || IRKUTSKOIL_BODY_4 || IRKUTSKOIL_BODY_5 || IRKUTSKOIL_BODY_6)
 describe                  IRKUTSKOIL_OFFICIAL Official Irkutsk Oil email
 score IRKUTSKOIL_OFFICIAL -20.0
+
+# ----------------------------------------------------------------------------
+# BIDZAAR - Уведомления о закупках и тендерах
+# ----------------------------------------------------------------------------
+
+header BIDZAAR_FROM From:addr =~ /@bidzaar\.com$/i
+header BIDZAAR_RETURN_PATH Return-Path =~ /@bidzaar\.com>$/i
+header BIDZAAR_MSGTYPE X-Postmaster-Msgtype =~ /^ProcedureDigestReadyEvent$/i
+
+meta BIDZAAR_OFFICIAL (BIDZAAR_FROM && BIDZAAR_RETURN_PATH && DKIM_VALID && BIDZAAR_MSGTYPE)
+score BIDZAAR_OFFICIAL 0.0
+describe BIDZAAR_OFFICIAL Official Bidzaar tender notification
+
+# ----------------------------------------------------------------------------
+# AST GOZ (АСТ ГОЗ) - Уведомления о закупках и тендерах
+# ----------------------------------------------------------------------------
+
+header ASTGOZ_FROM From:addr =~ /@astgoz\.ru$/i
+header ASTGOZ_RETURN_PATH Return-Path =~ /@astgoz\.ru>$/i
+header ASTGOZ_REPLY_TO Reply-To =~ /@astgoz\.ru>/i
+
+header ASTGOZ_XMAILER X-Mailer =~ /^ASTGOZ mail service$/i
+
+header ASTGOZ_RECEIVED Received =~ /from mail2\.astgoz\.ru\s+\(mail2\.astgoz\.ru\s+\[213\.171\.56\.150\]\)/i
+
+meta ASTGOZ_SERVER (ASTGOZ_FROM && ASTGOZ_RETURN_PATH && ASTGOZ_RECEIVED && ASTGOZ_XMAILER)
+score ASTGOZ_SERVER -25.0
+describe ASTGOZ_SERVER Official AST GOZ message from known mail server
 
 # ============================================================================
 # ОБЩЕЕ ПРАВИЛО ДЛЯ ПИСЕМ С КОРРЕКТНЫМИ ЗАГОЛОВКАМИ (FALLBACK)

@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### БАЗОВЫЕ ТЕХНИЧЕСКИЕ ПРИЗНАКИ 4 SpamAssassin                                                            ###
-### Version: 20260720                                                                                      ###
+### Version: 20260721                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -579,7 +579,7 @@ score   SPAM_MIX_STRICT      4.0
 tflags  SPAM_MIX_STRICT      autolearn_force
 
 # Смешанные языки (похожие буквы)
-body    SPAM_MIX_SIMILAR     \b(?=[А-ЯЁа-яё]*[AaBCcEeHKkMOoPpTXxYy])(?=[A-Za-zА-ЯЁа-яё]*[А-ЯЁа-яё])[A-Za-zА-ЯЁа-яё]+\b
+body    SPAM_MIX_SIMILAR     /\b(?=[A-Za-zА-ЯЁа-яё]*[А-ЯЁа-яё])(?=[A-Za-zА-ЯЁа-яё]*[AaBCcEeHKkMOoPpTXxYy])[A-Za-zА-ЯЁа-яё]+\b/
 score   SPAM_MIX_SIMILAR     5.0
 tflags  SPAM_MIX_SIMILAR     autolearn_force
 
