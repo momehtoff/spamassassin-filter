@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### УНИВЕРСАЛЬНЫЕ ПРАВИЛА ДЛЯ БЕЛОГО СПИСКА 4 SpamAssassin                                                 ###
-### Version: 20260721                                                                                      ###
+### Version: 20260722                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -13,8 +13,13 @@
 # ============================================================================
 
 header LIST_UNSUBSCRIBE List-Unsubscribe =~ /\S+/i
+score LIST_UNSUBSCRIBE 0
+
 header LIST_PRECEDENCE Precedence =~ /bulk|list|junk/i
+score LIST_PRECEDENCE 0
+
 header LIST_ID List-Id =~ /\S+\.\S+/i
+score LIST_ID 0
 
 meta LEGITIMATE_MAILING (LIST_UNSUBSCRIBE && LIST_PRECEDENCE && DKIM_VALID)
 score LEGITIMATE_MAILING -5.0
@@ -25,6 +30,7 @@ describe LEGITIMATE_MAILING Legitimate mailing with proper list headers
 # ============================================================================
 
 header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru|bidzaar\.com|astgoz\.ru)$/i
+score TRUSTED_DOMAIN 0
 
 meta TRUSTED_DOMAIN_MAIL (TRUSTED_DOMAIN && DKIM_VALID)
 score TRUSTED_DOMAIN_MAIL -20.0
@@ -39,7 +45,10 @@ describe TRUSTED_DOMAIN_MAIL Email from trusted domain with valid DKIM
 # ----------------------------------------------------------------------------
 
 header OZON_FROM From:addr =~ /sender\.ozon\.ru$/i
+score OZON_FROM 0
+
 header OZON_DKIM DKIM-Signature =~ /d=sender\.ozon\.ru/i
+score OZON_DKIM 0
 
 body OZON_BODY_1 /ozon\.ru\/(my|order|points|product)/i
 score OZON_BODY_1 0
@@ -57,8 +66,13 @@ describe OZON_OFFICIAL Official email from Ozon.ru
 # ----------------------------------------------------------------------------
 
 header YANDEX_FROM From:addr =~ /(360\.yandex\.ru|yandex\.ru)$/i
+score YANDEX_FROM 0
+
 header YANDEX_DKIM DKIM-Signature =~ /d=360\.yandex\.ru/i
+score YANDEX_DKIM 0
+
 header YANDEX_SUPER Sender =~ /supersender\.yandex\.net/i
+score YANDEX_SUPER 0
 
 body YANDEX_BODY_1  /Яндекс( 360)? (для бизнеса|Почта|Почты)/i
 score YANDEX_BODY_1 0
@@ -76,9 +90,16 @@ describe YANDEX_OFFICIAL Official email from Yandex 360 / Yandex Mail
 # ----------------------------------------------------------------------------
 
 header TBANK_FROM From:addr =~ /(emails\.tinkoff\.ru|tbank\.ru)$/i
+score TBANK_FROM 0
+
 header TBANK_DKIM DKIM-Signature =~ /d=emails\.tinkoff\.ru/i
+score TBANK_DKIM 0
+
 header TBANK_LIST_ID List-Id =~ /tinkoff\.pg/i
+score TBANK_LIST_ID 0
+
 header TBANK_UNSUB_LIST List-Unsubscribe =~ /emails\.tinkoff\.ru\/backend\/member\/unsub/i
+score TBANK_UNSUB_LIST 0
 
 body TBANK_BODY_1 /Т-Банк|Тинькофф/i
 score TBANK_BODY_1 0
@@ -303,12 +324,16 @@ describe BIDZAAR_OFFICIAL Official Bidzaar tender notification
 # ----------------------------------------------------------------------------
 
 header ASTGOZ_FROM From:addr =~ /@astgoz\.ru$/i
+score ASTGOZ_FROM 0
+
 header ASTGOZ_RETURN_PATH Return-Path =~ /@astgoz\.ru>$/i
-header ASTGOZ_REPLY_TO Reply-To =~ /@astgoz\.ru>/i
+score ASTGOZ_RETURN_PATH 0
 
 header ASTGOZ_XMAILER X-Mailer =~ /^ASTGOZ mail service$/i
+score ASTGOZ_RETURN_PATH 0
 
 header ASTGOZ_RECEIVED Received =~ /from mail2\.astgoz\.ru\s+\(mail2\.astgoz\.ru\s+\[213\.171\.56\.150\]\)/i
+score ASTGOZ_RECEIVED 0
 
 meta ASTGOZ_SERVER (ASTGOZ_FROM && ASTGOZ_RETURN_PATH && ASTGOZ_RECEIVED && ASTGOZ_XMAILER)
 score ASTGOZ_SERVER -25.0

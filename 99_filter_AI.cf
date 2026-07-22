@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### БАЗОВЫЕ ТЕХНИЧЕСКИЕ ПРИЗНАКИ 4 SpamAssassin                                                            ###
-### Version: 20260721                                                                                      ###
+### Version: 20260722                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -215,7 +215,7 @@ score   SPAM_SEXTORTION      4.0
 tflags  SPAM_SEXTORTION      autolearn_force
 
 # Угрозы публикации
-body    SPAM_SEXTORTION_THREAT /(?:send this video to all your|make public all your emails|send and publish your videos|delete all those videos)/
+body    SPAM_SEXTORTION_THREAT /(?:send this video to all your|make public all your emails|send and publish your videos|delete all those videos|share the video of you.*?(?:family|friends|relatives|email contacts|social networks|darknet))/i
 score   SPAM_SEXTORTION_THREAT 3.5
 tflags  SPAM_SEXTORTION_THREAT autolearn_force
 
@@ -228,12 +228,37 @@ tflags  SPAM_SEXTORTION_TECH autolearn_force
 body    SPAM_SEXTORTION_AMOUNT /(?:1280 USD|1280\s*USD|1,280\s*USD)/
 score   SPAM_SEXTORTION_AMOUNT 3.0
 
+# Fake RAT / Trojan infection
+body    SPAM_SEXTORTION_RAT /(?:private\s+Trojan|R\.A\.T\.\s*\(\s*Remote\s+Administration\s+Tool\s*\)|infected\s+with\s+my\s+Trojan)/i
+score   SPAM_SEXTORTION_RAT 2.0
+tflags  SPAM_SEXTORTION_RAT autolearn_force
+
+# Fake access to files, accounts and camera
+body    SPAM_SEXTORTION_ACCESS /(?:access\s+(?:your\s+)?(?:files|accounts?|camera)|access\s+to\s+(?:your\s+)?(?:files|accounts?|camera))/i
+score   SPAM_SEXTORTION_ACCESS 2.0
+tflags  SPAM_SEXTORTION_ACCESS autolearn_force
+
+# Fake malware removal / no traces
+body    SPAM_SEXTORTION_CLEANUP /(?:removed\s+my\s+malware\s+to\s+leave\s+no\s+traces|removed\s+the\s+malware\s+to\s+leave\s+no\s+traces)/i
+score   SPAM_SEXTORTION_CLEANUP 2.0
+tflags  SPAM_SEXTORTION_CLEANUP autolearn_force
+
+# Repeated delivery of the same message
+body    SPAM_SEXTORTION_REPEAT /(?:receive\s+(?:this\s+email|it)\s+multiple\s+times|send\s+(?:this\s+email|it)\s+multiple\s+times)/i
+score   SPAM_SEXTORTION_REPEAT 1.5
+tflags  SPAM_SEXTORTION_REPEAT autolearn_force
+
+# Bitcoin ransom / wallet
+body    SPAM_BITCOIN_RANSOM /(?:Bitcoin|BTC).*?(?:wallet|payment|transfer|transaction)|my\s+wallet/i
+score   SPAM_BITCOIN_RANSOM 1.5
+tflags  SPAM_BITCOIN_RANSOM autolearn_force
+
 ###############################################################################
 # BITCOIN - ПРИЗНАКИ
 ###############################################################################
 
 # Bitcoin адрес (формат Base58)
-body    SPAM_BITCOIN_ADDRESS /[13][a-km-zA-HJ-NP-Z1-9]{25,34}/
+body    SPAM_BITCOIN_ADDRESS /(?:^|[\s:])[13][a-km-zA-HJ-NP-Z1-9]{25,34}(?=$|[\s.,!?])/i
 score   SPAM_BITCOIN_ADDRESS 4.0
 
 # Bitcoin упоминание
@@ -241,9 +266,9 @@ body    SPAM_BITCOIN_MENTION /(?:Bitcoin|BTC|bitcoin address|transfer the Bitcoi
 score   SPAM_BITCOIN_MENTION 2.5
 
 # Валидный Bitcoin-адрес (строгий)
-body    SPAM_BITCOIN_VALID   /\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b/
-score   SPAM_BITCOIN_VALID   5.0
-tflags  SPAM_BITCOIN_VALID   autolearn_force
+body    SPAM_BITCOIN_BASE58   /\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b/
+score   SPAM_BITCOIN_BASE58   1.0
+tflags  SPAM_BITCOIN_BASE58   autolearn_force
 
 ###############################################################################
 # ФАЛЬШИВЫЕ ИСТОРИИ
@@ -324,12 +349,12 @@ tflags  SPAM_RU_FAKE_COPYRIGHT autolearn_force
 
 # Банковская гарантия
 body    SPAM_RU_BG           /(?:банковскую гарантию|БГ за 2 часа|банковской гарантии|выпустить независимую гарантию)/
-score   SPAM_RU_BG           3.0
+score   SPAM_RU_BG           1.0
 tflags  SPAM_RU_BG           autolearn_force
 
 # Законы 44-ФЗ, 223-ФЗ, 275-ФЗ (уже частично есть в SPAM_THREAT_RU, добавляем недостающие)
 body    SPAM_RU_LAWS_BG      /(?:44-ФЗ|223-ФЗ|275-ФЗ|615-ПП|185-ФЗ)/
-score   SPAM_RU_LAWS_BG      2.0
+score   SPAM_RU_LAWS_BG      1.0
 tflags  SPAM_RU_LAWS_BG      autolearn_force
 
 # Без залога и поручительства
@@ -338,12 +363,12 @@ score   SPAM_RU_NO_COLLATERAL 2.5
 tflags  SPAM_RU_NO_COLLATERAL autolearn_force
 
 # Более 85 банков (ложное представительство)
-body    SPAM_RU_85_BANKS     /(?:представителем более 85 банков|более 85 банков)/
-score   SPAM_RU_85_BANKS     2.0
+body    SPAM_RU_85_BANKS     /(?:более \d+ банков)/
+score   SPAM_RU_85_BANKS     1.0
 tflags  SPAM_RU_85_BANKS     autolearn_force
 
 # ФинТендер
-body    SPAM_RU_FINTENDER    /(?:Компания ФинТендер|ФинТендер)/
+body    SPAM_RU_FINTENDER    /(?:ФинТендер)/
 score   SPAM_RU_FINTENDER    2.0
 tflags  SPAM_RU_FINTENDER    autolearn_force
 
@@ -353,11 +378,11 @@ score   SPAM_RU_PHONE_800    1.0
 
 # Отписка через email (без ссылки)
 body    SPAM_RU_UNSUB_EMAIL  /(?:отпишитесь здесь|отписаться по почте|subject=UNSUBSCRIBE)/
-score   SPAM_RU_UNSUB_EMAIL  2.0
+score   SPAM_RU_UNSUB_EMAIL  1.0
 tflags  SPAM_RU_UNSUB_EMAIL  autolearn_force
 
 # Перечисление преимуществ (маркер B2B-спама)
-body    SPAM_RU_BENEFITS_BG  /(?:Наши преимущества|Оформление за 2 часа|Без залога|Без поручительства|Быстро|Индивидуально|Удобно)/
+body    SPAM_RU_BENEFITS_BG  /(?:Наши преимущества|Оформление за \d+ часа|Без залога|Без поручительства|Быстро|Индивидуально|Удобно)/
 score   SPAM_RU_BENEFITS_BG  2.5
 tflags  SPAM_RU_BENEFITS_BG  autolearn_force
 
@@ -644,7 +669,7 @@ meta    SPAM_SEXTORTION_FULL SPAM_SEXTORTION_TOTAL && (SPAM_NO_HELO || SPAM_WEIR
 score   SPAM_SEXTORTION_FULL 7.0
 
 # 14. SEXTORTION критический
-meta    SPAM_SEXTORTION_CRITICAL SPAM_SEXTORTION_THREAT && SPAM_BITCOIN_VALID && SPAM_SEXTORTION_TIMER && SPAM_SEXTORTION_INSULTS
+meta    SPAM_SEXTORTION_CRITICAL SPAM_SEXTORTION_THREAT && SPAM_BITCOIN_BASE58 && SPAM_SEXTORTION_TIMER && SPAM_SEXTORTION_INSULTS
 score   SPAM_SEXTORTION_CRITICAL 8.0
 
 # 15. SEXTORTION упрощенный
@@ -714,3 +739,14 @@ score   SPAM_RO_RU_SPAM 4.5
 # 31. Рекламный Telegram
 meta    SPAM_RU_TELEGRAM_ADS (SPAM_RU_TELEGRAM_AD || SPAM_RU_PRICE) && SPAM_RU_OBFUSCATED_PHONE && (SPAM_NO_URLS || SPAM_BASE64_BODY || SPAM_BASE64_HTML)
 score   SPAM_RU_TELEGRAM_ADS 5.0
+
+# 32. Sextortion с RAT / fake malware
+meta    SPAM_SEXTORTION_RAT_TOTAL (SPAM_SEXTORTION || SPAM_SEXTORTION_RAT) && (SPAM_SEXTORTION_ACCESS || SPAM_SEXTORTION_TECH) && (SPAM_BITCOIN_MENTION || SPAM_BITCOIN_ADDRESS || SPAM_BITCOIN_RANSOM)
+score   SPAM_SEXTORTION_RAT_TOTAL 5.0
+tflags  SPAM_SEXTORTION_RAT_TOTAL autolearn_force
+
+
+# 33. Sextortion с конкретным Bitcoin-вымогательством
+meta    SPAM_SEXTORTION_RANSOM (SPAM_SEXTORTION || SPAM_SEXTORTION_THREAT) && SPAM_BITCOIN_RANSOM && (SPAM_BITCOIN_ADDRESS || SPAM_BITCOIN_BASE58)
+score   SPAM_SEXTORTION_RANSOM 6.0
+tflags  SPAM_SEXTORTION_RANSOM autolearn_force

@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Whitelist filter 4 SpamAssassin                                                               ###
-### Version: 20260720                                                                             ###
+### Version: 20260721                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -34,6 +34,7 @@ whitelist_from *@kontur.ru
 whitelist_from *@lentamail.com
 whitelist_from *@lot-online.ru
 whitelist_from *@market.yandex.ru
+whitelist_from *@maximatelecom.ru
 whitelist_from *@miranda-media.ru
 whitelist_from *@momehtoff.ru
 whitelist_from *@news.ozon.ru
@@ -53,11 +54,13 @@ whitelist_from *@sbermarket.ru
 whitelist_from *@sbis.ru
 whitelist_from *@service.citilink.ru
 whitelist_from *@service.leroymerlin.ru
+whitelist_from *@sever.ttk.ru
 whitelist_from *@stellit-spb.com
 whitelist_from *@tender.pro
 whitelist_from *@tochka.com
 whitelist_from *@toomanygifts.ru
 whitelist_from *@torgi223.ru
+whitelist_from *@ttk.ru
 whitelist_from *@vispo.ru
 whitelist_from *@vnov.acron.ru
 whitelist_from *@xcomspb.ru
