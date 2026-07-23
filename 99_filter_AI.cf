@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### БАЗОВЫЕ ТЕХНИЧЕСКИЕ ПРИЗНАКИ 4 SpamAssassin                                                            ###
-### Version: 20260722                                                                                      ###
+### Version: 20260723                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -608,10 +608,6 @@ body    SPAM_MIX_SIMILAR     /\b(?=[A-Za-zА-ЯЁа-яё]*[А-ЯЁа-яё])(?=[A
 score   SPAM_MIX_SIMILAR     5.0
 tflags  SPAM_MIX_SIMILAR     autolearn_force
 
-body    SPAM_RU_OBFUSCATED_PHONE /\d+\s*\(\d\s*\d\s*\d\)\s*\d\s*\d\s*\d[- ]?\d\d(?:==)?/
-score   SPAM_RU_OBFUSCATED_PHONE 3.0
-tflags  SPAM_RU_OBFUSCATED_PHONE autolearn_force
-
 ###############################################################################
 # МЕТА-ПРАВИЛА (КОМБИНАЦИИ)
 ###############################################################################
@@ -729,7 +725,7 @@ meta    SPAM_CLOUD_SCAM      SPAM_CLOUD_HOSTING && SPAM_HELO_MISMATCH && SPAM_RA
 score   SPAM_CLOUD_SCAM      4.5
 
 # 29. Полный Telegram-спам
-meta    SPAM_RU_TELEGRAM_TOTAL SPAM_RU_TELEGRAM_AD && (SPAM_RU_PRICE || SPAM_RU_AD_SETUP) && (SPAM_RU_OBFUSCATED_PHONE || SPAM_RU_TELEGRAM_MAX)
+meta    SPAM_RU_TELEGRAM_TOTAL SPAM_RU_TELEGRAM_AD && (SPAM_RU_PRICE || SPAM_RU_AD_SETUP) && SPAM_RU_TELEGRAM_MAX
 score   SPAM_RU_TELEGRAM_TOTAL 5.5
 
 # 30. Спам с ro.ru
@@ -737,7 +733,7 @@ meta    SPAM_RO_RU_SPAM SPAM_DOMAIN_FROM && (SPAM_RU_TELEGRAM_AD || SPAM_RU_PRIC
 score   SPAM_RO_RU_SPAM 4.5
 
 # 31. Рекламный Telegram
-meta    SPAM_RU_TELEGRAM_ADS (SPAM_RU_TELEGRAM_AD || SPAM_RU_PRICE) && SPAM_RU_OBFUSCATED_PHONE && (SPAM_NO_URLS || SPAM_BASE64_BODY || SPAM_BASE64_HTML)
+meta    SPAM_RU_TELEGRAM_ADS (SPAM_RU_TELEGRAM_AD || SPAM_RU_PRICE) && (SPAM_NO_URLS || SPAM_BASE64_BODY || SPAM_BASE64_HTML)
 score   SPAM_RU_TELEGRAM_ADS 5.0
 
 # 32. Sextortion с RAT / fake malware

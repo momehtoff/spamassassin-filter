@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### УНИВЕРСАЛЬНЫЕ ПРАВИЛА ДЛЯ БЕЛОГО СПИСКА 4 SpamAssassin                                                 ###
-### Version: 20260722                                                                                      ###
+### Version: 20260723                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -29,7 +29,7 @@ describe LEGITIMATE_MAILING Legitimate mailing with proper list headers
 # ОБЩЕЕ ПРАВИЛО ДЛЯ КРУПНЫХ КОМПАНИЙ (ПО ДОМЕНУ)
 # ============================================================================
 
-header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru|bidzaar\.com|astgoz\.ru)$/i
+header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru|bidzaar\.com|astgoz\.ru|loans\.ozon\.ru)$/i
 score TRUSTED_DOMAIN 0
 
 meta TRUSTED_DOMAIN_MAIL (TRUSTED_DOMAIN && DKIM_VALID)
@@ -52,8 +52,10 @@ score OZON_DKIM 0
 
 body OZON_BODY_1 /ozon\.ru\/(my|order|points|product)/i
 score OZON_BODY_1 0
+
 body OZON_BODY_2 /Озон|Ozon/i
 score OZON_BODY_2 0
+
 body OZON_BODY_3 /баллы|кешбэк|скидка|подарок/i
 score OZON_BODY_3 0
 
@@ -76,8 +78,10 @@ score YANDEX_SUPER 0
 
 body YANDEX_BODY_1  /Яндекс( 360)? (для бизнеса|Почта|Почты)/i
 score YANDEX_BODY_1 0
+
 body YANDEX_BODY_2 /yandex\.(ru|net)\//i
 score YANDEX_BODY_2 0
+
 body YANDEX_BODY_3 /yastatic\.net/i
 score YANDEX_BODY_3 0
 
@@ -103,8 +107,10 @@ score TBANK_UNSUB_LIST 0
 
 body TBANK_BODY_1 /Т-Банк|Тинькофф/i
 score TBANK_BODY_1 0
+
 body TBANK_BODY_2 /tbank\.ru|tinkoff\.ru/i
 score TBANK_BODY_2 0
+
 body TBANK_BODY_3 /кэшбэк|кешбэк|бонусы|скидка/i
 score TBANK_BODY_3 0
 
@@ -121,14 +127,23 @@ describe TBANK_LIST_OFFICIAL Official T-Bank mailing with list headers
 # ----------------------------------------------------------------------------
 
 header VTB_FROM From:addr =~ /(send\.vtb\.ru|vtb\.ru)$/i
+score VTB_FROM 0
+
 header VTB_DKIM DKIM-Signature =~ /d=(emails\.tinkoff\.ru|mail\.psndsy\.ru)/i
+score VTB_DKIM 0
+
 header VTB_X_FELIS X-Felis-L =~ /bmru/i
+score VTB_X_FELIS 0
+
 header VTB_X_RPCAMPAIGN X-rpcampaign =~ /bmru/i
+score VTB_X_RPCAMPAIGN 0
 
 body VTB_BODY_1 /ВТБ/i
 score VTB_BODY_1 0
+
 body VTB_BODY_2 /vtb\.ru/i
 score VTB_BODY_2 0
+
 body VTB_BODY_3 /кредит(ная|ный)|карта|льготный период|кешбэк/i
 score VTB_BODY_3 0
 
@@ -149,8 +164,10 @@ header CITILINK_DKIM DKIM-Signature =~ /d=citilink\.ru/i
 
 body CITILINK_BODY_1 /Ситилинк|Citilink/i
 score CITILINK_BODY_1 0
+
 body CITILINK_BODY_2 /citilink\.ru/i
 score CITILINK_BODY_2 0
+
 body CITILINK_BODY_3 /скидка|бонус|промокод|корпоративн/i
 score CITILINK_BODY_3 0
 
@@ -159,6 +176,8 @@ score CITILINK_OFFICIAL -20.0
 describe CITILINK_OFFICIAL Official email from Citilink
 
 body CITILINK_MANAGER /Менеджер корпоративного отдела|Dolganov\.V@citilink\.ru/i
+score CITILINK_MANAGER 0
+
 meta CITILINK_B2B (CITILINK_OFFICIAL && CITILINK_MANAGER)
 score CITILINK_B2B -30.0
 describe CITILINK_B2B Citilink B2B email with manager signature
@@ -168,12 +187,17 @@ describe CITILINK_B2B Citilink B2B email with manager signature
 # ----------------------------------------------------------------------------
 
 header POFD_FROM From:addr =~ /(chek\.pofd\.ru|pofd\.ru)$/i
+score POFD_FROM 0
+
 header POFD_DKIM DKIM-Signature =~ /d=chek\.pofd\.ru/i
+score POFD_DKIM 0
 
 body POFD_BODY_1 /Платформа ОФД|platformaofd\.ru/i
 score POFD_BODY_1 0
+
 body POFD_BODY_2 /кассовый чек|фискальн/i
 score POFD_BODY_2 0
+
 body POFD_BODY_3 /ФН \d+|ФПД \d+/i
 score POFD_BODY_3 0
 
@@ -182,6 +206,8 @@ score POFD_OFFICIAL -20.0
 describe POFD_OFFICIAL Official email from Platforma OFD (receipt)
 
 body POFD_QR /qrcode|QR-код/i
+score POFD_QR 0
+
 meta POFD_QR_CHECK (POFD_OFFICIAL && POFD_QR)
 score POFD_QR_CHECK -25.0
 describe POFD_QR_CHECK Official Platforma OFD receipt with QR-code
@@ -191,22 +217,35 @@ describe POFD_QR_CHECK Official Platforma OFD receipt with QR-code
 # ----------------------------------------------------------------------------
 
 header SBIS_FROM From:addr =~ /(mail-trade\.saby\.ru|saby\.ru)$/i
+score SBIS_FROM 0
+
 header SBIS_DKIM DKIM-Signature =~ /d=mail-trade\.saby\.ru/i
+score SBIS_DKIM 0
 
 header SBIS_LIST_ID List-Id =~ /3;6/i
+score SBIS_LIST_ID 0
+
 header SBIS_XMAILRU X-Mailru-Msgtype =~ /3;6/i
+score SBIS_XMAILRU 0
+
 header SBIS_XSABY X-SABY-NOTIFY =~ /1/i
+score SBIS_XSABY 0
 
 body SBIS_BODY_1 /СБИС|Сабис|Saby/i
 score SBIS_BODY_1 0
+
 body SBIS_BODY_2 /saby\.ru/i
 score SBIS_BODY_2 0
+
 body SBIS_BODY_3 /тендер|закупк|торги/i
 score SBIS_BODY_3 0
+
 body SBIS_BODY_4 /подача заявок|номер закупки/i
 score SBIS_BODY_4 0
+
 body SBIS_BODY_5 /электронная площадка|Росэлторг/i
 score SBIS_BODY_5 0
+
 body SBIS_BODY_6 /44-ФЗ|223-ФЗ/i
 score SBIS_BODY_6 0
 
@@ -227,24 +266,35 @@ describe SBIS_MAILING Valid Saby mailing with list headers
 # ----------------------------------------------------------------------------
 
 header ACRON_FROM From:addr =~ /acron\.ru$/i
+score ACRON_FROM 0
+
 header ACRON_DKIM DKIM-Signature =~ /d=vnov\.acron\.ru/i
+score ACRON_DKIM 0
 
 header ACRON_LIST_UNSUB List-Unsubscribe =~ /etp\.acron\.ru\/app\/UnSubscribe/i
+score ACRON_LIST_UNSUB 0
 
 body ACRON_BODY_1 /Электронная торговая площадка ГК Акрон|АКРОН\. ЭТП/i
 score ACRON_BODY_1 0
+
 body ACRON_BODY_2 /etp\.acron\.ru/i
 score ACRON_BODY_2 0
+
 body ACRON_BODY_3 /Извещение о проведении закупки/i
 score ACRON_BODY_3 0
+
 body ACRON_BODY_4 /запрос коммерческих предложений/i
 score ACRON_BODY_4 0
+
 body ACRON_BODY_5 /торгово-закупочной процедуре/i
 score ACRON_BODY_5 0
+
 body ACRON_BODY_6 /\bАкрон\b/i
 score ACRON_BODY_6 0
+
 body ACRON_BODY_7 /acron\.ru/i
 score ACRON_BODY_7 0
+
 body ACRON_BODY_8 /закупк/i
 score ACRON_BODY_8 0
 
@@ -265,8 +315,13 @@ describe ACRON_LEGIT Trusted Acron ETP email
 # ----------------------------------------------------------------------------
 
 header KSMG_SPAM_CLEAN      X-KSMG-AntiSpam-Status =~ /not_detected/i
+score KSMG_SPAM_CLEAN 0
+
 header KSMG_AV_CLEAN        X-KSMG-AntiVirus-Status =~ /NotDetected/i
+score KSMG_AV_CLEAN 0
+
 header KSMG_LINKS_CLEAN     X-KSMG-LinksScanning =~ /NotDetected/i
+score KSMG_LINKS_CLEAN 0
 
 meta KSMG_ALL_CLEAN  (KSMG_SPAM_CLEAN && KSMG_AV_CLEAN && KSMG_LINKS_CLEAN)
 describe             KSMG_ALL_CLEAN Message passed all Kaspersky SMG checks
@@ -277,8 +332,10 @@ describe                     URI_LKK_IRKUTSKOIL Official LKK Irkutsk Oil portal
 score URI_LKK_IRKUTSKOIL     -2.0
 
 uri URI_TG_ME /\bt\.me\b/i
+score URI_TG_ME 0
 
 body BODY_IRKUTSKOIL_TG /закупки_ИНК/i
+score BODY_IRKUTSKOIL_TG 0
 
 meta IRKUTSKOIL_TG  (URI_TG_ME && BODY_IRKUTSKOIL_TG)
 describe            IRKUTSKOIL_TG Official Telegram channel reference
@@ -289,6 +346,7 @@ describe                   IRKUTSKOIL_CORPORATE Trusted Irkutsk Oil corporate me
 score IRKUTSKOIL_CORPORATE -10.0
 
 header IRKUTSKOIL_FROM From:addr =~ /irkutskoil\.ru$/i
+score IRKUTSKOIL_FROM 0
 
 body IRKUTSKOIL_BODY_1 /\bИНК\b/i
 score IRKUTSKOIL_BODY_1 0
@@ -312,8 +370,13 @@ score IRKUTSKOIL_OFFICIAL -20.0
 # ----------------------------------------------------------------------------
 
 header BIDZAAR_FROM From:addr =~ /@bidzaar\.com$/i
+score BIDZAAR_FROM 0
+
 header BIDZAAR_RETURN_PATH Return-Path =~ /@bidzaar\.com>$/i
+score BIDZAAR_RETURN_PATH 0
+
 header BIDZAAR_MSGTYPE X-Postmaster-Msgtype =~ /^ProcedureDigestReadyEvent$/i
+score BIDZAAR_MSGTYPE 0
 
 meta BIDZAAR_OFFICIAL (BIDZAAR_FROM && BIDZAAR_RETURN_PATH && DKIM_VALID && BIDZAAR_MSGTYPE)
 score BIDZAAR_OFFICIAL 0.0
@@ -344,8 +407,13 @@ describe ASTGOZ_SERVER Official AST GOZ message from known mail server
 # ============================================================================
 
 header GENERIC_LIST_ID List-Id =~ /\S+\.\S+/i
+score GENERIC_LIST_ID 0
+
 header GENERIC_UNSUB List-Unsubscribe =~ /https?:\/\/\S+/i
+score GENERIC_UNSUB 0
+
 header GENERIC_PRECEDENCE Precedence =~ /bulk|list|junk/i
+score GENERIC_PRECEDENCE 0
 
 meta GENERIC_MAILING_LIST (GENERIC_LIST_ID && GENERIC_UNSUB && GENERIC_PRECEDENCE && DKIM_VALID)
 score GENERIC_MAILING_LIST -10.0
@@ -353,45 +421,76 @@ describe GENERIC_MAILING_LIST Generic legitimate mailing list with proper header
 
 # Определяем основные правила для идентификации письма от OFD.RU
 header OFDRU_FROM From:addr =~ /ofd\.ru|chek\.pofd\.ru$/i
+score OFDRU_FROM 0
+
 header OFDRU_DKIM DKIM-Signature =~ /d=ofd\.ru|d=chek\.pofd\.ru/i
+score OFDRU_DKIM 0
+
 header OFDRU_SENDER Sender =~ /noreply@ofd\.ru/i
+score OFDRU_SENDER 0
 
 # Проверяем наличие уникальных маркеров в теле письма
 body OFDRU_BODY_1 /ОФД|OFD\.RU|Платформа ОФД/i
+score OFDRU_BODY_1 0
+
 body OFDRU_BODY_2 /ofd\.ru/i
+score OFDRU_BODY_2 0
+
 body OFDRU_BODY_3 /кассовый чек/i
+score OFDRU_BODY_3 0
+
 body OFDRU_BODY_4 /фискальный/i
+score OFDRU_BODY_4 0
+
 body OFDRU_BODY_5 /ФН \d+/i
+score OFDRU_BODY_5 0
+
 body OFDRU_BODY_6 /ФПД \d+/i
+score OFDRU_BODY_6 0
+
 body OFDRU_BODY_7 /QR-код|qrcode/i
+score OFDRU_BODY_7 0
+
 body OFDRU_BODY_8 /чек доступен в браузере/i
+score OFDRU_BODY_8 0
+
 body OFDRU_BODY_9 /platformaofd\.ru/i
+score OFDRU_BODY_9 0
+
 body OFDRU_BODY_10 /спасибо за покупку/i
+score OFDRU_BODY_10 0
+
 body OFDRU_BODY_11 /подарок за оплату/i
+score OFDRU_BODY_11 0
 
 # Мета-правило: письмо от OFD.RU, если совпадает домен отправителя, DKIM и хотя бы один признак в теле
 meta OFDRU_OFFICIAL (OFDRU_FROM && OFDRU_DKIM && (OFDRU_BODY_1 || OFDRU_BODY_2 || OFDRU_BODY_3 || OFDRU_BODY_4 || OFDRU_BODY_5 || OFDRU_BODY_6 || OFDRU_BODY_7 || OFDRU_BODY_8 || OFDRU_BODY_9 || OFDRU_BODY_10 || OFDRU_BODY_11))
+score OFDRU_OFFICIAL -20.0
+describe OFDRU_OFFICIAL Official email from OFD.RU (Platforma OFD) - receipt
 
 # Альтернативное мета-правило для чеков с QR-кодом
 body OFDRU_QR /qrcode|QR-код/i
+score OFDRU_QR 0
+
 meta OFDRU_QR_CHECK (OFDRU_OFFICIAL && OFDRU_QR)
 score OFDRU_QR_CHECK -25.0
-
-# Присваиваем письму очень низкий балл, чтобы оно гарантированно не попало в спам
-score OFDRU_OFFICIAL -20.0
-
-# Описываем правила для отчета
-describe OFDRU_OFFICIAL Official email from OFD.RU (Platforma OFD) - receipt
 describe OFDRU_QR_CHECK Official OFD.RU receipt with QR-code
 
 # Правило для писем с фискальными реквизитами
 header OFDRU_FROM_FISCAL From:addr =~ /ofd\.ru|chek\.pofd\.ru$/i
+score OFDRU_FROM_FISCAL 0
+
 header OFDRU_DKIM_FISCAL DKIM-Signature =~ /d=ofd\.ru|d=chek\.pofd\.ru/i
+score OFDRU_DKIM_FISCAL 0
 
 body OFDRU_FN /ФН \d+/i
+score OFDRU_FN 0
+
 body OFDRU_FPD /ФПД \d+/i
-body OFDRU_QR /qrcode|QR-код/i
+score OFDRU_FPD 0
+
 body OFDRU_CHECK /кассовый чек|фискальный/i
+score OFDRU_CHECK 0
 
 meta OFDRU_FISCAL (OFDRU_FROM_FISCAL && OFDRU_DKIM_FISCAL && OFDRU_FN && OFDRU_FPD && OFDRU_QR && OFDRU_CHECK)
 score OFDRU_FISCAL -25.0
