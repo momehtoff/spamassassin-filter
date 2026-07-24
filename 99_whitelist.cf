@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Whitelist filter 4 SpamAssassin                                                               ###
-### Version: 20260723                                                                             ###
+### Version: 20260724                                                                             ###
 ### https://github.com/momehtoff/spamassassin-filter                                              ###
 ###                                                                                               ###
 ### Addon links:                                                                                  ###
@@ -70,4 +70,8 @@ whitelist_from noreply@steampowered.com
 whitelist_from portalmarket@mos.ru
 whitelist_from robot@zont-online.ru
 
+whitelist_from_dkim anlan.ru
+whitelist_from_dkim e.petrovich.ru
 whitelist_from_dkim loans.ozon.ru
+whitelist_from_dkim mail-trade.saby.ru
+whitelist_from_dkim saby.ru

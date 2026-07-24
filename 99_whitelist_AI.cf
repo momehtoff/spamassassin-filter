@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### УНИВЕРСАЛЬНЫЕ ПРАВИЛА ДЛЯ БЕЛОГО СПИСКА 4 SpamAssassin                                                 ###
-### Version: 20260723                                                                                      ###
+### Version: 20260724                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -29,7 +29,7 @@ describe LEGITIMATE_MAILING Legitimate mailing with proper list headers
 # ОБЩЕЕ ПРАВИЛО ДЛЯ КРУПНЫХ КОМПАНИЙ (ПО ДОМЕНУ)
 # ============================================================================
 
-header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru|bidzaar\.com|astgoz\.ru|loans\.ozon\.ru)$/i
+header TRUSTED_DOMAIN From:addr =~ /@(sender\.ozon\.ru|yandex\.ru|360\.yandex\.ru|emails\.tinkoff\.ru|tbank\.ru|send\.vtb\.ru|vtb\.ru|citilink\.ru|chek\.pofd\.ru|pofd\.ru|saby\.ru|mail-trade\.saby\.ru|acron\.ru|irkutskoil\.ru|bidzaar\.com|astgoz\.ru|loans\.ozon\.ru|e\.petrovich\.ru|anlan\.ru)$/i
 score TRUSTED_DOMAIN 0
 
 meta TRUSTED_DOMAIN_MAIL (TRUSTED_DOMAIN && DKIM_VALID)
@@ -222,6 +222,9 @@ score SBIS_FROM 0
 header SBIS_DKIM DKIM-Signature =~ /d=mail-trade\.saby\.ru/i
 score SBIS_DKIM 0
 
+header SBIS_RELAY Received =~ /tensor\.ru/i
+score SBIS_RELAY 0
+
 header SBIS_LIST_ID List-Id =~ /3;6/i
 score SBIS_LIST_ID 0
 
@@ -252,6 +255,10 @@ score SBIS_BODY_6 0
 meta SBIS_OFFICIAL (SBIS_FROM && SBIS_DKIM && (SBIS_BODY_1 || SBIS_BODY_2 || SBIS_BODY_3 || SBIS_BODY_4 || SBIS_BODY_5 || SBIS_BODY_6))
 score SBIS_OFFICIAL -20.0
 describe SBIS_OFFICIAL Official email from Saby (SBIS) - tender notifications
+
+meta SBIS_TENSOR_OFFICIAL (SBIS_FROM && DKIM_VALID && SBIS_RELAY)
+score SBIS_TENSOR_OFFICIAL -10.0
+describe SBIS_TENSOR_OFFICIAL Official Saby email relayed through Tensor
 
 meta SBIS_HEADERS_ONLY (SBIS_FROM && SBIS_LIST_ID && SBIS_XMAILRU && SBIS_XSABY)
 score SBIS_HEADERS_ONLY -25.0
@@ -495,3 +502,19 @@ score OFDRU_CHECK 0
 meta OFDRU_FISCAL (OFDRU_FROM_FISCAL && OFDRU_DKIM_FISCAL && OFDRU_FN && OFDRU_FPD && OFDRU_QR && OFDRU_CHECK)
 score OFDRU_FISCAL -25.0
 describe OFDRU_FISCAL Official OFD.RU fiscal receipt with QR-code
+
+meta W_AI_SPF_DKIM_PASS_01     (SPF_PASS && DKIM_VALID && !T_SPF_HELO_TEMPERROR && !T_PDS_OTHER_BAD_TLD && !FROM_SUSPICIOUS_NTLD_FP && !FROM_SUSPICIOUS_NTLD && !HEADER_FROM_DIFFERENT_DOMAINS && !FREEMAIL_FORGED_REPLYTO && !SPF_HELO_NONE)
+score W_AI_SPF_DKIM_PASS_01    -1.0
+describe W_AI_SPF_DKIM_PASS_01 SPF_PASS+DKIM_VALID-!T_SPF_HELO_TEMPERROR-T_PDS_OTHER_BAD_TLD-FROM_SUSPICIOUS_NTLD_FP-!FROM_SUSPICIOUS_NTLD-!HEADER_FROM_DIFFERENT_DOMAINS-!FREEMAIL_FORGED_REPLYTO-!SPF_HELO_NONE
+
+meta W_AI_SPF_DKIM_PASS_02     (SPF_PASS && SPF_HELO_PASS && DKIM_VALID && !T_SPF_HELO_TEMPERROR && !T_PDS_OTHER_BAD_TLD && !FROM_SUSPICIOUS_NTLD_FP && !FROM_SUSPICIOUS_NTLD && !HEADER_FROM_DIFFERENT_DOMAINS && !FREEMAIL_FORGED_REPLYTO && !SPF_HELO_NONE)
+score W_AI_SPF_DKIM_PASS_02    -2.0
+describe W_AI_SPF_DKIM_PASS_02 SPF_PASS+SPF_HELO_PASS+DKIM_VALID-!T_SPF_HELO_TEMPERROR-T_PDS_OTHER_BAD_TLD-FROM_SUSPICIOUS_NTLD_FP-!FROM_SUSPICIOUS_NTLD-!HEADER_FROM_DIFFERENT_DOMAINS-!FREEMAIL_FORGED_REPLYTO-!SPF_HELO_NONE
+
+meta W_AI_SPF_DKIM_PASS_03     (SPF_PASS && SPF_HELO_PASS && DKIM_VALID && !T_SPF_HELO_TEMPERROR && DKIM_VALID_EF && !T_PDS_OTHER_BAD_TLD && !FROM_SUSPICIOUS_NTLD_FP && !FROM_SUSPICIOUS_NTLD && !HEADER_FROM_DIFFERENT_DOMAINS && !FREEMAIL_FORGED_REPLYTO && !SPF_HELO_NONE)
+score W_AI_SPF_DKIM_PASS_03    -3.0
+describe W_AI_SPF_DKIM_PASS_03 SPF_PASS+SPF_HELO_PASS+DKIM_VALID-!T_SPF_HELO_TEMPERROR+DKIM_VALID_EF-T_PDS_OTHER_BAD_TLD-FROM_SUSPICIOUS_NTLD_FP-!FROM_SUSPICIOUS_NTLD-!HEADER_FROM_DIFFERENT_DOMAINS-!FREEMAIL_FORGED_REPLYTO-!SPF_HELO_NONE
+
+meta W_AI_SPF_DKIM_PASS_04     (SPF_PASS && SPF_HELO_PASS && DKIM_VALID && !T_SPF_HELO_TEMPERROR && DKIM_VALID_EF && DKIM_VALID_AU && !T_PDS_OTHER_BAD_TLD && !FROM_SUSPICIOUS_NTLD_FP && !FROM_SUSPICIOUS_NTLD && !HEADER_FROM_DIFFERENT_DOMAINS && !FREEMAIL_FORGED_REPLYTO && !SPF_HELO_NONE)
+score W_AI_SPF_DKIM_PASS_04    -4.0
+describe W_AI_SPF_DKIM_PASS_04 SPF_PASS+SPF_HELO_PASS+DKIM_VALIDDKIM_VALID-!T_SPF_HELO_TEMPERROR+DKIM_VALID_EF+DKIM_VALID_AU-T_PDS_OTHER_BAD_TLD-FROM_SUSPICIOUS_NTLD_FP-!FROM_SUSPICIOUS_NTLD-!HEADER_FROM_DIFFERENT_DOMAINS-!FREEMAIL_FORGED_REPLYTO-!SPF_HELO_NONE

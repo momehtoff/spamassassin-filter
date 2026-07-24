@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### БАЗОВЫЕ ТЕХНИЧЕСКИЕ ПРИЗНАКИ 4 SpamAssassin                                                            ###
-### Version: 20260723                                                                                      ###
+### Version: 20260724                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -746,3 +746,68 @@ tflags  SPAM_SEXTORTION_RAT_TOTAL autolearn_force
 meta    SPAM_SEXTORTION_RANSOM (SPAM_SEXTORTION || SPAM_SEXTORTION_THREAT) && SPAM_BITCOIN_RANSOM && (SPAM_BITCOIN_ADDRESS || SPAM_BITCOIN_BASE58)
 score   SPAM_SEXTORTION_RANSOM 6.0
 tflags  SPAM_SEXTORTION_RANSOM autolearn_force
+
+meta LOCAL_NORDNS_HTML (RDNS_NONE && MIME_HTML_ONLY)
+describe LOCAL_NORDNS_HTML No reverse DNS and HTML-only message
+score LOCAL_NORDNS_HTML 1.5
+
+meta LOCAL_LOW_CONTRAST_PHISH (HTML_FONT_LOW_CONTRAST && RDNS_NONE)
+describe LOCAL_LOW_CONTRAST_PHISH Low contrast HTML from host without reverse DNS
+score LOCAL_LOW_CONTRAST_PHISH 1.5
+
+meta LOCAL_PHISHING_COMBINATION (RDNS_NONE && MIME_HTML_ONLY && HTML_FONT_LOW_CONTRAST)
+describe LOCAL_PHISHING_COMBINATION Multiple phishing indicators
+score LOCAL_PHISHING_COMBINATION 2.5
+
+meta F_AI_SPF_01  (T_SPF_PERMERROR && T_SPF_HELO_PERMERROR)
+score F_AI_SPF_01 1.0
+
+meta F_AI_SPF_SPAM_CH     (T_SPF_PERMERROR && SPAM_CLOUD_HOSTING)
+score F_AI_SPF_SPAM_CH    3.0
+describe F_AI_SPF_SPAM_CH T_SPF_PERMERROR+SPAM_CLOUD_HOSTING
+tflags  F_AI_SPF_SPAM_CH  autolearn_force
+
+meta F_AI_SPF_HELO_SPAM_CH     (T_SPF_HELO_PERMERROR && SPAM_CLOUD_HOSTING)
+score F_AI_SPF_HELO_SPAM_CH    3.0
+describe F_AI_SPF_HELO_SPAM_CH T_SPF_HELO_PERMERROR+SPAM_CLOUD_HOSTING
+tflags  F_AI_SPF_HELO_SPAM_CH  autolearn_force
+
+meta F_AI_SPF_RDNS_NONE	    (SPF_SOFTFAIL && RDNS_NONE)
+score F_AI_SPF_RDNS_NONE    3.0
+describe F_AI_SPF_RDNS_NONE SPF_SOFTFAIL+RDNS_NONE
+tflags F_AI_SPF_RDNS_NONE   autolearn_force
+
+meta F_AI_RCVD_IP_RDNS_NONE     (TVD_RCVD_IP && RDNS_NONE)
+score F_AI_RCVD_IP_RDNS_NONE    3.5
+describe F_AI_RCVD_IP_RDNS_NONE TVD_RCVD_IP+RDNS_NONE
+tflags  F_AI_RCVD_IP_RDNS_NONE  autolearn_force
+
+meta F_AI_RCVD_IP_RDNS_DYN     (TVD_RCVD_IP && RDNS_DYNAMIC)
+score F_AI_RCVD_IP_RDNS_DYN    2.0
+describe F_AI_RCVD_IP_RDNS_DYN TVD_RCVD_IP+RDNS_DYNAMIC
+tflags  F_AI_RCVD_IP_RDNS_DYN  autolearn_force
+
+meta F_AI_TLD_FISHING     (FROM_SUSPICIOUS_NTLD && T_PDS_OTHER_BAD_TLD)
+score F_AI_TLD_FISHING    3.0
+describe F_AI_TLD_FISHING FROM_SUSPICIOUS_NTLD+T_PDS_OTHER_BAD_TLD
+tflags F_AI_TLD_FISHING   autolearn_force
+
+meta F_AI_TLD_FISHING_FP     (FROM_SUSPICIOUS_NTLD_FP && T_PDS_OTHER_BAD_TLD)
+score F_AI_TLD_FISHING_FP    3.0
+describe F_AI_TLD_FISHING_FP FROM_SUSPICIOUS_NTLD_FP+T_PDS_OTHER_BAD_TLD
+tflags F_AI_TLD_FISHING_FP   autolearn_force
+
+meta F_AI_MMID_RDNS_NONE     (MISSING_MID && F_AI_MID_RDNS_NONE)
+score F_AI_MMID_RDNS_NONE    5.0
+describe F_AI_MMID_RDNS_NONE MISSING_MID+F_AI_MID_RDNS_NONE
+tflags F_AI_MMID_RDNS_NONE   autolearn_force
+
+meta F_AI_IMID_RDNS_NONE     (INVALID_MSGID && F_AI_MID_RDNS_NONE)
+score F_AI_IMID_RDNS_NONE    5.0
+describe F_AI_IMID_RDNS_NONE INVALID_MSGID+F_AI_MID_RDNS_NONE
+tflags F_AI_IMID_RDNS_NONE   autolearn_force
+
+meta F_AI_SXO_HTML     (STATIC_XPRIO_OLE && HTML_MESSAGE)
+score F_AI_SXO_HTML    2.0
+describe F_AI_SXO_HTML STATIC_XPRIO_OLE+HTML_MESSAGE
+tflags F_AI_SXO_HTML   autolearn_force
