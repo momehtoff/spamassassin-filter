@@ -1,6 +1,6 @@
 ##############################################################################################################
 ### БАЗОВЫЕ ТЕХНИЧЕСКИЕ ПРИЗНАКИ 4 SpamAssassin                                                            ###
-### Version: 20260724                                                                                      ###
+### Version: 20260731                                                                                      ###
 ###                                                                                                        ###
 ### Addon links:                                                                                           ###
 ### Converter UTF-8: https://codebeautify.org/utf8-converter                                               ###
@@ -63,7 +63,7 @@ rawbody SPAM_BASE64_BODY    /Content-Transfer-Encoding:\s*base64\s*$/
 score   SPAM_BASE64_BODY    1.0
 
 # Подозрительный TLD
-header	SPAM_SUSPECT_TLD     From =~ /@[a-z0-9]+\.(?:click|store|top|online|site|xyz|club|work|date|download|stream|bet|best|bio|bond|buzz|lat|cfd|fun|monster|one|quest|shop|space)/i
+header	SPAM_SUSPECT_TLD     From =~ /@[a-z0-9]+\.(?:best|bet|bio|bond|buzz|cfd|click|club|date|download|fun|lat|monster|one|online|quest|sbs|shop|site|space|store|stream|top|work|xyz)/i
 score   SPAM_SUSPECT_TLD     2.0
 
 # Двойная DKIM-подпись (Google)
